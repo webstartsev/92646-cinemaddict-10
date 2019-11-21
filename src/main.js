@@ -1,6 +1,6 @@
 'use strict';
 
-const createProfileTempalte = () => {
+const createProfileTemplate = () => {
   return (
     `<section class="header__profile profile">
       <p class="profile__rating">Movie Buff</p>
@@ -9,7 +9,7 @@ const createProfileTempalte = () => {
   );
 };
 
-const createMenuTempalte = () => {
+const createMenuTemplate = () => {
   return (
     `<nav class="main-navigation">
       <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
@@ -21,7 +21,7 @@ const createMenuTempalte = () => {
   );
 };
 
-const createSortTempalte = () => {
+const createSortTemplate = () => {
   return (
     `<ul class="sort">
       <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -31,7 +31,7 @@ const createSortTempalte = () => {
   );
 };
 
-const createFilmsTempalte = () => {
+const createFilmsTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -43,7 +43,7 @@ const createFilmsTempalte = () => {
   );
 };
 
-const createFilmsTopTempalte = () => {
+const createFilmsTopTemplate = () => {
   return (
     `<section class="films-list--extra films-list--extra-top">
       <h2 class="films-list__title">Top rated</h2>
@@ -53,7 +53,7 @@ const createFilmsTopTempalte = () => {
   );
 };
 
-const createFilmsMostTempalte = () => {
+const createFilmsMostTemplate = () => {
   return (
     `<section class="films-list--extra films-list--extra-most">
       <h2 class="films-list__title">Most commented</h2>
@@ -63,7 +63,7 @@ const createFilmsMostTempalte = () => {
   );
 };
 
-const createFilmTempalte = () => {
+const createFilmTemplate = () => {
   return (
     `<article class="film-card">
       <h3 class="film-card__title">The Dance of Life</h3>
@@ -85,13 +85,13 @@ const createFilmTempalte = () => {
   );
 };
 
-const createShowMoreBtnTempalte = () => {
+const createShowMoreBtnTemplate = () => {
   return (
     `<button class="films-list__show-more">Show more</button>`
   );
 };
 
-const createFilmPopupTempalte = () => {
+const createFilmPopupTemplate = () => {
   return (
     `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -273,30 +273,30 @@ const render = (container, template, position = `beforeend`) => {
 };
 
 const headerElement = document.querySelector(`.header`);
-render(headerElement, createProfileTempalte());
+render(headerElement, createProfileTemplate());
 
 const mainElement = document.querySelector(`.main`);
-render(mainElement, createMenuTempalte());
-render(mainElement, createSortTempalte());
-render(mainElement, createFilmsTempalte());
+render(mainElement, createMenuTemplate());
+render(mainElement, createSortTemplate());
+render(mainElement, createFilmsTemplate());
 
 const filmsElement = mainElement.querySelector(`.films`);
 const filmListContainerElement = filmsElement.querySelector(`.films-list__container`);
 
-new Array(FILM_COUNT).fill(``).forEach(() => render(filmListContainerElement, createFilmTempalte()));
+new Array(FILM_COUNT).fill(``).forEach(() => render(filmListContainerElement, createFilmTemplate()));
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
-render(filmsListElement, createShowMoreBtnTempalte());
+render(filmsListElement, createShowMoreBtnTemplate());
 
-render(filmsElement, createFilmsTopTempalte());
-render(filmsElement, createFilmsMostTempalte());
+render(filmsElement, createFilmsTopTemplate());
+render(filmsElement, createFilmsMostTemplate());
 
 const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
 const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListTopContainerElement, createFilmTempalte()));
+new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListTopContainerElement, createFilmTemplate()));
 
 const filmsListMostElement = mainElement.querySelector(`.films-list--extra-most`);
 const filmsListMostContainerElement = filmsListMostElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListMostContainerElement, createFilmTempalte()));
+new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListMostContainerElement, createFilmTemplate()));
 
-render(document.querySelector(`body`), createFilmPopupTempalte());
+render(document.querySelector(`body`), createFilmPopupTemplate());
