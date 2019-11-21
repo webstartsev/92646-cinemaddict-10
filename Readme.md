@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Sergey Startsev](https://up.htmlacademy.ru/ecmascript/10/user/92646).
-* Наставник: `Неизвестно`.
+* Наставник: [Сева Либеров](https://up.htmlacademy.ru/ecmascript/10/user/1229469).
 
 ---
 
