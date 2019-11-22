@@ -86,107 +86,16 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./src/components/film-popup.js":
+/*!**************************************!*\
+  !*** ./src/components/film-popup.js ***!
+  \**************************************/
+/*! exports provided: createFilmPopupTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-const createProfileTemplate = () => {
-  return (
-    `<section class="header__profile profile">
-      <p class="profile__rating">Movie Buff</p>
-      <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-    </section>`
-  );
-};
-
-const createMenuTemplate = () => {
-  return (
-    `<nav class="main-navigation">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-      <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
-    </nav>`
-  );
-};
-
-const createSortTemplate = () => {
-  return (
-    `<ul class="sort">
-      <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-      <li><a href="#" class="sort__button">Sort by date</a></li>
-      <li><a href="#" class="sort__button">Sort by rating</a></li>
-    </ul>`
-  );
-};
-
-const createFilmsTemplate = () => {
-  return (
-    `<section class="films">
-      <section class="films-list">
-        <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
-
-        <div class="films-list__container"></div>
-      </section>
-    </section>`
-  );
-};
-
-const createFilmsTopTemplate = () => {
-  return (
-    `<section class="films-list--extra films-list--extra-top">
-      <h2 class="films-list__title">Top rated</h2>
-
-      <div class="films-list__container"></div>
-    </section>`
-  );
-};
-
-const createFilmsMostTemplate = () => {
-  return (
-    `<section class="films-list--extra films-list--extra-most">
-      <h2 class="films-list__title">Most commented</h2>
-
-      <div class="films-list__container"></div>
-    </section>`
-  );
-};
-
-const createFilmTemplate = () => {
-  return (
-    `<article class="film-card">
-      <h3 class="film-card__title">The Dance of Life</h3>
-      <p class="film-card__rating">8.3</p>
-      <p class="film-card__info">
-        <span class="film-card__year">1929</span>
-        <span class="film-card__duration">1h 55m</span>
-        <span class="film-card__genre">Musical</span>
-      </p>
-      <img src="./images/posters/the-dance-of-life.jpg" alt="" class="film-card__poster">
-      <p class="film-card__description">Burlesque comic Ralph "Skid" Johnson (Skelly), and specialty dancer Bonny Lee King (Carroll), end up together on a cold, rainy night at a tr…</p>
-      <a class="film-card__comments">5 comments</a>
-      <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-      </form>
-    </article>`
-  );
-};
-
-const createShowMoreBtnTemplate = () => {
-  return (
-    `<button class="films-list__show-more">Show more</button>`
-  );
-};
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmPopupTemplate", function() { return createFilmPopupTemplate; });
 const createFilmPopupTemplate = () => {
   return (
     `<section class="film-details">
@@ -361,6 +270,232 @@ const createFilmPopupTemplate = () => {
   );
 };
 
+
+/***/ }),
+
+/***/ "./src/components/film.js":
+/*!********************************!*\
+  !*** ./src/components/film.js ***!
+  \********************************/
+/*! exports provided: createFilmTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmTemplate", function() { return createFilmTemplate; });
+const createFilmTemplate = () => {
+  return (
+    `<article class="film-card">
+      <h3 class="film-card__title">The Dance of Life</h3>
+      <p class="film-card__rating">8.3</p>
+      <p class="film-card__info">
+        <span class="film-card__year">1929</span>
+        <span class="film-card__duration">1h 55m</span>
+        <span class="film-card__genre">Musical</span>
+      </p>
+      <img src="./images/posters/the-dance-of-life.jpg" alt="" class="film-card__poster">
+      <p class="film-card__description">Burlesque comic Ralph "Skid" Johnson (Skelly), and specialty dancer Bonny Lee King (Carroll), end up together on a cold, rainy night at a tr…</p>
+      <a class="film-card__comments">5 comments</a>
+      <form class="film-card__controls">
+        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+      </form>
+    </article>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/films-most.js":
+/*!**************************************!*\
+  !*** ./src/components/films-most.js ***!
+  \**************************************/
+/*! exports provided: createFilmsMostTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmsMostTemplate", function() { return createFilmsMostTemplate; });
+const createFilmsMostTemplate = () => {
+  return (
+    `<section class="films-list--extra films-list--extra-most">
+      <h2 class="films-list__title">Most commented</h2>
+
+      <div class="films-list__container"></div>
+    </section>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/films-top.js":
+/*!*************************************!*\
+  !*** ./src/components/films-top.js ***!
+  \*************************************/
+/*! exports provided: createFilmsTopTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmsTopTemplate", function() { return createFilmsTopTemplate; });
+const createFilmsTopTemplate = () => {
+  return (
+    `<section class="films-list--extra films-list--extra-top">
+      <h2 class="films-list__title">Top rated</h2>
+
+      <div class="films-list__container"></div>
+    </section>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/films.js":
+/*!*********************************!*\
+  !*** ./src/components/films.js ***!
+  \*********************************/
+/*! exports provided: createFilmsTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createFilmsTemplate", function() { return createFilmsTemplate; });
+const createFilmsTemplate = () => {
+  return (
+    `<section class="films">
+      <section class="films-list">
+        <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
+
+        <div class="films-list__container"></div>
+      </section>
+    </section>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/menu.js":
+/*!********************************!*\
+  !*** ./src/components/menu.js ***!
+  \********************************/
+/*! exports provided: createMenuTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMenuTemplate", function() { return createMenuTemplate; });
+const createMenuTemplate = () => {
+  return (
+    `<nav class="main-navigation">
+      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
+      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
+      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
+      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
+      <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
+    </nav>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/profile.js":
+/*!***********************************!*\
+  !*** ./src/components/profile.js ***!
+  \***********************************/
+/*! exports provided: createProfileTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProfileTemplate", function() { return createProfileTemplate; });
+const createProfileTemplate = () => {
+  return (
+    `<section class="header__profile profile">
+      <p class="profile__rating">Movie Buff</p>
+      <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
+    </section>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/show-more-btn.js":
+/*!*****************************************!*\
+  !*** ./src/components/show-more-btn.js ***!
+  \*****************************************/
+/*! exports provided: createShowMoreBtnTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createShowMoreBtnTemplate", function() { return createShowMoreBtnTemplate; });
+const createShowMoreBtnTemplate = () => {
+  return (
+    `<button class="films-list__show-more">Show more</button>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/components/sort.js":
+/*!********************************!*\
+  !*** ./src/components/sort.js ***!
+  \********************************/
+/*! exports provided: createSortTemplate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createSortTemplate", function() { return createSortTemplate; });
+const createSortTemplate = () => {
+  return (
+    `<ul class="sort">
+      <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
+      <li><a href="#" class="sort__button">Sort by date</a></li>
+      <li><a href="#" class="sort__button">Sort by rating</a></li>
+    </ul>`
+  );
+};
+
+
+/***/ }),
+
+/***/ "./src/main.js":
+/*!*********************!*\
+  !*** ./src/main.js ***!
+  \*********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_profile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/profile */ "./src/components/profile.js");
+/* harmony import */ var _components_menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/menu */ "./src/components/menu.js");
+/* harmony import */ var _components_sort__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/sort */ "./src/components/sort.js");
+/* harmony import */ var _components_films__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/films */ "./src/components/films.js");
+/* harmony import */ var _components_film__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/film */ "./src/components/film.js");
+/* harmony import */ var _components_show_more_btn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/show-more-btn */ "./src/components/show-more-btn.js");
+/* harmony import */ var _components_films_top__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/films-top */ "./src/components/films-top.js");
+/* harmony import */ var _components_films_most__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/films-most */ "./src/components/films-most.js");
+/* harmony import */ var _components_film_popup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/film-popup */ "./src/components/film-popup.js");
+
+
+
+
+
+
+
+
+
+
 const FILM_COUNT = 5;
 const FILM__EXTRA_COUNT = 2;
 
@@ -369,33 +504,33 @@ const render = (container, template, position = `beforeend`) => {
 };
 
 const headerElement = document.querySelector(`.header`);
-render(headerElement, createProfileTemplate());
+render(headerElement, Object(_components_profile__WEBPACK_IMPORTED_MODULE_0__["createProfileTemplate"])());
 
 const mainElement = document.querySelector(`.main`);
-render(mainElement, createMenuTemplate());
-render(mainElement, createSortTemplate());
-render(mainElement, createFilmsTemplate());
+render(mainElement, Object(_components_menu__WEBPACK_IMPORTED_MODULE_1__["createMenuTemplate"])());
+render(mainElement, Object(_components_sort__WEBPACK_IMPORTED_MODULE_2__["createSortTemplate"])());
+render(mainElement, Object(_components_films__WEBPACK_IMPORTED_MODULE_3__["createFilmsTemplate"])());
 
 const filmsElement = mainElement.querySelector(`.films`);
 const filmListContainerElement = filmsElement.querySelector(`.films-list__container`);
 
-new Array(FILM_COUNT).fill(``).forEach(() => render(filmListContainerElement, createFilmTemplate()));
+new Array(FILM_COUNT).fill(``).forEach(() => render(filmListContainerElement, Object(_components_film__WEBPACK_IMPORTED_MODULE_4__["createFilmTemplate"])()));
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
-render(filmsListElement, createShowMoreBtnTemplate());
+render(filmsListElement, Object(_components_show_more_btn__WEBPACK_IMPORTED_MODULE_5__["createShowMoreBtnTemplate"])());
 
-render(filmsElement, createFilmsTopTemplate());
-render(filmsElement, createFilmsMostTemplate());
+render(filmsElement, Object(_components_films_top__WEBPACK_IMPORTED_MODULE_6__["createFilmsTopTemplate"])());
+render(filmsElement, Object(_components_films_most__WEBPACK_IMPORTED_MODULE_7__["createFilmsMostTemplate"])());
 
 const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
 const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListTopContainerElement, createFilmTemplate()));
+new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListTopContainerElement, Object(_components_film__WEBPACK_IMPORTED_MODULE_4__["createFilmTemplate"])()));
 
 const filmsListMostElement = mainElement.querySelector(`.films-list--extra-most`);
 const filmsListMostContainerElement = filmsListMostElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListMostContainerElement, createFilmTemplate()));
+new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListMostContainerElement, Object(_components_film__WEBPACK_IMPORTED_MODULE_4__["createFilmTemplate"])()));
 
-render(document.querySelector(`body`), createFilmPopupTemplate());
+render(document.querySelector(`body`), Object(_components_film_popup__WEBPACK_IMPORTED_MODULE_8__["createFilmPopupTemplate"])());
 
 
 /***/ })
