@@ -7,6 +7,7 @@ import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createFilmsTopTemplate} from './components/films-top';
 import {createFilmsMostTemplate} from './components/films-most';
 import {createFilmPopupTemplate} from './components/film-popup';
+import {generateFilms} from './mock/film.js';
 
 const FILM_COUNT = 5;
 const FILM__EXTRA_COUNT = 2;
@@ -14,6 +15,7 @@ const FILM__EXTRA_COUNT = 2;
 const render = (container, template, position = `beforeend`) => {
   container.insertAdjacentHTML(position, template);
 };
+const films = generateFilms(FILM_COUNT);
 
 const headerElement = document.querySelector(`.header`);
 render(headerElement, createProfileTemplate());
@@ -26,7 +28,7 @@ render(mainElement, createFilmsTemplate());
 const filmsElement = mainElement.querySelector(`.films`);
 const filmListContainerElement = filmsElement.querySelector(`.films-list__container`);
 
-new Array(FILM_COUNT).fill(``).forEach(() => render(filmListContainerElement, createFilmTemplate()));
+films.forEach((film) => render(filmListContainerElement, createFilmTemplate(film)));
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
 render(filmsListElement, createShowMoreBtnTemplate());
