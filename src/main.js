@@ -6,7 +6,7 @@ import {createFilmTemplate} from './components/film';
 import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createFilmsTopTemplate} from './components/films-top';
 import {createFilmsMostTemplate} from './components/films-most';
-// import {createFilmPopupTemplate} from './components/film-popup';
+import {createFilmPopupTemplate} from './components/film-popup';
 import {generateFilms} from './mock/film.js';
 import {generateMenu} from './mock/menu.js';
 
@@ -48,4 +48,4 @@ const filmsListMostCommentContainerElement = filmsListMostCommentElement.querySe
 const filmMostComment = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM__EXTRA_COUNT);
 filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, createFilmTemplate(film)));
 
-// render(document.querySelector(`body`), createFilmPopupTemplate());
+render(document.querySelector(`body`), createFilmPopupTemplate(films[0]));
