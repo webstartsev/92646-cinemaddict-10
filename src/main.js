@@ -7,8 +7,10 @@ import {createShowMoreBtnTemplate} from './components/show-more-btn';
 import {createFilmsTopTemplate} from './components/films-top';
 import {createFilmsMostTemplate} from './components/films-most';
 import {createFilmPopupTemplate} from './components/film-popup';
+import {createCommentsTemplate} from './components/comments';
 import {generateFilms} from './mock/film.js';
 import {generateMenu} from './mock/menu.js';
+import {generateComments} from './mock/comment.js';
 
 const FILM_COUNT = 5;
 const FILM__EXTRA_COUNT = 2;
@@ -49,3 +51,6 @@ const filmMostComment = films.slice().sort((a, b) => b.comments - a.comments).sl
 filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, createFilmTemplate(film)));
 
 render(document.querySelector(`body`), createFilmPopupTemplate(films[0]));
+const popupBottomElement = document.querySelector(`.form-details__bottom-container`);
+const comments = generateComments(films[0].comments);
+render(popupBottomElement, createCommentsTemplate(comments));
