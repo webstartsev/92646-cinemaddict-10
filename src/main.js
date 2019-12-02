@@ -40,10 +40,12 @@ render(filmsElement, createFilmsMostTemplate());
 
 const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
 const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListTopContainerElement, createFilmTemplate()));
+const filmTopList = films.slice().sort((a, b) => b.rating - a.rating).slice(0, FILM__EXTRA_COUNT);
+filmTopList.forEach((film) => render(filmsListTopContainerElement, createFilmTemplate(film)));
 
-const filmsListMostElement = mainElement.querySelector(`.films-list--extra-most`);
-const filmsListMostContainerElement = filmsListMostElement.querySelector(`.films-list__container`);
-new Array(FILM__EXTRA_COUNT).fill(``).forEach(() => render(filmsListMostContainerElement, createFilmTemplate()));
+const filmsListMostCommentElement = mainElement.querySelector(`.films-list--extra-most`);
+const filmsListMostCommentContainerElement = filmsListMostCommentElement.querySelector(`.films-list__container`);
+const filmMostComment = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM__EXTRA_COUNT);
+filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, createFilmTemplate(film)));
 
 // render(document.querySelector(`body`), createFilmPopupTemplate());
