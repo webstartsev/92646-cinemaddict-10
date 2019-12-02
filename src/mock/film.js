@@ -88,7 +88,10 @@ export const generateFilm = () => {
     year: getRandomIntegerNumber(Year.begin, Year.end),
     duration: generateDuration(),
     genre: getRandomArrayItem(Genres),
-    comments: getRandomIntegerNumber(Comment.begin, Comment.end)
+    comments: getRandomIntegerNumber(Comment.begin, Comment.end),
+    isNeedWatch: Math.random() > 0.5,
+    isWatch: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.5,
   };
 };
 
