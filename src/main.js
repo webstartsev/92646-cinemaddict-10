@@ -71,3 +71,5 @@ loadMoreButton.addEventListener(`click`, () => {
     loadMoreButton.remove();
   }
 });
+
+document.querySelector(`.footer__statistics`).innerHTML = `${films.length} movies inside`;
