@@ -1,10 +1,10 @@
 import {getRandomIntegerNumber, getRandomArrayItem, getRandomFloatNumber} from '../utils.js';
+import {Months} from '../const.js';
 
 const Day = {
   begin: 1,
   end: 30
 };
-const Months = [`January`, `February`, `March`, `April`, `May`, `June`, `July`, `August`, `September`, `October`, `November`, `December`];
 const Year = {
   begin: 2000,
   end: 2020
