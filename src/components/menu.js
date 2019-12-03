@@ -1,4 +1,4 @@
-const createMenuMarkup = (item, isChecked, isLast) => {
+const createMenuMarkup = (item, {isChecked, isLast}) => {
   const {name, code, count} = item;
 
   const checkedClass = isChecked ? `main-navigation__item--active` : ``;
@@ -12,7 +12,7 @@ const createMenuMarkup = (item, isChecked, isLast) => {
 };
 
 export const createMenuTemplate = (menuItems) => {
-  const menuMarkup = menuItems.map((item, i) => createMenuMarkup(item, i === 0, i === menuItems.length - 1)).join(`\n`);
+  const menuMarkup = menuItems.map((item, i) => createMenuMarkup(item, {isChecked: i === 0, isLast: i === menuItems.length - 1})).join(`\n`);
 
   return (
     `<nav class="main-navigation">
