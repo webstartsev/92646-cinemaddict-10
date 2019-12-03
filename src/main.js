@@ -52,7 +52,6 @@ films.slice(0, showingFilmsCount)
     };
     const closePopup = () => {
       filmPopup.getElement().remove();
-      filmPopup.removeElement();
     };
 
     filmPosterElement.addEventListener(`click`, openPopup);
