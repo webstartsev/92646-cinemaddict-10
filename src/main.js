@@ -11,15 +11,13 @@ import {createCommentsTemplate} from './components/comments';
 import {generateFilms} from './mock/film.js';
 import {generateMenu} from './mock/menu.js';
 import {generateComments} from './mock/comment.js';
+import {render} from './utils.js';
 
 const FILM_COUNT = 15;
 const FILM_EXTRA_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
-const render = (container, template, position = `beforeend`) => {
-  container.insertAdjacentHTML(position, template);
-};
 const films = generateFilms(FILM_COUNT);
 const menuItems = generateMenu(films);
 
