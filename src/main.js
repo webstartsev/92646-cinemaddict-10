@@ -41,19 +41,23 @@ films.slice(0, showingFilmsCount)
 const filmsListElement = mainElement.querySelector(`.films-list`);
 render(filmsListElement, createShowMoreBtnTemplate());
 
-render(filmsElement, createFilmsTopTemplate());
-render(filmsElement, createFilmsMostTemplate());
-
-const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
-const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
 const filmTopList = films.slice().sort((a, b) => b.rating - a.rating).slice(0, FILM_EXTRA_COUNT);
-filmTopList.forEach((film) => render(filmsListTopContainerElement, createFilmTemplate(film)));
+let filterFilm = filmTopList.filter((film) => film.rating > 0);
+if (filterFilm.length) {
+  render(filmsElement, createFilmsTopTemplate());
+  const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
+  const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
+  filmTopList.forEach((film) => render(filmsListTopContainerElement, createFilmTemplate(film)));
+}
 
-const filmsListMostCommentElement = mainElement.querySelector(`.films-list--extra-most`);
-const filmsListMostCommentContainerElement = filmsListMostCommentElement.querySelector(`.films-list__container`);
 const filmMostComment = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM_EXTRA_COUNT);
-filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, createFilmTemplate(film)));
-
+filterFilm = filmTopList.filter((film) => film.comments > 0);
+if (filterFilm.length) {
+  render(filmsElement, createFilmsMostTemplate());
+  const filmsListMostCommentElement = mainElement.querySelector(`.films-list--extra-most`);
+  const filmsListMostCommentContainerElement = filmsListMostCommentElement.querySelector(`.films-list__container`);
+  filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, createFilmTemplate(film)));
+}
 render(document.querySelector(`body`), createFilmPopupTemplate(films[0]));
 const popupBottomElement = document.querySelector(`.form-details__bottom-container`);
 const comments = generateComments(films[0].comments);
