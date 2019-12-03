@@ -1,11 +1,22 @@
-export const createMenuTemplate = () => {
+const createMenuMarkup = (item, {isChecked, isLast}) => {
+  const {name, code, count} = item;
+
+  const checkedClass = isChecked ? `main-navigation__item--active` : ``;
+  const lastClass = isLast ? `main-navigation__item--additional` : ``;
+
+  const countMarkup = count ? `<span class="main-navigation__item-count">${count}</span>` : ``;
+
+  return (
+    `<a href="#${code}" class="main-navigation__item ${checkedClass} ${lastClass}">${name} ${countMarkup}</a>`
+  );
+};
+
+export const createMenuTemplate = (menuItems) => {
+  const menuMarkup = menuItems.map((item, i) => createMenuMarkup(item, {isChecked: i === 0, isLast: i === menuItems.length - 1})).join(`\n`);
+
   return (
     `<nav class="main-navigation">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">13</span></a>
-      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">4</span></a>
-      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
-      <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
+      ${menuMarkup}
     </nav>`
   );
 };
