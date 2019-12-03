@@ -1,3 +1,5 @@
+import {createElement} from '../utils.js';
+
 const createCommentMarkup = (commet) => {
   const {text, user, date, emoji} = commet;
 
@@ -18,7 +20,7 @@ const createCommentMarkup = (commet) => {
   );
 };
 
-export const createCommentsTemplate = (commets) => {
+const createCommentsTemplate = (commets) => {
   const commentMarkup = commets.map((comment) => createCommentMarkup(comment)).join(`\n`);
 
   return (
@@ -61,3 +63,26 @@ export const createCommentsTemplate = (commets) => {
   </section>`
   );
 };
+
+export default class Comments {
+  constructor(commets) {
+    this._element = null;
+    this._commets = commets;
+  }
+
+  getTemplate() {
+    return createCommentsTemplate(this._commets);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
