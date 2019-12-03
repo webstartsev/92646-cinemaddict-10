@@ -8,6 +8,7 @@ import FilmsTopComponent from './components/films-top';
 import FilmsMostComponent from './components/films-most';
 import FilmPopupComponent from './components/film-popup';
 import CommentsComponent from './components/comments';
+import CountFilmsComponent from './components/count-films';
 import {generateFilms} from './mock/film.js';
 import {generateMenu} from './mock/menu.js';
 import {generateComments} from './mock/comment.js';
@@ -74,4 +75,4 @@ loadMoreButton.addEventListener(`click`, () => {
   }
 });
 
-document.querySelector(`.footer__statistics`).innerHTML = `${films.length} movies inside`;
+render(document.querySelector(`.footer__statistics`), new CountFilmsComponent(films.length).getElement());
