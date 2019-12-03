@@ -20,11 +20,11 @@ const getMenuCountItems = (title, films) => {
 };
 
 const generateMenu = (films) => {
-  return menuItems.map((it) => {
+  return menuItems.map((item) => {
     return {
-      name: it.name,
-      code: it.code,
-      count: getMenuCountItems(it.name, films),
+      name: item.name,
+      code: item.code,
+      count: getMenuCountItems(item.name, films),
     };
   });
 };
