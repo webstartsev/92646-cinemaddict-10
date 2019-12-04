@@ -23,6 +23,14 @@ const renderFilm = (filmListContainerElement, film) => {
   const filmComponent = new FilmComponent(film);
   const filmPopup = new FilmPopupComponent(film);
 
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      closePopup();
+    }
+  };
+
   const filmPosterElement = filmComponent.getElement().querySelector(`.film-card__poster`);
   const filmTitleElement = filmComponent.getElement().querySelector(`.film-card__title`);
   const filmCommentsElement = filmComponent.getElement().querySelector(`.film-card__comments`);
@@ -33,9 +41,11 @@ const renderFilm = (filmListContainerElement, film) => {
     const popupBottomElement = filmPopup.getElement().querySelector(`.form-details__bottom-container`);
     const comments = generateComments(films[0].comments);
     render(popupBottomElement, new CommentsComponent(comments).getElement());
+    document.addEventListener(`keydown`, onEscKeyDown);
   };
   const closePopup = () => {
     filmPopup.getElement().remove();
+    document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
   filmPosterElement.addEventListener(`click`, openPopup);
