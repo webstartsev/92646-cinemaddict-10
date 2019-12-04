@@ -44,7 +44,7 @@ const renderFilm = (filmListContainerElement, film) => {
     document.addEventListener(`keydown`, onEscKeyDown);
   };
   const closePopup = () => {
-    filmPopup.getElement().remove();
+    document.querySelector(`body`).removeChild(filmPopup.getElement());
     document.removeEventListener(`keydown`, onEscKeyDown);
   };
 
