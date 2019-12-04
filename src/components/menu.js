@@ -1,3 +1,5 @@
+import {createElement} from '../utils.js';
+
 const createMenuMarkup = (item, {isChecked, isLast}) => {
   const {name, code, count} = item;
 
@@ -11,7 +13,7 @@ const createMenuMarkup = (item, {isChecked, isLast}) => {
   );
 };
 
-export const createMenuTemplate = (menuItems) => {
+const createMenuTemplate = (menuItems) => {
   const menuMarkup = menuItems.map((item, i) => createMenuMarkup(item, {isChecked: i === 0, isLast: i === menuItems.length - 1})).join(`\n`);
 
   return (
@@ -20,3 +22,26 @@ export const createMenuTemplate = (menuItems) => {
     </nav>`
   );
 };
+
+export default class Menu {
+  constructor(menuItems) {
+    this._element = null;
+    this._menuItems = menuItems;
+  }
+
+  getTemplate() {
+    return createMenuTemplate(this._menuItems);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
