@@ -19,6 +19,33 @@ const FILM_EXTRA_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
+const renderFilm = (filmListContainerElement, film) => {
+  const filmComponent = new FilmComponent(film);
+  const filmPopup = new FilmPopupComponent(film);
+
+  const filmPosterElement = filmComponent.getElement().querySelector(`.film-card__poster`);
+  const filmTitleElement = filmComponent.getElement().querySelector(`.film-card__title`);
+  const filmCommentsElement = filmComponent.getElement().querySelector(`.film-card__comments`);
+  const popupCloseBtn = filmPopup.getElement().querySelector(`.film-details__close-btn`);
+
+  const openPopup = () => {
+    render(document.querySelector(`body`), filmPopup.getElement());
+    const popupBottomElement = filmPopup.getElement().querySelector(`.form-details__bottom-container`);
+    const comments = generateComments(films[0].comments);
+    render(popupBottomElement, new CommentsComponent(comments).getElement());
+  };
+  const closePopup = () => {
+    filmPopup.getElement().remove();
+  };
+
+  filmPosterElement.addEventListener(`click`, openPopup);
+  filmTitleElement.addEventListener(`click`, openPopup);
+  filmCommentsElement.addEventListener(`click`, openPopup);
+  popupCloseBtn.addEventListener(`click`, closePopup);
+
+  render(filmListContainerElement, filmComponent.getElement());
+};
+
 const films = generateFilms(FILM_COUNT);
 const menuItems = generateMenu(films);
 
@@ -36,30 +63,7 @@ const filmListContainerElement = filmsElement.querySelector(`.films-list__contai
 let showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
 films.slice(0, showingFilmsCount)
   .forEach((film) => {
-    const filmComponent = new FilmComponent(film);
-    const filmPopup = new FilmPopupComponent(film);
-
-    const filmPosterElement = filmComponent.getElement().querySelector(`.film-card__poster`);
-    const filmTitleElement = filmComponent.getElement().querySelector(`.film-card__title`);
-    const filmCommentsElement = filmComponent.getElement().querySelector(`.film-card__comments`);
-    const popupCloseBtn = filmPopup.getElement().querySelector(`.film-details__close-btn`);
-
-    const openPopup = () => {
-      render(document.querySelector(`body`), filmPopup.getElement());
-      const popupBottomElement = filmPopup.getElement().querySelector(`.form-details__bottom-container`);
-      const comments = generateComments(films[0].comments);
-      render(popupBottomElement, new CommentsComponent(comments).getElement());
-    };
-    const closePopup = () => {
-      filmPopup.getElement().remove();
-    };
-
-    filmPosterElement.addEventListener(`click`, openPopup);
-    filmTitleElement.addEventListener(`click`, openPopup);
-    filmCommentsElement.addEventListener(`click`, openPopup);
-    popupCloseBtn.addEventListener(`click`, closePopup);
-
-    render(filmListContainerElement, filmComponent.getElement());
+    renderFilm(filmListContainerElement, film);
   });
 
 const filmsListElement = mainElement.querySelector(`.films-list`);
@@ -71,7 +75,7 @@ if (filterFilm.length) {
   render(filmsElement, new FilmsTopComponent().getElement());
   const filmsListTopElement = mainElement.querySelector(`.films-list--extra-top`);
   const filmsListTopContainerElement = filmsListTopElement.querySelector(`.films-list__container`);
-  filmTopList.forEach((film) => render(filmsListTopContainerElement, new FilmComponent(film).getElement()));
+  filmTopList.forEach((film) => renderFilm(filmsListTopContainerElement, film));
 }
 
 const filmMostComment = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM_EXTRA_COUNT);
@@ -80,7 +84,7 @@ if (filterFilm.length) {
   render(filmsElement, new FilmsMostComponent().getElement());
   const filmsListMostCommentElement = mainElement.querySelector(`.films-list--extra-most`);
   const filmsListMostCommentContainerElement = filmsListMostCommentElement.querySelector(`.films-list__container`);
-  filmMostComment.forEach((film) => render(filmsListMostCommentContainerElement, new FilmComponent(film).getElement()));
+  filmMostComment.forEach((film) => renderFilm(filmsListMostCommentContainerElement, film));
 }
 
 const loadMoreButton = filmsListElement.querySelector(`.films-list__show-more`);
@@ -89,7 +93,7 @@ loadMoreButton.addEventListener(`click`, () => {
   showingFilmsCount = showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
   films.slice(prevTasksCount, showingFilmsCount)
-    .forEach((film) => render(filmListContainerElement, new FilmComponent(film).getElement()));
+    .forEach((film) => renderFilm(filmListContainerElement, film));
 
   if (showingFilmsCount >= films.length) {
     loadMoreButton.remove();
