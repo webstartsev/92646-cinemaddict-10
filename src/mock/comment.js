@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from '../utils.js';
+import {getRandomArrayItem, getRandomIntegerNumber} from '../utils/utils.js';
 import {Months} from '../const.js';
 
 const Day = {

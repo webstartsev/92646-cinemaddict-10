@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component.js';
-import {getRandomIntegerNumber} from '../utils.js';
+import {getRandomIntegerNumber} from '../utils/utils.js';
 
 const View = {
   begin: 0,
