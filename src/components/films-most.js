@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createFilmsMostTemplate = () => {
   return (
@@ -10,25 +10,9 @@ const createFilmsMostTemplate = () => {
   );
 };
 
-export default class FilmsMost {
-  constructor() {
-    this._element = null;
-  }
-
+export default class FilmsMost extends AbstractComponent {
   getTemplate() {
     return createFilmsMostTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
