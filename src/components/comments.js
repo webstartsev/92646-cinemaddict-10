@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createCommentMarkup = (commet) => {
   const {text, user, date, emoji} = commet;
@@ -64,25 +64,14 @@ const createCommentsTemplate = (commets) => {
   );
 };
 
-export default class Comments {
+export default class Comments extends AbstractComponent {
   constructor(commets) {
-    this._element = null;
+    super();
+
     this._commets = commets;
   }
 
   getTemplate() {
     return createCommentsTemplate(this._commets);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
