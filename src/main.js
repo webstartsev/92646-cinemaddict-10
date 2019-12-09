@@ -3,6 +3,7 @@ import MenuComponent from './components/menu';
 import SortComponent from './components/sort';
 import FilmsComponent from './components/films';
 import PageController from './controllers/page.js';
+import CountFilmsComponent from './components/count-films.js';
 import {generateFilms} from './mock/film.js';
 import {generateMenu} from './mock/menu.js';
 import {render} from './utils/render.js';
@@ -24,3 +25,6 @@ render(mainElement, filmsComponent);
 
 const pageController = new PageController(filmsComponent);
 pageController.render(films);
+
+const countFilmsComponent = new CountFilmsComponent(films.length);
+render(document.querySelector(`.footer__statistics`), countFilmsComponent);

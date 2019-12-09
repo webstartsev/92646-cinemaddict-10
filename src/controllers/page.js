@@ -5,10 +5,10 @@ import FilmPopupComponent from '../components/film-popup.js';
 import CommentsComponent from '../components/comments.js';
 import FilmsTopComponent from '../components/films-top.js';
 import FilmsMostComponent from '../components/films-most.js';
-import CountFilmsComponent from '../components/count-films.js';
+import SortComponent from '../components/sort';
 
 import {generateComments} from '../mock/comment.js';
-import {render, remove} from '../utils/render.js';
+import {render, remove, RenderPosition} from '../utils/render.js';
 
 const FILM_EXTRA_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
@@ -22,6 +22,7 @@ export default class PageController {
 
     this._showMoreBtnComponent = new ShowMoreBtnComponent();
     this._noFilmsComponent = new NoFilmsComponent();
+    this._sortComponent = new SortComponent();
   }
 
   _renderFilms(filmsContainer, films) {
@@ -81,6 +82,7 @@ export default class PageController {
     if (films.length === 0) {
       render(container, this._noFilmsComponent);
     } else {
+      render(document.querySelector(`.main`), this._sortComponent);
       this._renderFilms(filmListContainerElement, films.slice(0, this._showingFilmsCount));
       this._renderShowMoreBtn(filmListContainerElement, films);
 
@@ -99,9 +101,6 @@ export default class PageController {
         render(container, filmsMostComponent);
         this._renderFilms(filmsListMostContainerElement, filmMostList);
       }
-
-      const countFilmsComponent = new CountFilmsComponent(films.length);
-      render(document.querySelector(`.footer__statistics`), countFilmsComponent);
     }
   }
 }
