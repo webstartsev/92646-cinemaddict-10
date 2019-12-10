@@ -44,6 +44,13 @@ export default class Sort extends AbstractComponent {
     return createSortTemplate(this._currentSortType);
   }
 
+  _setActiveElement(currentElement, sortElements) {
+    sortElements.forEach((element) => {
+      element.classList.remove(`sort__button--active`);
+    });
+    currentElement.classList.add(`sort__button--active`);
+  }
+
   setClickSortHandler(handler) {
     const sortElements = this.getElement().querySelectorAll(`.sort__button`);
     sortElements.forEach((element) => element.addEventListener(`click`, (evt) => {
@@ -56,6 +63,8 @@ export default class Sort extends AbstractComponent {
 
       this._currentSortType = sortType;
       handler(sortType);
+
+      this._setActiveElement(element, sortElements);
     }));
   }
 }
