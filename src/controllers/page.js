@@ -5,15 +5,16 @@ import FilmPopupComponent from '../components/film-popup.js';
 import CommentsComponent from '../components/comments.js';
 import FilmsTopComponent from '../components/films-top.js';
 import FilmsMostComponent from '../components/films-most.js';
-import CountFilmsComponent from '../components/count-films.js';
+import SortComponent from '../components/sort';
+import FilmsComponent from '../components/films';
 
 import {generateComments} from '../mock/comment.js';
 import {render, remove} from '../utils/render.js';
+import {SortType} from '../const.js';
 
 const FILM_EXTRA_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
-
 
 export default class PageController {
   constructor(container) {
@@ -22,6 +23,8 @@ export default class PageController {
 
     this._showMoreBtnComponent = new ShowMoreBtnComponent();
     this._noFilmsComponent = new NoFilmsComponent();
+    this._sortComponent = new SortComponent();
+    this._filmsComponent = new FilmsComponent();
   }
 
   _renderFilms(filmsContainer, films) {
@@ -29,6 +32,7 @@ export default class PageController {
       this._renderFilm(filmsContainer, film);
     });
   }
+
   _renderFilm(filmsContainer, film) {
     const filmComponent = new FilmComponent(film);
     const filmPopupComponent = new FilmPopupComponent(film);
@@ -58,15 +62,21 @@ export default class PageController {
     render(filmsContainer, filmComponent);
   }
 
-  _renderShowMoreBtn(filmListContainerElement, films) {
-    const container = this._container.getElement();
-    render(container, this._showMoreBtnComponent);
+  _renderShowMoreBtn(films) {
+    if (this._showingFilmsCount >= films.length) {
+      return;
+    }
+
+    const filmsElement = this._filmsComponent.getElement();
+    const filmsListElement = filmsElement.querySelector(`.films-list`);
+    const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
+    render(filmsListElement, this._showMoreBtnComponent);
 
     this._showMoreBtnComponent.setClickHandler(() => {
       const prevTasksCount = this._showingFilmsCount;
       this._showingFilmsCount = this._showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
-      this._renderFilms(filmListContainerElement, films.slice(prevTasksCount, this._showingFilmsCount));
+      this._renderFilms(filmsListContainerElement, films.slice(prevTasksCount, this._showingFilmsCount));
 
       if (this._showingFilmsCount >= films.length) {
         remove(this._showMoreBtnComponent);
@@ -75,33 +85,56 @@ export default class PageController {
   }
 
   render(films) {
-    const container = this._container.getElement();
-    const filmListContainerElement = container.querySelector(`.films-list__container`);
-
     if (films.length === 0) {
-      render(container, this._noFilmsComponent);
-    } else {
-      this._renderFilms(filmListContainerElement, films.slice(0, this._showingFilmsCount));
-      this._renderShowMoreBtn(filmListContainerElement, films);
+      render(this._container, this._noFilmsComponent);
+      return;
+    }
 
-      const filmTopList = films.slice().sort((a, b) => b.rating - a.rating).slice(0, FILM_EXTRA_COUNT);
-      if (filmTopList.length) {
-        const filmsTopComponent = new FilmsTopComponent();
-        const filmsListTopContainerElement = filmsTopComponent.getElement().querySelector(`.films-list__container`);
-        render(container, filmsTopComponent);
-        this._renderFilms(filmsListTopContainerElement, filmTopList);
+    render(this._container, this._sortComponent);
+    render(this._container, this._filmsComponent);
+    const filmsElement = this._filmsComponent.getElement();
+    const filmListContainerElement = filmsElement.querySelector(`.films-list__container`);
+
+    this._sortComponent.setClickSortHandler((sortType) => {
+      let sortFilms = [];
+
+      switch (sortType) {
+        case SortType.DATE:
+          sortFilms = films.slice().sort((a, b) => Date.parse(b.releaseDate) - Date.parse(a.releaseDate));
+          break;
+        case SortType.RATING:
+          sortFilms = films.slice().sort((a, b) => b.rating - a.rating);
+          break;
+        case SortType.DEFAULT:
+        default:
+          sortFilms = films.slice();
+          break;
       }
 
-      const filmMostList = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM_EXTRA_COUNT);
-      if (filmMostList.length) {
-        const filmsMostComponent = new FilmsMostComponent();
-        const filmsListMostContainerElement = filmsMostComponent.getElement().querySelector(`.films-list__container`);
-        render(container, filmsMostComponent);
-        this._renderFilms(filmsListMostContainerElement, filmMostList);
-      }
+      filmListContainerElement.innerHTML = ``;
+      remove(this._showMoreBtnComponent);
 
-      const countFilmsComponent = new CountFilmsComponent(films.length);
-      render(document.querySelector(`.footer__statistics`), countFilmsComponent);
+      this._renderFilms(filmListContainerElement, sortFilms.slice(0, this._showingFilmsCount));
+      this._renderShowMoreBtn(sortFilms);
+    });
+
+    this._renderFilms(filmListContainerElement, films.slice(0, this._showingFilmsCount));
+    this._renderShowMoreBtn(films);
+
+    const filmTopList = films.slice().sort((a, b) => b.rating - a.rating).slice(0, FILM_EXTRA_COUNT);
+    if (filmTopList.length) {
+      const filmsTopComponent = new FilmsTopComponent();
+      const filmsListTopContainerElement = filmsTopComponent.getElement().querySelector(`.films-list__container`);
+      render(filmsElement, filmsTopComponent);
+      this._renderFilms(filmsListTopContainerElement, filmTopList);
+    }
+
+    const filmMostList = films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM_EXTRA_COUNT);
+    if (filmMostList.length) {
+      const filmsMostComponent = new FilmsMostComponent();
+      const filmsListMostContainerElement = filmsMostComponent.getElement().querySelector(`.films-list__container`);
+      render(filmsElement, filmsMostComponent);
+      this._renderFilms(filmsListMostContainerElement, filmMostList);
     }
   }
 }
