@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const createGenresMarkup = (genre) => {
   return (
@@ -93,9 +93,10 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractComponent {
   constructor(film) {
-    this._element = null;
+    super();
+
     this._film = film;
   }
 
@@ -103,15 +104,8 @@ export default class FilmPopup {
     return createFilmPopupTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickCloseHandler(handler) {
+    const popupCloseBtn = this.getElement().querySelector(`.film-details__close-btn`);
+    popupCloseBtn.addEventListener(`click`, handler);
   }
 }
