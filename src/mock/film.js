@@ -100,12 +100,13 @@ const generateDuration = () => {
 };
 
 export const generateFilm = () => {
+  const releaseDate = generateRealeaseDate();
   return {
     title: getRandomArrayItem(TitleItems),
     description: generateRandomArray(DescriptionItems).join(` `),
     poster: getRandomArrayItem(PosterItems),
     rating: getRandomFloatNumber(Rating.begin, Rating.end),
-    year: getRandomIntegerNumber(Year.begin, Year.end),
+    year: releaseDate.split(` `)[2],
     duration: generateDuration(),
     genres: generateRandomArray(Genres),
     comments: getRandomIntegerNumber(Comment.begin, Comment.end),
@@ -115,7 +116,7 @@ export const generateFilm = () => {
     directors: generateRandomArray(Directors),
     writers: generateRandomArray(Writers),
     actors: generateRandomArray(Actors),
-    releaseDate: generateRealeaseDate(),
+    releaseDate,
     country: getRandomArrayItem(Country),
     ratingPlus: getRandomIntegerNumber(RatingPlus.begin, RatingPlus.end)
   };
