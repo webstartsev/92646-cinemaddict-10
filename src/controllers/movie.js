@@ -6,9 +6,10 @@ import {generateComments} from '../mock/comment.js';
 import {render, remove} from '../utils/render.js';
 
 export default class Movie {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
     this._filmComments = [];
+    this._onDataChange = onDataChange;
 
     this._filmComponent = null;
     this._filmPopupComponent = null;
@@ -26,6 +27,43 @@ export default class Movie {
     this._filmComments = generateComments(film.comments);
 
     this._filmComponent.setOpenDetailHandler(this._openPopup);
+    this._filmComponent.setWatchlistClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isNeedWatch: !film.isNeedWatch
+      }));
+    });
+    this._filmComponent.setWatchedClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatch: !film.isWatch
+      }));
+    });
+    this._filmComponent.setFavoriteClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite
+      }));
+    });
+
+    this._filmPopupComponent.setWatchlistClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isNeedWatch: !film.isNeedWatch
+      }));
+    });
+    this._filmPopupComponent.setWatchedClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isWatch: !film.isWatch
+      }));
+    });
+    this._filmPopupComponent.setFavoriteClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, Object.assign({}, film, {
+        isFavorite: !film.isFavorite
+      }));
+    });
 
     render(this._container, this._filmComponent);
   }
