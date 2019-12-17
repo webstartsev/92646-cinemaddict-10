@@ -18,6 +18,7 @@ export default class PageController {
     this._container = container;
     this._showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
     this._films = [];
+    this._showedFilmControllers = [];
 
     this._showMoreBtnComponent = new ShowMoreBtnComponent();
     this._noFilmsComponent = new NoFilmsComponent();
@@ -25,6 +26,7 @@ export default class PageController {
     this._filmsComponent = new FilmsComponent();
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   _onDataChange(movieController, oldFilm, newFilm) {
@@ -38,10 +40,16 @@ export default class PageController {
     movieController.render(this._films[index]);
   }
 
-  _renderFilms(filmsContainer, films, onDataChange) {
-    films.forEach((film) => {
-      const movieController = new MovieController(filmsContainer, onDataChange);
+  _onViewChange() {
+    this._showedFilmControllers.forEach((filmController) => filmController.setDefaultView());
+  }
+
+  _renderFilms(filmsContainer, films, onDataChange, onViewChange) {
+    return films.map((film) => {
+      const movieController = new MovieController(filmsContainer, onDataChange, onViewChange);
       movieController.render(film);
+
+      return movieController;
     });
   }
 
@@ -59,7 +67,8 @@ export default class PageController {
       const prevTasksCount = this._showingFilmsCount;
       this._showingFilmsCount = this._showingFilmsCount + SHOWING_FILMS_COUNT_BY_BUTTON;
 
-      this._renderFilms(filmsListContainerElement, films.slice(prevTasksCount, this._showingFilmsCount), this._onDataChange);
+      const newFilms = this._renderFilms(filmsListContainerElement, films.slice(prevTasksCount, this._showingFilmsCount), this._onDataChange, this._onViewChange);
+      this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
 
       if (this._showingFilmsCount >= films.length) {
         remove(this._showMoreBtnComponent);
@@ -98,11 +107,13 @@ export default class PageController {
       filmListContainerElement.innerHTML = ``;
       remove(this._showMoreBtnComponent);
 
-      this._renderFilms(filmListContainerElement, sortFilms.slice(0, this._showingFilmsCount), this._onDataChange);
+      const newFilms = this._renderFilms(filmListContainerElement, sortFilms.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
+      this._showedFilmControllers = newFilms;
       this._renderShowMoreBtn(sortFilms);
     });
 
-    this._renderFilms(filmListContainerElement, this._films.slice(0, this._showingFilmsCount), this._onDataChange);
+    const newFilms = this._renderFilms(filmListContainerElement, this._films.slice(0, this._showingFilmsCount), this._onDataChange, this._onViewChange);
+    this._showedFilmControllers = newFilms;
     this._renderShowMoreBtn(films);
 
     const filmTopList = this._films.slice().sort((a, b) => b.rating - a.rating).slice(0, FILM_EXTRA_COUNT);
@@ -110,7 +121,8 @@ export default class PageController {
       const filmsTopComponent = new FilmsTopComponent();
       const filmsListTopContainerElement = filmsTopComponent.getElement().querySelector(`.films-list__container`);
       render(filmsElement, filmsTopComponent);
-      this._renderFilms(filmsListTopContainerElement, filmTopList, this._onDataChange);
+      const newFilmsTop = this._renderFilms(filmsListTopContainerElement, filmTopList, this._onDataChange, this._onViewChange);
+      this._showedFilmControllers = this._showedFilmControllers.concat(newFilmsTop);
     }
 
     const filmMostList = this._films.slice().sort((a, b) => b.comments - a.comments).slice(0, FILM_EXTRA_COUNT);
@@ -118,7 +130,8 @@ export default class PageController {
       const filmsMostComponent = new FilmsMostComponent();
       const filmsListMostContainerElement = filmsMostComponent.getElement().querySelector(`.films-list__container`);
       render(filmsElement, filmsMostComponent);
-      this._renderFilms(filmsListMostContainerElement, filmMostList, this._onDataChange);
+      const newFilmsMost = this._renderFilms(filmsListMostContainerElement, filmMostList, this._onDataChange, this._onViewChange);
+      this._showedFilmControllers = this._showedFilmControllers.concat(newFilmsMost);
     }
   }
 }

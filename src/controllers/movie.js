@@ -4,10 +4,17 @@ import CommentsComponent from '../components/comments.js';
 
 import {render, remove, replace} from '../utils/render.js';
 
+const Mode = {
+  DEFAULT: `default`,
+  OPEN: `open`,
+};
+
 export default class Movie {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
+    this._mode = Mode.DEFAULT;
 
     this._filmComponent = null;
     this._filmPopupComponent = null;
@@ -93,16 +100,26 @@ export default class Movie {
   }
 
   _closePopup() {
+    this._mode = Mode.DEFAULT;
     remove(this._filmPopupComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 
   _openPopup(film) {
+    this._onViewChange();
+    this._mode = Mode.OPEN;
+
     if (!this._filmPopupComponent._element) {
       this._prepearPopup(film);
     }
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
+    }
   }
 }
