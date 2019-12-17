@@ -1,5 +1,6 @@
 import {getRandomIntegerNumber, getRandomArrayItem, getRandomFloatNumber} from '../utils/utils.js';
 import {Months} from '../const.js';
+import {generateComments} from './comment.js';
 
 const Day = {
   begin: 1,
@@ -109,7 +110,7 @@ export const generateFilm = () => {
     year: releaseDate.split(` `)[2],
     duration: generateDuration(),
     genres: generateRandomArray(Genres),
-    comments: getRandomIntegerNumber(Comment.begin, Comment.end),
+    comments: generateComments(getRandomIntegerNumber(Comment.begin, Comment.end)),
     isNeedWatch: Math.random() > 0.5,
     isWatch: Math.random() > 0.5,
     isFavorite: Math.random() > 0.5,

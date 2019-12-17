@@ -2,13 +2,11 @@ import FilmComponent from '../components/film.js';
 import FilmPopupComponent from '../components/film-popup.js';
 import CommentsComponent from '../components/comments.js';
 
-import {generateComments} from '../mock/comment.js';
 import {render, remove, replace} from '../utils/render.js';
 
 export default class Movie {
   constructor(container, onDataChange) {
     this._container = container;
-    this._filmComments = [];
     this._onDataChange = onDataChange;
 
     this._filmComponent = null;
@@ -89,9 +87,8 @@ export default class Movie {
     });
 
     // Comment
-    this._filmComments = generateComments(film.comments);
     const popupBottomElement = this._filmPopupComponent.getElement().querySelector(`.form-details__bottom-container`);
-    this._commentsComponent = new CommentsComponent(this._filmComments);
+    this._commentsComponent = new CommentsComponent(film.comments);
     render(popupBottomElement, this._commentsComponent);
   }
 
