@@ -1,6 +1,7 @@
 import FilmComponent from '../components/film.js';
 import FilmPopupComponent from '../components/film-popup.js';
 import CommentsComponent from '../components/comments.js';
+import UserRatingComponent from '../components/user-rating.js';
 
 import {render, remove, replace} from '../utils/render.js';
 
@@ -19,6 +20,7 @@ export default class Movie {
     this._filmComponent = null;
     this._filmPopupComponent = null;
     this._commentsComponent = null;
+    this._userRatingComponent = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._closePopup = this._closePopup.bind(this);
@@ -92,6 +94,12 @@ export default class Movie {
         isFavorite: !film.isFavorite
       }));
     });
+
+    if (film.isWatch) {
+      const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
+      this._userRatingComponent = new UserRatingComponent(film);
+      render(popupMiddleElement, this._userRatingComponent);
+    }
 
     // Comment
     const popupBottomElement = this._filmPopupComponent.getElement().querySelector(`.form-details__bottom-container`);

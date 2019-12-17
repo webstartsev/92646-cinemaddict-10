@@ -85,7 +85,8 @@ const createFilmPopupTemplate = (film) => {
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
-
+      <div class="form-details__middle-container">
+      </div>
       <div class="form-details__bottom-container">
       </div>
     </form>
