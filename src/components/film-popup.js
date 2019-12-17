@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component.js';
+import AbstarctSmartComponent from './abstract-smart-component.js';
 
 const createGenresMarkup = (genre) => {
   return (
@@ -7,7 +7,7 @@ const createGenresMarkup = (genre) => {
 };
 
 const createFilmPopupTemplate = (film) => {
-  const {title, description, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus} = film;
+  const {title, description, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
   const genresMarkup = genres.map((genre) => createGenresMarkup(genre)).join(`\n`);
 
   return (
@@ -75,13 +75,13 @@ const createFilmPopupTemplate = (film) => {
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isNeedWatch ? `checked` : ``}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatch ? `checked` : ``}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -93,7 +93,7 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup extends AbstractComponent {
+export default class FilmPopup extends AbstarctSmartComponent {
   constructor(film) {
     super();
 
@@ -119,5 +119,9 @@ export default class FilmPopup extends AbstractComponent {
 
   setFavoriteClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
+  }
+
+  recoveryListeners() {
+
   }
 }

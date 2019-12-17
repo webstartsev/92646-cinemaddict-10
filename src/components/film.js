@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 const createFilmTemplate = (film) => {
-  const {title, description, poster, rating, year, duration, genres, comments} = film;
+  const {title, description, poster, rating, year, duration, genres, comments, isNeedWatch, isWatch, isFavorite} = film;
 
   return (
     `<article class="film-card">
@@ -16,9 +16,9 @@ const createFilmTemplate = (film) => {
       <p class="film-card__description">${description.slice(1, 100)}...</p>
       <a class="film-card__comments">${comments} comments</a>
       <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isNeedWatch ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatch ? `film-card__controls-item--active` : ``}">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
       </form>
     </article>`
   );
