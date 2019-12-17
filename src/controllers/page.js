@@ -1,14 +1,11 @@
 import ShowMoreBtnComponent from '../components/show-more-btn.js';
 import NoFilmsComponent from '../components/no-films.js';
-import FilmComponent from '../components/film.js';
-import FilmPopupComponent from '../components/film-popup.js';
-import CommentsComponent from '../components/comments.js';
 import FilmsTopComponent from '../components/films-top.js';
 import FilmsMostComponent from '../components/films-most.js';
-import SortComponent from '../components/sort';
-import FilmsComponent from '../components/films';
+import SortComponent from '../components/sort.js';
+import FilmsComponent from '../components/films.js';
+import MovieController from '../controllers/movie.js';
 
-import {generateComments} from '../mock/comment.js';
 import {render, remove} from '../utils/render.js';
 import {SortType} from '../const.js';
 
@@ -29,37 +26,9 @@ export default class PageController {
 
   _renderFilms(filmsContainer, films) {
     films.forEach((film) => {
-      this._renderFilm(filmsContainer, film);
+      const movieController = new MovieController(filmsContainer);
+      movieController.render(film);
     });
-  }
-
-  _renderFilm(filmsContainer, film) {
-    const filmComponent = new FilmComponent(film);
-    const filmPopupComponent = new FilmPopupComponent(film);
-
-    const onEscKeyDown = (evt) => {
-      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-      if (isEscKey) {
-        closePopup();
-      }
-    };
-
-    const openPopup = () => {
-      render(document.querySelector(`body`), filmPopupComponent);
-      const popupBottomElement = filmPopupComponent.getElement().querySelector(`.form-details__bottom-container`);
-      const comments = generateComments(film.comments);
-      render(popupBottomElement, new CommentsComponent(comments));
-      document.addEventListener(`keydown`, onEscKeyDown);
-      filmPopupComponent.setClickCloseHandler(closePopup);
-    };
-    const closePopup = () => {
-      remove(filmPopupComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    };
-    filmComponent.setOpenDetailHandler(openPopup);
-
-    render(filmsContainer, filmComponent);
   }
 
   _renderShowMoreBtn(films) {
