@@ -1,14 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from '../utils/utils.js';
-import {Months} from '../const.js';
-
-const Day = {
-  begin: 1,
-  end: 30
-};
-const Year = {
-  begin: 2017,
-  end: 2020
-};
+import {getRandomArrayItem, formatDate, randomDate} from '../utils/utils.js';
 
 const Emojies = [`angry.png`, `puke.png`, `sleeping.png`, `smile.png`, `trophy.png`];
 const Texts = [
@@ -24,18 +14,12 @@ const Users = [
   `Petr Petrov`,
 ];
 
-const generateDate = () => {
-  const date = getRandomIntegerNumber(Day.begin, Day.end);
-  const month = getRandomArrayItem(Months);
-  const year = getRandomIntegerNumber(Year.begin, Year.end);
-  return `${date} ${month} ${year}`;
-};
-
 export const generateComment = () => {
+  const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
   return {
     text: getRandomArrayItem(Texts),
     user: getRandomArrayItem(Users),
-    date: generateDate(),
+    date,
     emoji: getRandomArrayItem(Emojies)
   };
 };
