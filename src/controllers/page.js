@@ -93,14 +93,14 @@ export default class PageController {
 
       switch (sortType) {
         case SortType.DATE:
-          sortFilms = this._filmsslice().sort((a, b) => Date.parse(b.releaseDate) - Date.parse(a.releaseDate));
+          sortFilms = this._films.slice().sort((a, b) => Date.parse(b.releaseDate) - Date.parse(a.releaseDate));
           break;
         case SortType.RATING:
-          sortFilms = this._filmsslice().sort((a, b) => b.rating - a.rating);
+          sortFilms = this._films.slice().sort((a, b) => b.rating - a.rating);
           break;
         case SortType.DEFAULT:
         default:
-          sortFilms = this._filmsslice();
+          sortFilms = this._films.slice();
           break;
       }
 

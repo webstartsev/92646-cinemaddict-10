@@ -1,15 +1,6 @@
-import {getRandomIntegerNumber, getRandomArrayItem, getRandomFloatNumber} from '../utils/utils.js';
-import {Months} from '../const.js';
+import {getRandomIntegerNumber, getRandomArrayItem, getRandomFloatNumber, formatDate, randomDate} from '../utils/utils.js';
 import {generateComments} from './comment.js';
 
-const Day = {
-  begin: 1,
-  end: 30
-};
-const Year = {
-  begin: 2000,
-  end: 2020
-};
 const Time = {
   hour: {
     begin: 1,
@@ -86,13 +77,6 @@ const generateRandomArray = (array) => {
   return result;
 };
 
-const generateRealeaseDate = () => {
-  const date = getRandomIntegerNumber(Day.begin, Day.end);
-  const month = getRandomArrayItem(Months);
-  const year = getRandomIntegerNumber(Year.begin, Year.end);
-  return `${date} ${month} ${year}`;
-};
-
 const generateDuration = () => {
   const hour = getRandomIntegerNumber(Time.hour.begin, Time.hour.end);
   const minute = getRandomIntegerNumber(Time.minute.begin, Time.minute.end);
@@ -101,7 +85,7 @@ const generateDuration = () => {
 };
 
 export const generateFilm = () => {
-  const releaseDate = generateRealeaseDate();
+  const releaseDate = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
   return {
     title: getRandomArrayItem(TitleItems),
     description: generateRandomArray(DescriptionItems).join(` `),

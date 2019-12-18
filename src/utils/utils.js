@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
@@ -10,4 +12,16 @@ export const getRandomIntegerNumber = (min, max) => {
 
 export const getRandomFloatNumber = (min, max) => {
   return (Math.random() * (max - min) + min).toFixed(1);
+};
+
+export const formatTime = (date) => {
+  return moment(date).format(`hh:mm A`);
+};
+
+export const formatDate = (date) => {
+  return moment(date).format(`DD MMMM YYYY`);
+};
+
+export const randomDate = (start, end) => {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
