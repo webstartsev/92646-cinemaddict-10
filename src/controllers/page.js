@@ -14,11 +14,12 @@ const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
 export default class PageController {
-  constructor(container) {
+  constructor(container, movieModel) {
     this._container = container;
     this._showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
     this._films = [];
     this._showedFilmControllers = [];
+    this._movieModel = movieModel;
 
     this._showMoreBtnComponent = new ShowMoreBtnComponent();
     this._noFilmsComponent = new NoFilmsComponent();
@@ -76,8 +77,8 @@ export default class PageController {
     });
   }
 
-  render(films) {
-    this._films = films;
+  render() {
+    this._films = this._movieModel.getMovies();
     if (this._filmslength === 0) {
       render(this._container, this._noFilmsComponent);
       return;
