@@ -111,6 +111,11 @@ export default class Movie {
     const popupBottomElement = this._filmPopupComponent.getElement().querySelector(`.form-details__bottom-container`);
     this._commentsComponent = new CommentsComponent(film.comments);
     render(popupBottomElement, this._commentsComponent);
+
+    this._commentsComponent.setDeleteClickHandler((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, film, null);
+    });
   }
 
   _closePopup() {

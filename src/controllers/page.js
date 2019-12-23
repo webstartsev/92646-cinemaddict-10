@@ -62,14 +62,20 @@ export default class PageController {
     this._showedFilmControllers = [];
   }
 
-  _onDataChange(movieController, oldFilm, newFilm) {
-    const index = this._films.findIndex((film) => film === oldFilm);
+  _onDataChange(movieController, oldData, newData) {
+    console.log('movieController: ', movieController);
+    console.log('oldData: ', oldData);
+    if (newData === null) {
+      this._movieModel.removeComment();
+    }
+
+    const index = this._films.findIndex((film) => film === oldData);
 
     if (index === -1) {
       return;
     }
 
-    this._films = [].concat(this._films.slice(0, index), newFilm, this._films.slice(index + 1));
+    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
     movieController.render(this._films[index]);
   }
 
