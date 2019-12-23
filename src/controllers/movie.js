@@ -42,6 +42,12 @@ export default class Movie {
     }
   }
 
+  destroy() {
+    remove(this._filmComponent);
+    remove(this._filmPopupComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 

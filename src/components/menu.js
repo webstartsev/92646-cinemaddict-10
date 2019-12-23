@@ -33,4 +33,15 @@ export default class Menu extends AbstractComponent {
   getTemplate() {
     return createMenuTemplate(this._menuItems);
   }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      const filterName = evt.target.href.split(`#`)[1];
+      if (!filterName) {
+        return;
+      }
+
+      handler(filterName);
+    });
+  }
 }
