@@ -7,6 +7,7 @@ import CommentController from "../controllers/comment.js";
 import CommentsModel from "../models/comments.js";
 
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
+import {isSubmitPressed} from "../utils/utils.js";
 
 const Mode = {
   DEFAULT: `default`,
@@ -35,6 +36,8 @@ export default class Movie {
     this._closePopup = this._closePopup.bind(this);
     this._openPopup = this._openPopup.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
+    this._onSubmitForm = this._onSubmitForm.bind(this);
+
 
     this._commentsModel.setCommentChangeHandler(this._onCommentChange);
   }
@@ -67,6 +70,15 @@ export default class Movie {
 
     if (isEscKey) {
       this._closePopup();
+    }
+  }
+
+  _onSubmitForm(evt) {
+    if (isSubmitPressed(evt)) {
+      this._filmPopupComponent.setFormSumbitHandler(() => {
+        const data = this._filmPopupComponent.getData();
+        console.log('data: ', data);
+      });
     }
   }
 
@@ -114,13 +126,7 @@ export default class Movie {
         isFavorite: !film.isFavorite
       }));
     });
-    this._filmPopupComponent.setFormSumbitHandler((evt) => {
-      console.log('evt: ', evt);
-      evt.preventDefault();
-      const data = this._filmPopupComponent.getData();
 
-      // this._commentsModel.addComment(data);
-    });
 
     if (film.isWatch) {
       const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
@@ -176,6 +182,7 @@ export default class Movie {
     remove(this._commentsComponent);
     remove(this._countCommentsComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+    document.removeEventListener(`keydown`, this._onSubmitForm);
   }
 
   _openPopup(film) {
@@ -188,6 +195,7 @@ export default class Movie {
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
+    document.addEventListener(`keydown`, this._onSubmitForm);
   }
 
   setDefaultView() {

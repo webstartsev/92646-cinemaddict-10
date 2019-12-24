@@ -1,6 +1,6 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
 import {USER} from "../const.js";
-import {formatDate, randomDate} from "../utils/utils.js";
+import {formatDate, randomDate, isSubmitPressed} from "../utils/utils.js";
 
 const createGenresMarkup = (genre) => {
   return (
@@ -137,7 +137,7 @@ export default class FilmPopup extends AbstarctSmartComponent {
   }
 
   setFormSumbitHandler(handler) {
-    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+    handler();
   }
 
   recoveryListeners() {
