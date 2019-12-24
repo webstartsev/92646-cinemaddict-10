@@ -25,10 +25,6 @@ export default class Movies {
 
   }
 
-  removeComment() {
-    console.log(`removeComment`);
-  }
-
   setFilter(filterType) {
     this._activeFilterType = filterType;
     this._callHandlers(this._filterChangeHandlers);

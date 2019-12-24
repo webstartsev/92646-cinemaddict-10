@@ -1,34 +1,21 @@
 import AbstractComponent from './abstract-component.js';
+import {createElement} from "../utils/render.js";
 
-const createCommentMarkup = (commet) => {
-  const {text, user, date, emoji} = commet;
+const Emoji = {
+  WIDTH: `55`,
+  HEIGHT: `55`,
+};
 
+const emojiMarkup = (src) => {
   return (
-    `<li class="film-details__comment">
-    <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji">
-    </span>
-    <div>
-      <p class="film-details__comment-text">${text}</p>
-      <p class="film-details__comment-info">
-        <span class="film-details__comment-author">${user}</span>
-        <span class="film-details__comment-day">${date}</span>
-        <button class="film-details__comment-delete">Delete</button>
-      </p>
-    </div>
-  </li>`
+    `<img src="${src}" width="${Emoji.WIDTH}" height="${Emoji.HEIGHT}"/>`
   );
 };
 
-const createCommentsTemplate = (commets) => {
-  const commentMarkup = commets.map((comment) => createCommentMarkup(comment)).join(`\n`);
-
+const createCommentsTemplate = () => {
   return (
     `<section class="film-details__comments-wrap">
-    <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commets.length}</span></h3>
-
     <ul class="film-details__comments-list">
-      ${commentMarkup}
     </ul>
 
     <div class="film-details__new-comment">
@@ -65,18 +52,25 @@ const createCommentsTemplate = (commets) => {
 };
 
 export default class Comments extends AbstractComponent {
-  constructor(commets) {
-    super();
-
-    this._commets = commets;
-  }
-
   getTemplate() {
-    return createCommentsTemplate(this._commets);
+    return createCommentsTemplate();
   }
 
-  setDeleteClickHandler(handler) {
-    const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
-    deleteButtons.forEach((button) => button.addEventListener(`click`, handler));
+  setClickEmojiHandler() {
+    const emojies = this.getElement().querySelectorAll(`.film-details__emoji-label`);
+    emojies.forEach((emoji) => {
+      emoji.addEventListener(`click`, (evt) => {
+        const src = evt.currentTarget.querySelector(`img`).getAttribute(`src`);
+        this._setEmoji(src);
+      });
+    });
+  }
+
+  _setEmoji(src) {
+    const emojiLabel = this.getElement().querySelector(`.film-details__add-emoji-label`);
+    emojiLabel.innerHTML = ``;
+
+    const img = emojiMarkup(src);
+    emojiLabel.append(createElement(img));
   }
 }

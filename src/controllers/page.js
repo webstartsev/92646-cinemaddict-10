@@ -63,8 +63,6 @@ export default class PageController {
   }
 
   _onDataChange(movieController, oldData, newData) {
-    console.log('movieController: ', movieController);
-    console.log('oldData: ', oldData);
     if (newData === null) {
       this._movieModel.removeComment();
     }
@@ -85,7 +83,7 @@ export default class PageController {
 
   _renderFilms(filmsContainer, films) {
     const newFilms = films.map((film) => {
-      const movieController = new MovieController(filmsContainer, this._onDataChange, this._onViewChange);
+      const movieController = new MovieController(filmsContainer, this._onDataChange, this._onViewChange, this._movieModel);
       movieController.render(film);
 
       return movieController;

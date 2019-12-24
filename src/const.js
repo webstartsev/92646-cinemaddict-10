@@ -10,3 +10,6 @@ export const FilterType = {
   HISTORY: `history`,
   FAVORITES: `favorites`
 };
+
+
+export const USER = `Sergey Startsev`;

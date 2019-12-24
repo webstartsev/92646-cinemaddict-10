@@ -1,9 +1,23 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
+import {USER} from "../const.js";
+import {formatDate, randomDate} from "../utils/utils.js";
 
 const createGenresMarkup = (genre) => {
   return (
     `<span class="film-details__genre">${genre}</span>`
   );
+};
+
+const parseFormData = (formData) => {
+  const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
+
+  return {
+    id: String(Date.now() + Math.random()),
+    text: formData.get(`comment`),
+    user: USER,
+    date,
+    emoji: formData.get(`comment-emoji`)
+  };
 };
 
 const createFilmPopupTemplate = (film) => {
@@ -122,7 +136,18 @@ export default class FilmPopup extends AbstarctSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
+  setFormSumbitHandler(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+  }
+
   recoveryListeners() {
 
+  }
+
+  getData() {
+    const form = this.getElement().querySelector(`form`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
   }
 }
