@@ -1,4 +1,19 @@
+import he from "he";
 import AbstarctSmartComponent from './abstract-smart-component.js';
+import {formatDate, randomDate} from "../utils/utils.js";
+
+const Description = {
+  MIN: 1,
+  MAX: 140
+};
+
+const checkDescriptionLength = (description) => {
+  if (description.length > 139) {
+    return `${description.slice(Description.MIN, Description.MAX)}...`;
+  }
+
+  return description;
+};
 
 const createGenresMarkup = (genre) => {
   return (
@@ -6,9 +21,23 @@ const createGenresMarkup = (genre) => {
   );
 };
 
+const parseFormData = (formData) => {
+  const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
+  const comment = he.encode(formData.get(`comment`));
+
+  return {
+    id: String(Date.now() + Math.random()),
+    text: comment,
+    date,
+    emoji: `${formData.get(`comment-emoji`)}.png`
+  };
+};
+
 const createFilmPopupTemplate = (film) => {
-  const {title, description, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
+  const {title, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
   const genresMarkup = genres.map((genre) => createGenresMarkup(genre)).join(`\n`);
+
+  const description = checkDescriptionLength(film.description);
 
   return (
     `<section class="film-details">
@@ -122,7 +151,18 @@ export default class FilmPopup extends AbstarctSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
+  setFormSumbitHandler(handler) {
+    handler();
+  }
+
   recoveryListeners() {
 
+  }
+
+  getData() {
+    const form = this.getElement().querySelector(`form`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
   }
 }

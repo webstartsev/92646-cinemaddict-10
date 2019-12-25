@@ -25,3 +25,7 @@ export const formatDate = (date) => {
 export const randomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
+
+export const isSubmitPressed = (evt) => {
+  return evt.ctrlKey && (evt.key === `Enter` || evt.key === `Ent`);
+};

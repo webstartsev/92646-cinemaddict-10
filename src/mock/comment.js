@@ -17,6 +17,7 @@ const Users = [
 export const generateComment = () => {
   const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
   return {
+    id: String(Date.now() + Math.random()),
     text: getRandomArrayItem(Texts),
     user: getRandomArrayItem(Users),
     date,

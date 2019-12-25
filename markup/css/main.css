@@ -778,6 +778,9 @@ button {
   opacity: 0.5;
   transition: all 0.4s;
 }
+.film-details__emoji-src {
+  background-size: 100%;
+}
 .film-details__emoji-label:hover {
   opacity: 1;
 }
