@@ -63,18 +63,10 @@ export default class PageController {
   }
 
   _onDataChange(movieController, oldData, newData) {
-    if (newData === null) {
-      this._movieModel.removeComment();
+    if (newData !== null) {
+      this._movieModel.updateMovie(oldData.id, newData);
     }
-
-    const index = this._films.findIndex((film) => film === oldData);
-
-    if (index === -1) {
-      return;
-    }
-
-    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
-    movieController.render(this._films[index]);
+    this._updateMovies(this._showingFilmsCount);
   }
 
   _onViewChange() {
