@@ -34,8 +34,10 @@ export default class PageController {
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onShowMoreBtnClick = this._onShowMoreBtnClick.bind(this);
+    this._onSortTypeChange = this._onSortTypeChange.bind(this);
 
     this._movieModel.setFilterChangeHandler(this._onFilterChange);
+    this._sortComponent.setClickSortHandler(this._onSortTypeChange);
   }
 
   _onFilterChange() {
@@ -124,34 +126,35 @@ export default class PageController {
     this._filmsElement = this._filmsComponent.getElement();
     this._filmsListContainer = this._filmsElement.querySelector(`.films-list__container`);
 
-    this._sortComponent.setClickSortHandler((sortType) => {
-      let sortFilms = [];
-
-      switch (sortType) {
-        case SortType.DATE:
-          sortFilms = this._films.slice().sort((a, b) => Date.parse(b.releaseDate) - Date.parse(a.releaseDate));
-          break;
-        case SortType.RATING:
-          sortFilms = this._films.slice().sort((a, b) => b.rating - a.rating);
-          break;
-        case SortType.DEFAULT:
-        default:
-          sortFilms = this._films.slice();
-          break;
-      }
-
-      this._filmsListContainer.innerHTML = ``;
-      remove(this._showMoreBtnComponent);
-
-      this._renderFilms(this._filmsListContainer, sortFilms.slice(0, this._showingFilmsCount));
-      this._renderShowMoreBtn();
-    });
-
     this._renderFilms(this._filmsListContainer, this._films.slice(0, this._showingFilmsCount));
     this._renderShowMoreBtn();
 
     this._renderTopList();
     this._renderMostList();
+  }
+
+  _onSortTypeChange(sortType) {
+    let sortFilms = [];
+
+    const movies = this._movieModel.getMovies();
+
+    switch (sortType) {
+      case SortType.DATE:
+        sortFilms = movies.slice().sort((a, b) => Date.parse(b.releaseDate) - Date.parse(a.releaseDate));
+        break;
+      case SortType.RATING:
+        sortFilms = movies.slice().sort((a, b) => b.rating - a.rating);
+        break;
+      case SortType.DEFAULT:
+      default:
+        sortFilms = movies.slice();
+        break;
+    }
+
+    this._removeMovies();
+    this._renderFilms(this._filmsListContainer, sortFilms.slice(0, this._showingFilmsCount));
+
+    this._renderShowMoreBtn();
   }
 
   _renderTopList() {
