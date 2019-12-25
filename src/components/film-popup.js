@@ -1,6 +1,5 @@
 import he from "he";
 import AbstarctSmartComponent from './abstract-smart-component.js';
-import {USER} from "../const.js";
 import {formatDate, randomDate} from "../utils/utils.js";
 
 const Description = {
@@ -29,7 +28,6 @@ const parseFormData = (formData) => {
   return {
     id: String(Date.now() + Math.random()),
     text: comment,
-    user: USER,
     date,
     emoji: `${formData.get(`comment-emoji`)}.png`
   };
