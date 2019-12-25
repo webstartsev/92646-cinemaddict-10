@@ -2,6 +2,19 @@ import AbstarctSmartComponent from './abstract-smart-component.js';
 import {USER} from "../const.js";
 import {formatDate, randomDate} from "../utils/utils.js";
 
+const Description = {
+  MIN: 1,
+  MAX: 140
+};
+
+const checkDescriptionLength = (description) => {
+  if (description.length > 139) {
+    return `${description.slice(Description.MIN, Description.MAX)}...`;
+  }
+
+  return description;
+};
+
 const createGenresMarkup = (genre) => {
   return (
     `<span class="film-details__genre">${genre}</span>`
@@ -21,8 +34,10 @@ const parseFormData = (formData) => {
 };
 
 const createFilmPopupTemplate = (film) => {
-  const {title, description, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
+  const {title, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
   const genresMarkup = genres.map((genre) => createGenresMarkup(genre)).join(`\n`);
+
+  const description = checkDescriptionLength(film.description);
 
   return (
     `<section class="film-details">

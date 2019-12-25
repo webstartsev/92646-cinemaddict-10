@@ -1,5 +1,10 @@
 import AbstractComponent from './abstract-component.js';
 
+const Description = {
+  MIN: 1,
+  MAX: 100
+};
+
 const createFilmTemplate = (film) => {
   const {title, description, poster, rating, year, duration, genres, comments, isNeedWatch, isWatch, isFavorite} = film;
 
@@ -13,7 +18,7 @@ const createFilmTemplate = (film) => {
         <span class="film-card__genre">${genres[0]}</span>
       </p>
       <img src="./images/posters/${poster}" alt="" class="film-card__poster">
-      <p class="film-card__description">${description.slice(1, 100)}...</p>
+      <p class="film-card__description">${description.slice(Description.MIN, Description.MAX)}...</p>
       <a class="film-card__comments">${comments.length} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isNeedWatch ? `film-card__controls-item--active` : ``}">Add to watchlist</button>

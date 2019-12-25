@@ -1,7 +1,9 @@
 import AbstractComponent from './abstract-component.js';
+import {formatDate} from "../utils/comment.js";
 
 const createCommentsTemplate = (commet) => {
-  const {text, user, date, emoji} = commet;
+  const {text, user, emoji} = commet;
+  const date = formatDate(commet.date);
 
   return (
     `<li class="film-details__comment">
