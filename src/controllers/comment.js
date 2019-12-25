@@ -8,10 +8,6 @@ export default class CommentController {
     this._commentsModel = commentsModel;
 
     this._commentComponent = null;
-
-    this._onDataChange = this._onDataChange.bind(this);
-
-    this._commentsModel.setCommentChangeHandler(this._onDataChange);
   }
 
   render(comment) {
@@ -27,9 +23,5 @@ export default class CommentController {
 
   destroy() {
     remove(this._commentComponent);
-  }
-
-  _onDataChange() {
-    this.render();
   }
 }

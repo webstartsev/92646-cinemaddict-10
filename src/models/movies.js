@@ -22,7 +22,15 @@ export default class Movies {
   }
 
   updateMovie(id, film) {
+    const index = this._getIndexMovieById(id);
 
+    if (index === -1) {
+      return false;
+    }
+
+    this._movies = [...this._movies.slice(0, index), film, ...this._movies.slice(index + 1)];
+
+    return true;
   }
 
   setFilter(filterType) {
@@ -36,5 +44,9 @@ export default class Movies {
 
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
+  }
+
+  _getIndexMovieById(id) {
+    return this._movies.findIndex((movie) => movie.id === id);
   }
 }

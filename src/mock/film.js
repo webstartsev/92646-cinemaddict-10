@@ -87,6 +87,7 @@ const generateDuration = () => {
 export const generateFilm = () => {
   const releaseDate = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
   return {
+    id: String(Date.now() + Math.random()),
     title: getRandomArrayItem(TitleItems),
     description: generateRandomArray(DescriptionItems).join(` `),
     poster: getRandomArrayItem(PosterItems),

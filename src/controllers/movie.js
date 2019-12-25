@@ -22,6 +22,7 @@ export default class Movie {
     this._movieModel = movieModel;
     this._commentsModel = new CommentsModel();
 
+    this._film = null;
     this._mode = Mode.DEFAULT;
     this._popupBottomElement = null;
     this._showedCommentControllers = [];
@@ -42,13 +43,14 @@ export default class Movie {
   }
 
   render(film) {
+    this._film = film;
     const oldFilmComponent = this._filmComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
 
     this._commentsModel.setComments(film.comments);
 
-    this._prepeareFilm(film);
-    this._prepearPopup(film);
+    this._prepeareFilm(this._film);
+    this._prepearPopup(this._film);
 
     if (oldFilmComponent && oldFilmPopupComponent) {
       replace(this._filmComponent, oldFilmComponent);
@@ -136,6 +138,9 @@ export default class Movie {
         this._commentsModel.addComment(data);
 
         const comments = this._commentsModel.getComments();
+        this._film.comments = comments;
+        this._movieModel.updateMovie(this._film.id, this._film);
+
         this._updateComments(comments);
       });
     }
@@ -145,6 +150,10 @@ export default class Movie {
     if (newData === null) {
       commentController.destroy();
       this._commentsModel.removeComment(oldData);
+
+      const comments = this._commentsModel.getComments();
+      this._film.comments = comments;
+      this._movieModel.updateMovie(this._film.id, this._film);
     }
 
     this._updateComments();
