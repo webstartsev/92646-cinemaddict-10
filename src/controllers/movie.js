@@ -38,7 +38,6 @@ export default class Movie {
     this._onCommentChange = this._onCommentChange.bind(this);
     this._onSubmitForm = this._onSubmitForm.bind(this);
 
-
     this._commentsModel.setCommentChangeHandler(this._onCommentChange);
   }
 
@@ -70,15 +69,6 @@ export default class Movie {
 
     if (isEscKey) {
       this._closePopup();
-    }
-  }
-
-  _onSubmitForm(evt) {
-    if (isSubmitPressed(evt)) {
-      this._filmPopupComponent.setFormSumbitHandler(() => {
-        const data = this._filmPopupComponent.getData();
-        console.log('data: ', data);
-      });
     }
   }
 
@@ -139,18 +129,25 @@ export default class Movie {
     this._renderComments(comments);
   }
 
+  _onSubmitForm(evt) {
+    if (isSubmitPressed(evt)) {
+      this._filmPopupComponent.setFormSumbitHandler(() => {
+        const data = this._filmPopupComponent.getData();
+        this._commentsModel.addComment(data);
+
+        const comments = this._commentsModel.getComments();
+        this._updateComments(comments);
+      });
+    }
+  }
+
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
       commentController.destroy();
       this._commentsModel.removeComment(oldData);
     }
 
-    const comments = this._commentsModel.getComments();
-    this._updateComments(comments);
-  }
-
-  _updateComments(comments) {
-
+    this._updateComments();
   }
 
   _renderComments(comments) {
@@ -167,13 +164,25 @@ export default class Movie {
 
     const commentListElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-list`);
     const newComment = comments.map((comment) => {
-      const commentController = new CommentController(commentListElement, this._onCommentChange);
+      const commentController = new CommentController(commentListElement, this._onCommentChange, this._commentsModel);
       commentController.render(comment);
 
       return commentController;
     });
 
     this._showedCommentControllers = [...this._showedCommentControllers, ...newComment];
+  }
+
+  _removeComents() {
+    remove(this._commentsComponent);
+    this._showedCommentControllers.forEach((commentController) => commentController.destroy());
+    this._showedCommentControllers = [];
+  }
+
+  _updateComments() {
+    const comments = this._commentsModel.getComments();
+    this._removeComents();
+    this._renderComments(comments);
   }
 
   _closePopup() {

@@ -2,11 +2,16 @@ import CommentComponent from "../components/comment.js";
 import {render, remove} from '../utils/render.js';
 
 export default class CommentController {
-  constructor(container, onCommentChange) {
+  constructor(container, onCommentChange, commentsModel) {
     this._container = container;
     this._onCommentChange = onCommentChange;
+    this._commentsModel = commentsModel;
 
     this._commentComponent = null;
+
+    this._onDataChange = this._onDataChange.bind(this);
+
+    this._commentsModel.setCommentChangeHandler(this._onDataChange);
   }
 
   render(comment) {
@@ -22,5 +27,9 @@ export default class CommentController {
 
   destroy() {
     remove(this._commentComponent);
+  }
+
+  _onDataChange() {
+    this.render();
   }
 }

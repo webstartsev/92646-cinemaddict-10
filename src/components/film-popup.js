@@ -1,6 +1,6 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
 import {USER} from "../const.js";
-import {formatDate, randomDate, isSubmitPressed} from "../utils/utils.js";
+import {formatDate, randomDate} from "../utils/utils.js";
 
 const createGenresMarkup = (genre) => {
   return (
@@ -16,7 +16,7 @@ const parseFormData = (formData) => {
     text: formData.get(`comment`),
     user: USER,
     date,
-    emoji: formData.get(`comment-emoji`)
+    emoji: `${formData.get(`comment-emoji`)}.png`
   };
 };
 
