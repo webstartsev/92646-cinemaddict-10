@@ -95,8 +95,7 @@ export default class PageController {
       return;
     }
 
-    const filmsElement = this._filmsComponent.getElement();
-    const filmsListElement = filmsElement.querySelector(`.films-list`);
+    const filmsListElement = this._filmsElement.querySelector(`.films-list`);
     render(filmsListElement, this._showMoreBtnComponent);
 
     this._showMoreBtnComponent.setClickHandler(this._onShowMoreBtnClick);
@@ -187,5 +186,15 @@ export default class PageController {
 
   _getMostListMovies(movies) {
     return movies.slice().sort((a, b) => b.comments.length - a.comments.length).slice(0, FILM_EXTRA_COUNT);
+  }
+
+  show() {
+    this._sortComponent.show();
+    this._filmsElement.classList.remove(`visually-hidden`);
+  }
+
+  hide() {
+    this._sortComponent.hide();
+    this._filmsElement.classList.add(`visually-hidden`);
   }
 }

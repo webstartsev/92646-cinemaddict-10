@@ -1,3 +1,4 @@
+import {MenuItem} from "./components/menu.js";
 import ProfileComponent from './components/profile';
 import StatisticsComponent from './components/statistics.js';
 import PageController from './controllers/page.js';
@@ -30,3 +31,18 @@ render(document.querySelector(`.footer__statistics`), countFilmsComponent);
 
 const statisticsComponent = new StatisticsComponent();
 render(mainElement, statisticsComponent);
+
+statisticsComponent.hide();
+
+filterController.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.STATS:
+      statisticsComponent.show();
+      pageController.hide();
+      break;
+    default:
+      statisticsComponent.hide();
+      pageController.show();
+      break;
+  }
+});
