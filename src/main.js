@@ -1,4 +1,5 @@
 import ProfileComponent from './components/profile';
+import StatisticsComponent from './components/statistics.js';
 import PageController from './controllers/page.js';
 import FilterController from "./controllers/filter.js";
 import CountFilmsComponent from './components/count-films.js';
@@ -26,3 +27,6 @@ pageController.render();
 
 const countFilmsComponent = new CountFilmsComponent(films.length);
 render(document.querySelector(`.footer__statistics`), countFilmsComponent);
+
+const statisticsComponent = new StatisticsComponent();
+render(mainElement, statisticsComponent);
