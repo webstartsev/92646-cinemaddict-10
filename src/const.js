@@ -11,5 +11,6 @@ export const FilterType = {
   FAVORITES: `favorites`
 };
 
-
 export const USER = `Sergey Startsev`;
+
+export const HIDDEN_CLASS = `visually-hidden`;
