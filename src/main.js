@@ -8,14 +8,16 @@ import {generateFilms} from './mock/film.js';
 
 import MovieModel from "./models/movies.js";
 import {render} from './utils/render.js';
+import {getRank} from './utils/statistics.js';
 
 const FILM_COUNT = 15;
 
 const films = generateFilms(FILM_COUNT);
+const rank = getRank(films);
 const mainElement = document.querySelector(`.main`);
 
 const headerElement = document.querySelector(`.header`);
-render(headerElement, new ProfileComponent());
+render(headerElement, new ProfileComponent(rank));
 
 const movieModel = new MovieModel();
 movieModel.setMovies(films);
@@ -29,7 +31,7 @@ pageController.render();
 const countFilmsComponent = new CountFilmsComponent(films.length);
 render(document.querySelector(`.footer__statistics`), countFilmsComponent);
 
-const statisticsController = new StatisticsController(mainElement, movieModel);
+const statisticsController = new StatisticsController(mainElement, movieModel, rank);
 statisticsController.render();
 statisticsController.hide();
 
