@@ -1,27 +1,6 @@
 import AbstractComponent from './abstract-component.js';
-import {getRandomIntegerNumber} from '../utils/utils.js';
 
-const View = {
-  begin: 0,
-  end: 30
-};
-
-const getRank = (countView) => {
-  let rank = ``;
-  if (countView >= 1 && countView <= 10) {
-    rank = `novice`;
-  } else if (countView >= 11 && countView <= 20) {
-    rank = `fan`;
-  } else {
-    rank = `movie buff`;
-  }
-
-  return rank;
-};
-
-const createProfileTemplate = () => {
-  const rank = getRank(getRandomIntegerNumber(View.begin, View.end));
-
+const createProfileTemplate = (rank) => {
   return (
     `<section class="header__profile profile">
       <p class="profile__rating">${rank}</p>
@@ -31,7 +10,12 @@ const createProfileTemplate = () => {
 };
 
 export default class Profile extends AbstractComponent {
+  constructor(rank) {
+    super();
+
+    this._rank = rank;
+  }
   getTemplate() {
-    return createProfileTemplate();
+    return createProfileTemplate(this._rank);
   }
 }
