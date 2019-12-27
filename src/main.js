@@ -31,7 +31,7 @@ pageController.render();
 const countFilmsComponent = new CountFilmsComponent(films.length);
 render(document.querySelector(`.footer__statistics`), countFilmsComponent);
 
-const statisticsController = new StatisticsController(mainElement, movieModel, rank);
+const statisticsController = new StatisticsController(mainElement, movieModel);
 statisticsController.render();
 statisticsController.hide();
 

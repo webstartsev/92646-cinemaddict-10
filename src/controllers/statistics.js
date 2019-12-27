@@ -2,12 +2,13 @@ import StatisticsComponent from '../components/statistics.js';
 import StatisticsRankComponent from '../components/statistics-rank.js';
 import StatisticsFiltersComponent from '../components/statistics-filters.js';
 import {render, replace, RenderPosition} from '../utils/render.js';
+import {getRank} from '../utils/statistics.js';
 
 export default class StatisticsController {
-  constructor(container, movieModel, rank) {
+  constructor(container, movieModel) {
     this._container = container;
     this._movieModel = movieModel;
-    this._rank = rank;
+    this._rank = null;
 
     this._statisticsComponent = null;
     this._statisticsRankComponent = null;
@@ -16,6 +17,8 @@ export default class StatisticsController {
 
   render() {
     const oldStatisticsComponent = this._statisticsComponent;
+    const movies = this._movieModel.getMovies();
+    this._rank = getRank(movies);
 
     this._statisticsComponent = new StatisticsComponent(this._movieModel);
     this._statisticsRankComponent = new StatisticsRankComponent(this._rank);
