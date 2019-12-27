@@ -85,16 +85,22 @@ const renderMovieChart = (fimsCtx, movies) => {
 };
 
 const getDuration = (films) => {
-  return films.reduce((acc, film) => {
+  const totalMinutes = films.reduce((acc, film) => {
     const duration = film.duration.split(` `);
     const h = parseInt(duration[0], 10);
     const m = parseInt(duration[1], 10);
+    const total = (h * 60) + m;
 
-    return {
-      h: acc.h + h,
-      m: acc.m + m
-    };
-  }, {h: 0, m: 0});
+    return acc + total;
+  }, 0);
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return {
+    hours,
+    minutes
+  };
 };
 
 const createStatisticsTemplate = ({films}) => {
@@ -114,7 +120,7 @@ const createStatisticsTemplate = ({films}) => {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">${totalDuration.h} <span class="statistic__item-description">h</span> ${totalDuration.m} <span class="statistic__item-description">m</span></p>
+        <p class="statistic__item-text">${totalDuration.hours} <span class="statistic__item-description">h</span> ${totalDuration.minutes} <span class="statistic__item-description">m</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
