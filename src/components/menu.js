@@ -61,6 +61,7 @@ export default class Menu extends AbstractComponent {
   setOnChange(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       const menuItem = getCurrentItem(evt.target.href);
+
       if (!menuItem) {
         return;
       }
