@@ -86,6 +86,8 @@ const generateDuration = () => {
 
 export const generateFilm = () => {
   const releaseDate = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
+  const dateWatched = formatDate(randomDate(new Date(2020, 0, 1), new Date()));
+
   return {
     id: String(Date.now() + Math.random()),
     title: getRandomArrayItem(TitleItems),
@@ -102,6 +104,7 @@ export const generateFilm = () => {
     directors: generateRandomArray(Directors),
     writers: generateRandomArray(Writers),
     actors: generateRandomArray(Actors),
+    dateWatched,
     releaseDate,
     country: getRandomArrayItem(Country),
     ratingPlus: getRandomIntegerNumber(RatingPlus.begin, RatingPlus.end)

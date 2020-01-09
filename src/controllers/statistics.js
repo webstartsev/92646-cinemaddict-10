@@ -2,7 +2,7 @@ import StatisticsComponent from '../components/statistics.js';
 import StatisticsRankComponent from '../components/statistics-rank.js';
 import StatisticsFiltersComponent from '../components/statistics-filters.js';
 import {render, replace, RenderPosition} from '../utils/render.js';
-import {getRank} from '../utils/statistics.js';
+import {getRank, getMoviesByPeriod} from '../utils/statistics.js';
 import {StatisticType} from '../const.js';
 
 export default class StatisticsController {
@@ -22,9 +22,10 @@ export default class StatisticsController {
   render() {
     const oldStatisticsComponent = this._statisticsComponent;
     const movies = this._movieModel.getMovies();
+    const filmIsWatching = getMoviesByPeriod(movies, this._activeFilterType);
     this._rank = getRank(movies);
 
-    this._statisticsComponent = new StatisticsComponent(this._movieModel, this._activeFilterType);
+    this._statisticsComponent = new StatisticsComponent(filmIsWatching, this._activeFilterType);
     this._statisticsRankComponent = new StatisticsRankComponent(this._rank);
     this._statisticsFiltersComponent = new StatisticsFiltersComponent(this._activeFilterType);
 

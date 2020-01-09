@@ -1,10 +1,13 @@
+import moment from 'moment';
+
+import {StatisticType, StatisticPeriod} from '../const.js';
+
 const Rank = {
   NONE: `-`,
   NOVICE: `novice`,
   FAN: `fan`,
   MOVIE_BUFF: `movie buff`
 };
-
 
 export const getRank = (films) => {
   let rank = ``;
@@ -20,4 +23,16 @@ export const getRank = (films) => {
   }
 
   return rank;
+};
+
+export const getMoviesByPeriod = (movies, period) => {
+  const watchedMovies = movies.filter((movie) => movie.isWatch);
+
+  if (period === StatisticType.ALL) {
+    return watchedMovies;
+  }
+
+  return watchedMovies.filter((movie) => {
+    return moment(movie.dateWatched).diff(new Date(), StatisticPeriod[period]) === 0;
+  });
 };

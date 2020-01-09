@@ -142,30 +142,22 @@ export default class Statistics extends AbstractSmartComponent {
     super();
 
     this._films = films;
-    this._filmIsWatching = [];
-
     this._filmsChart = null;
 
     this._renderCharts();
   }
 
   getTemplate() {
-    this._filmIsWatching = this._getWatchingFilms();
-    return createStatisticsTemplate({films: this._filmIsWatching});
+    return createStatisticsTemplate({films: this._films});
   }
 
   _renderCharts() {
     const element = this.getElement();
-    this._filmIsWatching = this._getWatchingFilms();
     const fimsCtx = element.querySelector(`.statistic__chart`);
 
     this._resetCharts();
 
-    this._moviesChart = renderMovieChart(fimsCtx, this._filmIsWatching);
-  }
-
-  _getWatchingFilms() {
-    return this._films.getMovies().filter((film) => film.isWatch);
+    this._moviesChart = renderMovieChart(fimsCtx, this._films);
   }
 
   _resetCharts() {
