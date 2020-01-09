@@ -88,6 +88,7 @@ export default class Movie {
     this._filmComponent.setWatchedClickHandler((evt) => {
       evt.preventDefault();
       this._onDataChange(this, this._filmComponent._film, Object.assign({}, this._filmComponent._film, {
+        dateWatched: (film.dateWatched ? null : new Date()),
         isWatch: !film.isWatch
       }));
     });
