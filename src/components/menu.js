@@ -1,5 +1,19 @@
 import AbstractComponent from './abstract-component.js';
 
+const ACTIVE_CLASS = `main-navigation__item--active`;
+
+export const MenuItem = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`,
+  STATS: `stats`
+};
+
+const getCurrentItem = (href) => {
+  return href.split(`#`)[1];
+};
+
 const createMenuMarkup = (item, {isChecked, isLast}) => {
   const {name, code, count} = item;
 
@@ -34,14 +48,25 @@ export default class Menu extends AbstractComponent {
     return createMenuTemplate(this._menuItems);
   }
 
-  setFilterChangeHandler(handler) {
+  setActiveMenu(menuItem) {
+    const menuItems = this.getElement().querySelectorAll(`.main-navigation__item`);
+    menuItems.forEach((item) => {
+      item.classList.remove(ACTIVE_CLASS);
+      if (getCurrentItem(item.href) === menuItem) {
+        item.classList.add(ACTIVE_CLASS);
+      }
+    });
+  }
+
+  setOnChange(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
-      const filterName = evt.target.href.split(`#`)[1];
-      if (!filterName) {
+      const menuItem = getCurrentItem(evt.target.href);
+
+      if (!menuItem) {
         return;
       }
 
-      handler(filterName);
+      handler(menuItem);
     });
   }
 }

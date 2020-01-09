@@ -9,7 +9,8 @@ export default class FilterController {
     this._movieModel = movieModel;
     this._activeFilterType = FilterType.ALL;
 
-    this._menuComponent = null;
+    this._MenuComponent = null;
+    this._handlerOnMenuChange = null;
 
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
@@ -23,7 +24,7 @@ export default class FilterController {
     const films = this._movieModel.getMovies();
     const menuItems = generateMenu(films);
     this._menuComponent = new MenuComponent(menuItems);
-    this._menuComponent.setFilterChangeHandler(this._onFilterChange);
+    this._recoveryListeners();
 
     if (oldComponent) {
       replace(this._menuComponent, oldComponent);
@@ -39,5 +40,20 @@ export default class FilterController {
 
   _onDataChange() {
     this.render();
+  }
+
+  setOnChange(handler) {
+    this._handlerOnMenuChange = handler;
+    this._menuComponent.setOnChange((menuItem) => {
+      this._menuComponent.setActiveMenu(menuItem);
+      if (this._handlerOnMenuChange) {
+        this._handlerOnMenuChange(menuItem);
+      }
+    });
+  }
+
+  _recoveryListeners() {
+    this._menuComponent.setOnChange(this._onFilterChange);
+    this.setOnChange(this._handlerOnMenuChange);
   }
 }
