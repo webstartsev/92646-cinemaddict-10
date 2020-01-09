@@ -1,30 +1,50 @@
 import AbstractComponent from "./abstract-component.js";
 
-const createStatisticsFilterTemplate = () => {
+const STATISTICS_FILTERS = [`All time`, `Today`, `Week`, `Month`, `Year`];
+
+const prepearFilter = (filter) => filter.toLowerCase().replace(` `, `-`);
+
+const createFilterMarkup = (activeFilter) => {
+  return STATISTICS_FILTERS.map((filter) => {
+    const item = prepearFilter(filter);
+    return `<input
+      type="radio"
+      class="statistic__filters-input visually-hidden"
+      name="statistic-filter"
+      id="statistic-${item}"
+      value="${item}"
+      ${item === activeFilter ? `checked` : ``}>
+    <label for="statistic-${item}" class="statistic__filters-label">${filter}</label>`;
+  }).join(``);
+};
+
+const createStatisticsFilterTemplate = (activeFilter) => {
+  const filterMarkup = createFilterMarkup(activeFilter);
+
   return (
     `<form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>
 
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-all-time" value="all-time" checked>
-      <label for="statistic-all-time" class="statistic__filters-label">All time</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-today" value="today">
-      <label for="statistic-today" class="statistic__filters-label">Today</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-week" value="week">
-      <label for="statistic-week" class="statistic__filters-label">Week</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-month" value="month">
-      <label for="statistic-month" class="statistic__filters-label">Month</label>
-
-      <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year" value="year">
-      <label for="statistic-year" class="statistic__filters-label">Year</label>
+      ${filterMarkup}
     </form>`
   );
 };
 
 export default class StatisticsFilter extends AbstractComponent {
+  constructor(activeFilterType) {
+    super();
+
+    this._activeFilerType = activeFilterType;
+  }
   getTemplate() {
-    return createStatisticsFilterTemplate();
+    return createStatisticsFilterTemplate(this._activeFilerType);
+  }
+
+  setClickSortHandler(handler) {
+    const filters = this.getElement();
+    filters.addEventListener(`change`, (evt) => {
+      const value = evt.target.value;
+      handler(value);
+    });
   }
 }
