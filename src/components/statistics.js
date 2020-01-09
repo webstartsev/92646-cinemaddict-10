@@ -104,11 +104,12 @@ const getDuration = (films) => {
 };
 
 const createStatisticsTemplate = ({films}) => {
-  const countMovies = films.length;
+  const countMovies = films.length || 0;
   const totalDuration = getDuration(films);
 
   const genresData = prepearData(films);
   const sortedGenresData = sortedData(genresData);
+  const topGenre = [...sortedGenresData.keys()].shift() || `-`;
 
   return (
     `<section class="statistic">
@@ -124,7 +125,7 @@ const createStatisticsTemplate = ({films}) => {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">${[...sortedGenresData.keys()].shift()}</p>
+        <p class="statistic__item-text">${topGenre}</p>
       </li>
     </ul>
 
