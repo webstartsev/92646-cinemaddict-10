@@ -9,7 +9,7 @@ const menuItems = [
 const getMenuCountItems = (title, movies) => {
   switch (title) {
     case `Watchlist`:
-      return movies.filter((movie) => {console.log(movie); return movie.isNeedWatch}).length;
+      return movies.filter((movie) => movie.isNeedWatch).length;
     case `History`:
       return movies.filter((movie) => movie.isWatch).length;
     case `Favorites`:
