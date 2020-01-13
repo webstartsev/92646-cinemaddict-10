@@ -34,7 +34,7 @@ const parseFormData = (formData) => {
 };
 
 const createFilmPopupTemplate = (film) => {
-  const {title, poster, rating, duration, genres, directors, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
+  const {title, poster, rating, duration, genres, director, writers, actors, releaseDate, country, ratingPlus, isNeedWatch, isWatch, isFavorite} = film;
   const genresMarkup = genres.map((genre) => createGenresMarkup(genre)).join(`\n`);
 
   const description = checkDescriptionLength(film.description);
@@ -48,7 +48,7 @@ const createFilmPopupTemplate = (film) => {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
+            <img class="film-details__poster-img" src="${poster}" alt="">
 
             <p class="film-details__age">${ratingPlus}+</p>
           </div>
@@ -68,7 +68,7 @@ const createFilmPopupTemplate = (film) => {
             <table class="film-details__table">
               <tr class="film-details__row">
                 <td class="film-details__term">Director</td>
-                <td class="film-details__cell">${directors.join(`, `)}</td>
+                <td class="film-details__cell">${director}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
