@@ -14,12 +14,13 @@ const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
 export default class PageController {
-  constructor(container, movieModel) {
+  constructor(container, movieModel, api) {
     this._container = container;
     this._showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
     this._films = [];
     this._showedFilmControllers = [];
     this._movieModel = movieModel;
+    this._api = api;
     this._filmsListContainer = null;
     this._filmsElement = null;
 
