@@ -144,11 +144,11 @@ export default class Movie {
   _onSubmitForm(evt) {
     if (isSubmitPressed(evt)) {
       this._filmPopupComponent.setFormSumbitHandler(() => {
-        const data = this._filmPopupComponent.getData();
-        this._filmPopupComponent.disabledForm();
+        const data = this._commentsComponent.getData();
+        this._commentsComponent.disabledForm();
         this._api.addComment(this._film.id, data)
           .then((res) => {
-            this._filmPopupComponent.activateForm();
+            this._commentsComponent.activateForm();
             this._commentsModel.addComment(res.comments.pop());
 
             const comments = this._commentsModel.getComments();
@@ -156,6 +156,9 @@ export default class Movie {
             this._movieModel.updateMovie(this._film.id, this._film);
 
             this._updateComments(comments);
+          })
+          .catch(() => {
+            // this._commentsComponent.shake();
           });
       });
     }
@@ -163,10 +166,8 @@ export default class Movie {
 
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
-      this._filmPopupComponent.disabledForm();
-      this._api.deleteComment(oldData.id, newData)
+      this._api.deleteComment(oldData.id)
         .then(() => {
-          this._filmPopupComponent.activateForm();
           commentController.destroy();
           this._commentsModel.removeComment(oldData);
 
