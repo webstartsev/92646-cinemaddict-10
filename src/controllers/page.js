@@ -67,9 +67,12 @@ export default class PageController {
 
   _onDataChange(movieController, oldData, newData) {
     if (newData !== null) {
-      this._movieModel.updateMovie(oldData.id, newData);
+      this._api.updateMovie(oldData.id, newData)
+        .then((movieModel) => {
+          this._movieModel.updateMovie(oldData.id, movieModel);
+          this._updateMovies(this._showingFilmsCount);
+        });
     }
-    this._updateMovies(this._showingFilmsCount);
   }
 
   _onViewChange() {
