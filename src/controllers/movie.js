@@ -145,8 +145,10 @@ export default class Movie {
     if (isSubmitPressed(evt)) {
       this._filmPopupComponent.setFormSumbitHandler(() => {
         const data = this._filmPopupComponent.getData();
+        this._filmPopupComponent.disabledForm();
         this._api.addComment(this._film.id, data)
           .then((res) => {
+            this._filmPopupComponent.activateForm();
             this._commentsModel.addComment(res.comments.pop());
 
             const comments = this._commentsModel.getComments();
@@ -161,8 +163,10 @@ export default class Movie {
 
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
+      this._filmPopupComponent.disabledForm();
       this._api.deleteComment(oldData.id, newData)
         .then(() => {
+          this._filmPopupComponent.activateForm();
           commentController.destroy();
           this._commentsModel.removeComment(oldData);
 

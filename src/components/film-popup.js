@@ -153,6 +153,14 @@ export default class FilmPopup extends AbstarctSmartComponent {
     handler();
   }
 
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
+  }
+
   recoveryListeners() {
 
   }
