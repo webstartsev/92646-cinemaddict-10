@@ -19,6 +19,7 @@ export default class Movie {
     this.releaseDate = data[`film_info`][`release`][`date`] ? new Date(data[`film_info`][`release`][`date`]) : new Date();
     this.country = data[`film_info`][`release`][`release_country`] || ``;
     this.ratingPlus = data[`film_info`][`age_rating`] || 0;
+    this.runtime = data[`film_info`][`runtime`] || 0;
     this.personalRating = data[`user_details`][`personal_rating`] || 0;
     this.dateWatched = data[`user_details`][`watching_date`] ? new Date(data[`user_details`][`watching_date`]) : null;
     this.isNeedWatch = data[`user_details`][`watchlist`] ? data[`user_details`][`watchlist`] : false;
@@ -30,13 +31,13 @@ export default class Movie {
   toRAW() {
     return {
       'id': this.id,
-      'comments': this.comments,
+      'comments': [...this.comments],
       'film_info': {
-        'title': this.name,
-        'alternative_title': this.alternativeName,
-        'poster': `images/posters/${this.poster}`,
-        "total_rating": this.filmMark,
-        'age_rating': this.ageRating * 1,
+        'title': this.title,
+        'alternative_title': this.alternativeTitle,
+        'poster': `${this.poster}`,
+        "total_rating": this.rating,
+        'age_rating': this.ratingPlus,
         'director': this.director,
         'writers': [...this.writers],
         'actors': [...this.actors],
@@ -44,15 +45,15 @@ export default class Movie {
           'date': this.releaseDate.toISOString(),
           'release_country': this.country
         },
-        'runtime': Math.floor(this.runTime / 60 / 1000),
+        'runtime': this.runtime,
         'genre': [...this.genres],
         'description': this.description
       },
       'user_details': {
         'personal_rating': this.personalRating,
-        'watchlist': this.isInWatchList,
-        'already_watched': this.isInHistory,
-        'watching_date': this.whatchedDate ? this.whatchedDate.toISOString() : this.whatchedDate,
+        'watchlist': this.isNeedWatch,
+        'already_watched': this.isWatch,
+        'watching_date': this.dateWatched ? this.dateWatched.toISOString() : this.dateWatched,
         'favorite': this.isFavorite
       }
     };
