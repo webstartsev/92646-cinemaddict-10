@@ -5,6 +5,7 @@ import UserRatingComponent from '../components/user-rating.js';
 import CountCommentsComponent from "../components/count-comments.js";
 import CommentController from "../controllers/comment.js";
 import CommentsModel from "../models/comments.js";
+import MovieModel from "../models/movie.js";
 
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
 import {isSubmitPressed} from "../utils/utils.js";
@@ -53,8 +54,8 @@ export default class Movie {
         this._commentsModel.setComments(comments);
       });
 
-    this._prepeareFilm(this._film);
-    this._prepearPopup(this._film);
+    this._prepeareFilm();
+    this._prepearPopup();
 
     if (oldFilmComponent && oldFilmPopupComponent) {
       replace(this._filmComponent, oldFilmComponent);
@@ -78,55 +79,64 @@ export default class Movie {
     }
   }
 
-  _prepeareFilm(film) {
-    this._filmComponent = new FilmComponent(film);
+  _prepeareFilm() {
+    this._filmComponent = new FilmComponent(this._film);
 
-    this._filmComponent.setOpenDetailHandler(() => this._openPopup(film));
+    this._filmComponent.setOpenDetailHandler(() => this._openPopup(this._film));
     this._filmComponent.setWatchlistClickHandler((evt) => {
       evt.preventDefault();
 
-      this._onDataChange(this, this._filmComponent._film, Object.assign({}, this._filmComponent._film, {
-        isNeedWatch: !film.isNeedWatch
-      }));
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.isNeedWatch = !newMovie.isNeedWatch;
+
+      this._onDataChange(this, this._film, newMovie);
     });
     this._filmComponent.setWatchedClickHandler((evt) => {
       evt.preventDefault();
-      this._onDataChange(this, this._filmComponent._film, Object.assign({}, this._filmComponent._film, {
-        dateWatched: (film.dateWatched ? null : new Date()),
-        isWatch: !film.isWatch
-      }));
+
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.dateWatched = (newMovie.dateWatched ? null : new Date());
+      newMovie.isWatch = !newMovie.isWatch;
+
+      this._onDataChange(this, this._film, newMovie);
     });
     this._filmComponent.setFavoriteClickHandler((evt) => {
       evt.preventDefault();
-      this._onDataChange(this, this._filmComponent._film, Object.assign({}, this._filmComponent._film, {
-        isFavorite: !film.isFavorite
-      }));
+
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.isFavorite = !newMovie.isFavorite;
+
+      this._onDataChange(this, this._film, newMovie);
     });
   }
 
-  _prepearPopup(film) {
-    this._filmPopupComponent = new FilmPopupComponent(film);
+  _prepearPopup() {
+    this._filmPopupComponent = new FilmPopupComponent(this._film);
 
     this._filmPopupComponent.setClickCloseHandler(this._closePopup);
     this._filmPopupComponent.setWatchlistClickHandler(() => {
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isNeedWatch: !film.isNeedWatch
-      }));
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.isNeedWatch = !newMovie.isNeedWatch;
+
+      this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setWatchedClickHandler(() => {
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isWatch: !film.isWatch
-      }));
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.dateWatched = (newMovie.dateWatched ? null : new Date());
+      newMovie.isWatch = !newMovie.isWatch;
+
+      this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setFavoriteClickHandler(() => {
-      this._onDataChange(this, film, Object.assign({}, film, {
-        isFavorite: !film.isFavorite
-      }));
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.isFavorite = !newMovie.isFavorite;
+
+      this._onDataChange(this, this._film, newMovie);
     });
 
-    if (film.isWatch) {
+    if (this._film.isWatch) {
       const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
-      this._userRatingComponent = new UserRatingComponent(film);
+      this._userRatingComponent = new UserRatingComponent(this._film);
       render(popupMiddleElement, this._userRatingComponent);
     }
   }
