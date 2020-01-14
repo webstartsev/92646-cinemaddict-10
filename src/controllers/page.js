@@ -116,7 +116,7 @@ export default class PageController {
 
   render() {
     this._films = this._movieModel.getMovies();
-    if (this._filmslength === 0) {
+    if (this._films.length === 0) {
       render(this._container, this._noFilmsComponent);
       return;
     }
