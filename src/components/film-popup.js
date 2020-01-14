@@ -1,6 +1,5 @@
 import he from "he";
 import AbstarctSmartComponent from './abstract-smart-component.js';
-import {formatDate, randomDate} from "../utils/utils.js";
 
 const Description = {
   MIN: 1,
@@ -22,14 +21,13 @@ const createGenresMarkup = (genre) => {
 };
 
 const parseFormData = (formData) => {
-  const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
+  const date = new Date().toISOString();
   const comment = he.encode(formData.get(`comment`));
 
   return {
-    id: String(Date.now() + Math.random()),
-    text: comment,
+    comment,
     date,
-    emoji: `${formData.get(`comment-emoji`)}.png`
+    emotion: formData.get(`comment-emoji`)
   };
 };
 
