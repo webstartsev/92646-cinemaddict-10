@@ -145,28 +145,34 @@ export default class Movie {
     if (isSubmitPressed(evt)) {
       this._filmPopupComponent.setFormSumbitHandler(() => {
         const data = this._filmPopupComponent.getData();
-        this._commentsModel.addComment(data);
+        this._api.addComment(this._film.id, data)
+          .then((res) => {
+            this._commentsModel.addComment(res.comments.pop());
 
-        const comments = this._commentsModel.getComments();
-        this._film.comments = comments;
-        this._movieModel.updateMovie(this._film.id, this._film);
+            const comments = this._commentsModel.getComments();
+            this._film.comments = comments;
+            this._movieModel.updateMovie(this._film.id, this._film);
 
-        this._updateComments(comments);
+            this._updateComments(comments);
+          });
       });
     }
   }
 
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
-      commentController.destroy();
-      this._commentsModel.removeComment(oldData);
+      this._api.deleteComment(oldData.id, newData)
+        .then(() => {
+          commentController.destroy();
+          this._commentsModel.removeComment(oldData);
 
-      const comments = this._commentsModel.getComments();
-      this._film.comments = comments;
-      this._movieModel.updateMovie(this._film.id, this._film);
+          const comments = this._commentsModel.getComments();
+          this._film.comments = comments;
+          this._movieModel.updateMovie(this._film.id, this._film);
+
+          this._updateComments();
+        });
     }
-
-    this._updateComments();
   }
 
   _renderComments(comments) {
