@@ -6,25 +6,25 @@ const menuItems = [
   {name: `Stats`, code: `stats`},
 ];
 
-const getMenuCountItems = (title, films) => {
+const getMenuCountItems = (title, movies) => {
   switch (title) {
     case `Watchlist`:
-      return films.filter((film) => film.isNeedWatch).length;
+      return movies.filter((movie) => movie.isNeedWatch).length;
     case `History`:
-      return films.filter((film) => film.isWatch).length;
+      return movies.filter((movie) => movie.isWatch).length;
     case `Favorites`:
-      return films.filter((film) => film.isFavorite).length;
+      return movies.filter((movie) => movie.isFavorite).length;
     default:
       return 0;
   }
 };
 
-const generateMenu = (films) => {
+const generateMenu = (movies) => {
   return menuItems.map((item) => {
     return {
       name: item.name,
       code: item.code,
-      count: getMenuCountItems(item.name, films),
+      count: getMenuCountItems(item.name, movies),
     };
   });
 };

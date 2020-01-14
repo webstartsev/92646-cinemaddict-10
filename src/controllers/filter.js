@@ -1,5 +1,5 @@
 import MenuComponent from '../components/menu.js';
-import {generateMenu} from '../mock/menu.js';
+import {generateMenu} from '../utils/menu.js';
 import {render, replace} from '../utils/render.js';
 import {FilterType} from "../const.js";
 
