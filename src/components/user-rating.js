@@ -35,9 +35,9 @@ const createUserRatingTemplate = (film) => {
 
           <p class="film-details__user-rating-feelings">How you feel it?</p>
 
-          <div class="film-details__user-rating-score">
+          <form action="" method="get" class="film-details__user-rating-score">
             ${ratingInputs}
-          </div>
+          </form>
         </section>
       </div>
     </section>`
@@ -52,5 +52,13 @@ export default class UserRating extends AbstractComponent {
   }
   getTemplate() {
     return createUserRatingTemplate(this._film);
+  }
+
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
   }
 }

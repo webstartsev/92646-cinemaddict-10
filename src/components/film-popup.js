@@ -1,4 +1,3 @@
-import he from "he";
 import AbstarctSmartComponent from './abstract-smart-component.js';
 
 const Description = {
@@ -18,17 +17,6 @@ const createGenresMarkup = (genre) => {
   return (
     `<span class="film-details__genre">${genre}</span>`
   );
-};
-
-const parseFormData = (formData) => {
-  const date = new Date().toISOString();
-  const comment = he.encode(formData.get(`comment`));
-
-  return {
-    comment,
-    date,
-    emotion: formData.get(`comment-emoji`)
-  };
 };
 
 const createFilmPopupTemplate = (film) => {
@@ -112,11 +100,11 @@ const createFilmPopupTemplate = (film) => {
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
-      <div class="form-details__middle-container">
-      </div>
-      <div class="form-details__bottom-container">
-      </div>
     </form>
+    <div class="form-details__middle-container">
+    </div>
+    <div class="form-details__bottom-container">
+    </div>
   </section>`
   );
 };
@@ -163,12 +151,5 @@ export default class FilmPopup extends AbstarctSmartComponent {
 
   recoveryListeners() {
 
-  }
-
-  getData() {
-    const form = this.getElement().querySelector(`form`);
-    const formData = new FormData(form);
-
-    return parseFormData(formData);
   }
 }
