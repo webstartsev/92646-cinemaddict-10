@@ -15,11 +15,12 @@ const Mode = {
 };
 
 export default class Movie {
-  constructor(container, onDataChange, onViewChange, movieModel) {
+  constructor(container, onDataChange, onViewChange, movieModel, api) {
     this._container = container;
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
     this._movieModel = movieModel;
+    this._api = api;
     this._commentsModel = new CommentsModel();
 
     this._film = null;
@@ -47,7 +48,10 @@ export default class Movie {
     const oldFilmComponent = this._filmComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
 
-    this._commentsModel.setComments(film.comments);
+    this._api.getComments(this._film.id)
+      .then((comments) => {
+        this._commentsModel.setComments(comments);
+      });
 
     this._prepeareFilm(this._film);
     this._prepearPopup(this._film);
@@ -120,16 +124,11 @@ export default class Movie {
       }));
     });
 
-
     if (film.isWatch) {
       const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
       this._userRatingComponent = new UserRatingComponent(film);
       render(popupMiddleElement, this._userRatingComponent);
     }
-
-    // Comment
-    const comments = this._commentsModel.getComments();
-    this._renderComments(comments);
   }
 
   _onSubmitForm(evt) {
@@ -211,6 +210,10 @@ export default class Movie {
     if (!this._filmPopupComponent._element) {
       this._prepearPopup(film);
     }
+
+    // Comment
+    const comments = this._commentsModel.getComments();
+    this._renderComments(comments);
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
