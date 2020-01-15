@@ -137,10 +137,6 @@ export default class FilmPopup extends AbstarctSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
-  setFormSumbitHandler(handler) {
-    handler();
-  }
-
   disabledForm() {
     this.getElement().querySelector(`form`).disabled = true;
   }
