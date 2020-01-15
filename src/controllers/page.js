@@ -76,7 +76,8 @@ export default class PageController {
           controller._updateComments();
         })
         .catch(() => {
-          const newCommentForm = this._commentsComponent.getElement().querySelector(`.film-details__new-comment`);
+          controller._commentsComponent.setErrorTextArea();
+          const newCommentForm = controller._commentsComponent.getElement().querySelector(`.film-details__new-comment`);
           controller.shake(newCommentForm);
         });
         break;
