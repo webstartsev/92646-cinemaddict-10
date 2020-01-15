@@ -1106,3 +1106,7 @@ button {
   border-color: #333;
   background: #e74c3c
 }
+
+.film-details__user-rating-input_error:checked + .film-details__user-rating-label {
+  background-color: #e74c3c;
+}
