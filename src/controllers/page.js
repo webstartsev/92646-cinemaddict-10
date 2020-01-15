@@ -65,14 +65,33 @@ export default class PageController {
     this._showedFilmControllers = [];
   }
 
-  _onDataChange(movieController, oldData, newData) {
-    if (newData !== null) {
-      this._api.updateMovie(oldData.id, newData)
+  _onDataChange(controller, oldData, newData, type = `movie`) {
+    switch (type) {
+      case `comment`:
+        this._api.addComment(oldData.id, newData)
         .then((movieModel) => {
-          this._movieModel.updateMovie(oldData.id, movieModel);
-          this._updateMovies(this._showingFilmsCount);
+          controller._commentsComponent.activateForm();
+          const commet = movieModel.comments.pop();
+          controller._commentsModel.addComment(commet);
+          controller._updateComments();
+        })
+        .catch(() => {
+          const newCommentForm = this._commentsComponent.getElement().querySelector(`.film-details__new-comment`);
+          controller.shake(newCommentForm);
         });
+        break;
+      case `movie`:
+      default:
+        if (newData !== null) {
+          this._api.updateMovie(oldData.id, newData)
+            .then((movieModel) => {
+              this._movieModel.updateMovie(oldData.id, movieModel);
+              this._updateMovies(this._showingFilmsCount);
+            });
+        }
+        break;
     }
+
   }
 
   _onViewChange() {
