@@ -145,6 +145,13 @@ export default class Movie {
     if (this._film.isWatch) {
       const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
       this._userRatingComponent = new UserRatingComponent(this._film);
+
+      this._userRatingComponent.setChangeRatingHandler((userRating) => {
+        const newMovie = MovieModel.clone(this._film);
+        newMovie.personalRating = parseInt(userRating, 10);
+
+        this._onDataChange(this, this._film, newMovie, `rating`);
+      });
       render(popupMiddleElement, this._userRatingComponent);
     }
   }

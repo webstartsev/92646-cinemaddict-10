@@ -81,6 +81,18 @@ export default class PageController {
           controller.shake(newCommentForm);
         });
         break;
+      case `rating`:
+        this._api.updateMovie(oldData.id, newData)
+          .then((movieModel) => {
+            controller._userRatingComponent.removeErrorInputs();
+            this._movieModel.updateMovie(oldData.id, movieModel);
+          })
+          .catch(() => {
+            controller._userRatingComponent.setErrorInput();
+            const userRatingFormElement = controller._userRatingComponent.getElement().querySelector(`.film-details__user-rating-score`);
+            controller.shake(userRatingFormElement);
+          });
+        break;
       case `movie`:
       default:
         if (newData !== null) {
