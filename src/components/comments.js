@@ -100,6 +100,10 @@ export default class Comments extends AbstractComponent {
     this.getElement().querySelector(`form`).disabled = false;
   }
 
+  setErrorTextArea() {
+    this.getElement().querySelector(`.film-details__comment-input`).classList.add(`film-details__comment-input_error`);
+  }
+
   getData() {
     const form = this.getElement().querySelector(`form`);
     const formData = new FormData(form);
