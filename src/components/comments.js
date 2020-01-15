@@ -1,5 +1,7 @@
+import he from "he";
 import AbstractComponent from './abstract-component.js';
 import {createElement} from "../utils/render.js";
+import {isSubmitPressed} from "../utils/utils.js";
 
 const Emoji = {
   WIDTH: `55`,
@@ -12,13 +14,24 @@ const emojiMarkup = (src) => {
   );
 };
 
+const parseFormData = (formData) => {
+  const date = new Date().toISOString();
+  const comment = he.encode(formData.get(`comment`));
+
+  return {
+    comment,
+    date,
+    emotion: formData.get(`comment-emoji`)
+  };
+};
+
 const createCommentsTemplate = () => {
   return (
     `<section class="film-details__comments-wrap">
     <ul class="film-details__comments-list">
     </ul>
 
-    <div class="film-details__new-comment">
+    <form action="" method="get" class="film-details__new-comment">
       <div for="add-emoji" class="film-details__add-emoji-label">
         <img src="./images/emoji/smile.png" width="55" height="55">
       </div>
@@ -43,7 +56,7 @@ const createCommentsTemplate = () => {
           <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
         </label>
       </div>
-    </div>
+    </form>
   </section>`
   );
 };
@@ -69,5 +82,32 @@ export default class Comments extends AbstractComponent {
 
     const img = emojiMarkup(src);
     emojiLabel.append(createElement(img));
+  }
+
+  setFormSumbitHandler(handler) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, (evt) => {
+      if (isSubmitPressed(evt)) {
+        handler();
+      }
+    });
+  }
+
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
+  }
+
+  setErrorTextArea() {
+    this.getElement().querySelector(`.film-details__comment-input`).classList.add(`film-details__comment-input_error`);
+  }
+
+  getData() {
+    const form = this.getElement().querySelector(`form`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
   }
 }

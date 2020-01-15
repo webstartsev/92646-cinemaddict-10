@@ -7,8 +7,8 @@ import CommentController from "../controllers/comment.js";
 import CommentsModel from "../models/comments.js";
 import MovieModel from "../models/movie.js";
 
+import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
-import {isSubmitPressed} from "../utils/utils.js";
 
 const Mode = {
   DEFAULT: `default`,
@@ -39,7 +39,7 @@ export default class Movie {
     this._closePopup = this._closePopup.bind(this);
     this._openPopup = this._openPopup.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
-    this._onSubmitForm = this._onSubmitForm.bind(this);
+    // this._onSubmitForm = this._onSubmitForm.bind(this);
 
     this._commentsModel.setCommentChangeHandler(this._onCommentChange);
   }
@@ -77,6 +77,14 @@ export default class Movie {
     if (isEscKey) {
       this._closePopup();
     }
+  }
+
+  shake(container) {
+    container.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      container.style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _prepeareFilm() {
@@ -137,41 +145,43 @@ export default class Movie {
     if (this._film.isWatch) {
       const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
       this._userRatingComponent = new UserRatingComponent(this._film);
-      render(popupMiddleElement, this._userRatingComponent);
-    }
-  }
 
-  _onSubmitForm(evt) {
-    if (isSubmitPressed(evt)) {
-      this._filmPopupComponent.setFormSumbitHandler(() => {
-        const data = this._filmPopupComponent.getData();
-        this._commentsModel.addComment(data);
+      this._userRatingComponent.setChangeRatingHandler((userRating) => {
+        const newMovie = MovieModel.clone(this._film);
+        newMovie.personalRating = parseInt(userRating, 10);
 
-        const comments = this._commentsModel.getComments();
-        this._film.comments = comments;
-        this._movieModel.updateMovie(this._film.id, this._film);
-
-        this._updateComments(comments);
+        this._onDataChange(this, this._film, newMovie, `rating`);
       });
+      render(popupMiddleElement, this._userRatingComponent);
     }
   }
 
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
-      commentController.destroy();
-      this._commentsModel.removeComment(oldData);
+      this._api.deleteComment(oldData.id)
+        .then(() => {
+          commentController.destroy();
+          this._commentsModel.removeComment(oldData);
 
-      const comments = this._commentsModel.getComments();
-      this._film.comments = comments;
-      this._movieModel.updateMovie(this._film.id, this._film);
+          const comments = this._commentsModel.getComments();
+          this._film.comments = comments;
+          this._movieModel.updateMovie(this._film.id, this._film);
+
+          this._updateComments();
+        });
     }
-
-    this._updateComments();
   }
 
   _renderComments(comments) {
     this._popupBottomElement = this._filmPopupComponent.getElement().querySelector(`.form-details__bottom-container`);
     this._commentsComponent = new CommentsComponent();
+
+    this._commentsComponent.setFormSumbitHandler(() => {
+      const data = this._commentsComponent.getData();
+      this._commentsComponent.disabledForm();
+
+      this._onDataChange(this, this._film, data, `comment`);
+    });
 
     this._commentsComponent.setClickEmojiHandler();
 
@@ -210,7 +220,6 @@ export default class Movie {
     remove(this._commentsComponent);
     remove(this._countCommentsComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
-    document.removeEventListener(`keydown`, this._onSubmitForm);
   }
 
   _openPopup(film) {
@@ -227,7 +236,6 @@ export default class Movie {
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
-    document.addEventListener(`keydown`, this._onSubmitForm);
   }
 
   setDefaultView() {

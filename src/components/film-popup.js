@@ -1,6 +1,4 @@
-import he from "he";
 import AbstarctSmartComponent from './abstract-smart-component.js';
-import {formatDate, randomDate} from "../utils/utils.js";
 
 const Description = {
   MIN: 1,
@@ -19,18 +17,6 @@ const createGenresMarkup = (genre) => {
   return (
     `<span class="film-details__genre">${genre}</span>`
   );
-};
-
-const parseFormData = (formData) => {
-  const date = formatDate(randomDate(new Date(2000, 0, 1), new Date()));
-  const comment = he.encode(formData.get(`comment`));
-
-  return {
-    id: String(Date.now() + Math.random()),
-    text: comment,
-    date,
-    emoji: `${formData.get(`comment-emoji`)}.png`
-  };
 };
 
 const createFilmPopupTemplate = (film) => {
@@ -114,11 +100,11 @@ const createFilmPopupTemplate = (film) => {
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
-      <div class="form-details__middle-container">
-      </div>
-      <div class="form-details__bottom-container">
-      </div>
     </form>
+    <div class="form-details__middle-container">
+    </div>
+    <div class="form-details__bottom-container">
+    </div>
   </section>`
   );
 };
@@ -151,18 +137,15 @@ export default class FilmPopup extends AbstarctSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
-  setFormSumbitHandler(handler) {
-    handler();
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
   }
 
   recoveryListeners() {
 
-  }
-
-  getData() {
-    const form = this.getElement().querySelector(`form`);
-    const formData = new FormData(form);
-
-    return parseFormData(formData);
   }
 }

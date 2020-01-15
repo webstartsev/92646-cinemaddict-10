@@ -35,9 +35,9 @@ const createUserRatingTemplate = (film) => {
 
           <p class="film-details__user-rating-feelings">How you feel it?</p>
 
-          <div class="film-details__user-rating-score">
+          <form action="" method="get" class="film-details__user-rating-score">
             ${ratingInputs}
-          </div>
+          </form>
         </section>
       </div>
     </section>`
@@ -49,8 +49,34 @@ export default class UserRating extends AbstractComponent {
     super();
 
     this._film = film;
+    this._errorInput = null;
   }
   getTemplate() {
     return createUserRatingTemplate(this._film);
+  }
+
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
+  }
+
+  setChangeRatingHandler(handler) {
+    const ratingBtns = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingBtns.forEach((button) => button.addEventListener(`change`, (evt) => {
+      this._errorInput = evt.target;
+      handler(evt.target.value);
+    }));
+  }
+
+  setErrorInput() {
+    this._errorInput.classList.add(`film-details__user-rating-input_error`);
+  }
+
+  removeErrorInputs() {
+    const ratingBtns = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingBtns.forEach((button) => button.classList.remove(`film-details__user-rating-input_error`));
   }
 }
