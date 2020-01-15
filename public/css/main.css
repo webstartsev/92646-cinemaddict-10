@@ -1101,3 +1101,8 @@ button {
 .shake {
   animation: shake 0.6s;
 }
+
+.film-details__comment-input_error{
+  border-color: #333;
+  background: #e74c3c
+}
