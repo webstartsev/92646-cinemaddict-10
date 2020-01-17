@@ -49,3 +49,13 @@ api.getMovies()
     const countFilmsComponent = new CountFilmsComponent(movies.length);
     render(document.querySelector(`.footer__statistics`), countFilmsComponent);
   });
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+
+    })
+    .catch(() => {
+
+    });
+});
