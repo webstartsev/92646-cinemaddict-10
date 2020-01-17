@@ -4,14 +4,14 @@ import PageController from './controllers/page.js';
 import FilterController from "./controllers/filter.js";
 import StatisticsController from "./controllers/statistics.js";
 import CountFilmsComponent from './components/count-films.js';
-import API from "./api.js";
+import Api from "./api/index.js";
 import {END_POINT, AUTHORIZATION} from "./const.js";
 
 import MovieModel from "./models/movies.js";
 import {render} from './utils/render.js';
 import {getRank} from './utils/statistics.js';
 
-const api = new API(END_POINT, AUTHORIZATION);
+const api = new Api(END_POINT, AUTHORIZATION);
 
 const mainElement = document.querySelector(`.main`);
 const headerElement = document.querySelector(`.header`);

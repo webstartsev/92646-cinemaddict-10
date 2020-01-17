@@ -1,4 +1,4 @@
-import Movie from "./models/movie.js";
+import Movie from "../models/movie.js";
 
 const Method = {
   GET: `GET`,
@@ -15,7 +15,7 @@ const checkStatus = (response) => {
   }
 };
 
-export default class API {
+export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
