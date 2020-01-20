@@ -66,6 +66,16 @@ window.addEventListener(`load`, () => {
 
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);
+
+  if (!apiWithProvider.getSynchronize()) {
+    apiWithProvider.sync()
+      .then(() => {
+
+      })
+      .catch(() => {
+
+      });
+  }
 });
 
 window.addEventListener(`offline`, () => {

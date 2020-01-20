@@ -123,6 +123,18 @@ export default class Provider {
     return this._isSynchronized;
   }
 
+  sync() {
+    if (this._isOnLine()) {
+      const store = this._store.getAll();
+      const storeMovies = Object.values(store.movies);
+      const storeComments = Object.values(store.comments);
+
+      return this._api.sync();
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
+  }
+
   _isOnLine() {
     return window.navigator.onLine;
   }
