@@ -44,10 +44,10 @@ export default class Provider {
   }
 
   getComments(movieId) {
-    const store = this._store.getAll();
     if (this._isOnLine()) {
       return this._api.getComments(movieId)
         .then((comments) => {
+          const store = this._store.getAll();
           const movieCommments = {[movieId]: comments};
           this._store.setItem(`comments`, Object.assign({}, store.comments, movieCommments));
 
@@ -55,6 +55,7 @@ export default class Provider {
         });
     }
 
+    const store = this._store.getAll();
     return Promise.resolve(store.comments[movieId]);
   }
 
@@ -80,18 +81,33 @@ export default class Provider {
   }
 
   deleteComment(id) {
-    console.log('id: ', id);
+    const store = this._store.getAll();
+    let indexComment = null;
+    let indexMovie = null;
+
+    for (const key in store.comments) {
+      if (store.comments[key]) {
+        indexMovie = key;
+        indexComment = store.comments[key].findIndex((comment) => comment.id === id);
+        if (indexComment !== -1) {
+          break;
+        }
+      }
+    }
+
+    if (indexComment === null) {
+      return Promise.reject();
+    }
+
     if (this._isOnLine()) {
       return this._api.deleteComment(id)
         .then(() => {
-          this._store.removeItem(id);
+          this._store.removeItem(`comments`, indexMovie, indexComment);
         });
     }
+    this._store.removeItem(`comments`, indexMovie, indexComment);
 
-    const store = this._store.getAll();
-
-    console.log(store.comments);
-
+    return Promise.resolve();
   }
 
   _isOnLine() {

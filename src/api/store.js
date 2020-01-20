@@ -23,10 +23,9 @@ export default class Store {
     );
   }
 
-  removeItem(key) {
+  removeItem(container, movie, key) {
     const store = this.getAll();
-
-    delete store[key];
+    delete store[container][movie][key];
 
     this._storage.setItem(
         this._storeKey,
