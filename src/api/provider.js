@@ -5,6 +5,7 @@ export default class Provider {
   constructor(api, store) {
     this._api = api;
     this._store = store;
+    this._isSynchronized = true;
   }
 
   updateMovie(id, movie) {
@@ -19,6 +20,7 @@ export default class Provider {
           return newMovie;
         });
     }
+    this._isSynchronized = false;
 
     const fakeUpdateMovie = Movie.parseMovie(Object.assign({}, movie.toRAW(), {id}));
     store.movies[id] = Object.assign({}, fakeUpdateMovie.toRAW(), {offline: true});
@@ -37,6 +39,8 @@ export default class Provider {
           return movies;
         });
     }
+    this._isSynchronized = false;
+
     const store = this._store.getAll();
     const movies = Object.values(store.movies);
 
@@ -54,6 +58,7 @@ export default class Provider {
           return comments;
         });
     }
+    this._isSynchronized = false;
 
     const store = this._store.getAll();
     return Promise.resolve(store.comments[movieId]);
@@ -71,6 +76,8 @@ export default class Provider {
           return newComment;
         });
     }
+    this._isSynchronized = false;
+
     const fakeNewCommentId = nanoid();
     const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, offline: true});
 
@@ -105,9 +112,15 @@ export default class Provider {
           this._store.removeItem(`comments`, indexMovie, indexComment);
         });
     }
+    this._isSynchronized = false;
+
     this._store.removeItem(`comments`, indexMovie, indexComment);
 
     return Promise.resolve();
+  }
+
+  getSynchronize() {
+    return this._isSynchronized;
   }
 
   _isOnLine() {
