@@ -156,11 +156,12 @@ export default class Movie {
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
       this._api.deleteComment(oldData.id)
-        .then(() => {
+        .then((movieModel) => {
           commentController.destroy();
 
-          this._movieModel.updateMovie(this._film.id, this._film);
-          this._updateComments(this._film.commentsFull);
+          this._movieModel.updateMovie(movieModel.id, movieModel);
+          this._updateComments(movieModel.commentsFull);
+
         });
     }
   }

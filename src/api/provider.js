@@ -88,34 +88,32 @@ export default class Provider {
 
   deleteComment(id) {
     const store = this._store.getAll();
-    let indexComment = null;
-    let indexMovie = null;
-
-    for (const key in store.comments) {
-      if (store.comments[key]) {
-        indexMovie = key;
-        indexComment = store.comments[key].findIndex((comment) => comment.id === id);
-        if (indexComment !== -1) {
-          break;
-        }
-      }
-    }
-
-    if (indexComment === null || indexMovie === null) {
-      return Promise.reject();
-    }
+    const updateMovie = Object.values(store).find(({commentsFull}) => commentsFull.some((comment) => comment.id === id));
+    const comments = updateMovie.comments;
+    const commentsFull = updateMovie.commentsFull;
+    const indexComment = commentsFull.findIndex((comment) => comment.id === id);
 
     if (this._isOnLine()) {
       return this._api.deleteComment(id)
         .then(() => {
-          this._store.removeItem(`comments`, indexMovie, indexComment);
+          updateMovie.comments = [...comments.slice(0, indexComment), ...comments.slice(indexComment + 1)];
+          updateMovie.commentsFull = [...commentsFull.slice(0, indexComment), ...commentsFull.slice(indexComment + 1)];
+          this._store.setItem(updateMovie.id, updateMovie);
+          return updateMovie;
         });
     }
     this._isSynchronized = false;
-    store.comments[indexMovie][indexComment] = Object.assign({}, store.comments[indexMovie][indexComment], {offline: true, type: `delete`});
-    this._store.setItem(`comments`, Object.assign({}, store.comments));
 
-    return Promise.resolve();
+    updateMovie.comments = [...comments.slice(0, indexComment), ...comments.slice(indexComment + 1)];
+    updateMovie.commentsFull = [...commentsFull.slice(0, indexComment), ...commentsFull.slice(indexComment + 1)];
+    updateMovie.deletedComments = updateMovie.deletedComments || [];
+    if (!comments[indexComment].offline) {
+      updateMovie.deletedComments.push(commentsFull[indexComment]);
+    }
+
+    this._store.setItem(updateMovie.id, Object.assign({}, updateMovie, {offline: true}));
+
+    return Promise.resolve(updateMovie);
   }
 
   getSynchronize() {
