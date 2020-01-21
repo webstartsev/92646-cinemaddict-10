@@ -70,4 +70,9 @@ export default class Movie {
   static clone(data) {
     return new Movie(data.toRAW());
   }
+
+  setComments(comments) {
+    this.comments = [...comments];
+    return this;
+  }
 }

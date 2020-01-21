@@ -49,11 +49,6 @@ export default class Movie {
     const oldFilmComponent = this._filmComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
 
-    this._api.getComments(this._film.id)
-      .then((comments) => {
-        this._commentsModel.setComments(comments);
-      });
-
     this._prepeareFilm();
     this._prepearPopup();
 

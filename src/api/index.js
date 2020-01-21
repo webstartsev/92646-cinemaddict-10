@@ -35,12 +35,14 @@ export default class Api {
   getMovies() {
     return this._load({url: `movies`})
       .then((response) => response.json())
-      .then(Movie.parseMovies);
+      .then(Movie.parseMovies)
+      .then((movies) => Promise.all(movies.map((movie) => this._getComments(movie))));
   }
 
-  getComments(movieId) {
-    return this._load({url: `comments/${movieId}`})
-      .then((response) => response.json());
+  _getComments(movie) {
+    return this._load({url: `comments/${movie.id}`})
+      .then((response) => response.json())
+      .then((comments) => movie.setComments(comments));
   }
 
   addComment(movieId, comment) {

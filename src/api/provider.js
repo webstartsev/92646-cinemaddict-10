@@ -8,6 +8,20 @@ export default class Provider {
     this._isSynchronized = true;
   }
 
+  getMovies() {
+    if (this._isOnLine()) {
+      return this._api.getMovies()
+        .then((movies) => {
+          movies.forEach((movie) => this._store.setItem(movie.id, movie.toRAW()));
+          return movies;
+        });
+    }
+    this._isSynchronized = false;
+
+    const storeMovies = Object.values(this._store.getAll());
+    return Promise.resolve(Movie.parseMovies(storeMovies));
+  }
+
   updateMovie(id, movie) {
     const store = this._store.getAll();
 
@@ -29,40 +43,23 @@ export default class Provider {
     return Promise.resolve(fakeUpdateMovie);
   }
 
-  getMovies() {
-    if (this._isOnLine()) {
-      return this._api.getMovies()
-        .then((movies) => {
-          const rawMovies = movies.map((movie) => movie.toRAW());
-          this._store.setItem(`movies`, Object.assign({}, rawMovies));
 
-          return movies;
-        });
-    }
-    this._isSynchronized = false;
+  // getComments(movie) {
+  //   if (this._isOnLine()) {
+  //     return this._api.getComments(movie)
+  //       .then((comments) => {
+  //         const store = this._store.getAll();
+  //         const movieCommments = {[movie.id]: comments};
+  //         this._store.setItem(`comments`, Object.assign({}, store.comments, movieCommments));
 
-    const store = this._store.getAll();
-    const movies = Object.values(store.movies);
+  //         return comments;
+  //       });
+  //   }
+  //   this._isSynchronized = false;
 
-    return Promise.resolve(Movie.parseMovies(movies));
-  }
-
-  getComments(movieId) {
-    if (this._isOnLine()) {
-      return this._api.getComments(movieId)
-        .then((comments) => {
-          const store = this._store.getAll();
-          const movieCommments = {[movieId]: comments};
-          this._store.setItem(`comments`, Object.assign({}, store.comments, movieCommments));
-
-          return comments;
-        });
-    }
-    this._isSynchronized = false;
-
-    const store = this._store.getAll();
-    return Promise.resolve(store.comments[movieId]);
-  }
+  //   const store = this._store.getAll();
+  //   return Promise.resolve(store.comments[movieId]);
+  // }
 
   addComment(movieId, comment) {
     const store = this._store.getAll();
