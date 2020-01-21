@@ -73,7 +73,7 @@ export default class Provider {
     const storeMovie = storeMovies[movieId];
 
     const fakeNewCommentId = nanoid();
-    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, author: DEFAULT_COMMENT_AUTHOR, offline: true, type: `add`});
+    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, movieId, author: DEFAULT_COMMENT_AUTHOR, offline: true});
 
     storeMovie.comments.push(fakeNewComment.id);
     storeMovie.commentsFull.push(fakeNewComment);
@@ -122,12 +122,10 @@ export default class Provider {
 
   sync() {
     if (this._isOnLine()) {
-      const store = this._store.getAll();
-      const storeMovies = store.movies;
-      const storeComments = store.comments;
+      const storeMovies = Object.values(this._store.getAll());
 
-      return this._syncComments(storeComments)
-        .then(() => this._syncFilms(storeMovies))
+      return this._syncComments(storeMovies)
+        .then(() => this._syncMovies(storeMovies))
         .then(() => {
           this._isSynchronized = true;
           return Promise.resolve();
@@ -138,34 +136,30 @@ export default class Provider {
     return Promise.reject(new Error(`Sync data failed`));
   }
 
-  _syncComments(storeComments) {
-    let commentsPromises = [];
-    for (const key in storeComments) {
-      if (storeComments[key]) {
-        commentsPromises = storeComments[key]
-          .filter((comment) => comment.offline)
-          .map((comment) => {
-            switch (comment.type) {
-              case `add`:
-                return this.addComment(key, comment);
-              case `delete`:
-              default:
-                return this.deleteComment(comment.id);
-            }
-          });
-      }
-    }
-
-    return Promise.all(commentsPromises);
+  _syncComments(storeMovies) {
+    return this._createOfflineComments(storeMovies).then(() => this._deleteOfflineComments(storeMovies));
   }
 
-  _syncFilms(storeMovies) {
-    const movies = Object.values(storeMovies);
-    return this._api.sync(movies)
-      .then((updateMovies) => {
-        const rawMovies = updateMovies.map((movie) => movie.toRAW());
-        this._store.setItem(`movies`, Object.assign({}, rawMovies));
-      });
+  _createOfflineComments(storeMovies) {
+    return Promise.all(storeMovies
+      .reduce((acc, movie) => [...acc, ...movie.commentsFull], [])
+      .filter((comment) => comment.offline)
+      .map((newComment) => {
+        this._api.addComment(newComment.movieId, newComment);
+      }));
+  }
+
+  _deleteOfflineComments(storeMovies) {
+    return Promise.all(storeMovies
+      .filter((movie) => movie.deletedComments)
+      .reduce((acc, movie) => [...acc, ...movie.deletedComments], [])
+      .map((deletedComment) => this._api.deleteComment(deletedComment.id)));
+  }
+
+  _syncMovies(storeMovies) {
+    return this._api.sync(storeMovies)
+      .then(() => this._api.getMovies())
+      .then((movies) => movies.forEach((movie) => this._store.setItem(movie.id, movie.toRAW())));
   }
 
   _isOnLine() {
