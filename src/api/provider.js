@@ -13,6 +13,7 @@ export default class Provider {
       return this._api.getMovies()
         .then((movies) => {
           movies.forEach((movie) => this._store.setItem(movie.id, movie.toRAW()));
+
           return movies;
         });
     }
@@ -22,25 +23,19 @@ export default class Provider {
     return Promise.resolve(Movie.parseMovies(storeMovies));
   }
 
-  updateMovie(id, movie) {
-    const store = this._store.getAll();
-
+  updateMovie(movie) {
     if (this._isOnLine()) {
-      return this._api.updateMovie(id, movie)
+      return this._api.updateMovie(movie)
         .then((newMovie) => {
-          const rawMovie = {[newMovie.id]: newMovie.toRAW()};
-          this._store.setItem(`movies`, Object.assign({}, store.movies, rawMovie));
+          this._store.setItem(newMovie.id, newMovie.toRAW());
 
           return newMovie;
         });
     }
     this._isSynchronized = false;
+    this._store.setItem(movie.id, Object.assign({}, movie.toRAW(), {offline: true}));
 
-    const fakeUpdateMovie = Movie.parseMovie(Object.assign({}, movie.toRAW(), {id}));
-    store.movies[id] = Object.assign({}, fakeUpdateMovie.toRAW(), {offline: true});
-    this._store.setItem(`movies`, store.movies);
-
-    return Promise.resolve(fakeUpdateMovie);
+    return Promise.resolve(Movie.parseMovie(movie.toRAW()));
   }
 
 

@@ -21,15 +21,16 @@ export default class Api {
     this._authorization = authorization;
   }
 
-  updateMovie(id, movie) {
+  updateMovie(movie) {
     return this._load({
-      url: `movies/${id}`,
+      url: `movies/${movie.id}`,
       method: Method.PUT,
       body: JSON.stringify(movie.toRAW()),
       headers: new Headers({'Content-Type': `application/json`})
     })
       .then((response) => response.json())
-      .then(Movie.parseMovie);
+      .then(Movie.parseMovie)
+      .then((movieModel) => this._getComments(movieModel));
   }
 
   getMovies() {
