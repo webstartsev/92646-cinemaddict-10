@@ -1,4 +1,4 @@
-import Movie from "./models/movie.js";
+import Movie from "../models/movie.js";
 
 const Method = {
   GET: `GET`,
@@ -15,32 +15,35 @@ const checkStatus = (response) => {
   }
 };
 
-export default class API {
+export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
 
-  updateMovie(id, movie) {
+  updateMovie(movie) {
     return this._load({
-      url: `movies/${id}`,
+      url: `movies/${movie.id}`,
       method: Method.PUT,
       body: JSON.stringify(movie.toRAW()),
       headers: new Headers({'Content-Type': `application/json`})
     })
       .then((response) => response.json())
-      .then(Movie.parseMovie);
+      .then(Movie.parseMovie)
+      .then((movieModel) => this._getComments(movieModel));
   }
 
   getMovies() {
     return this._load({url: `movies`})
       .then((response) => response.json())
-      .then(Movie.parseMovies);
+      .then(Movie.parseMovies)
+      .then((movies) => Promise.all(movies.map((movie) => this._getComments(movie))));
   }
 
-  getComments(movieId) {
-    return this._load({url: `comments/${movieId}`})
-      .then((response) => response.json());
+  _getComments(movie) {
+    return this._load({url: `comments/${movie.id}`})
+      .then((response) => response.json())
+      .then((comments) => movie.setComments(comments));
   }
 
   addComment(movieId, comment) {
@@ -50,7 +53,12 @@ export default class API {
       body: JSON.stringify(comment),
       headers: new Headers({'Content-Type': `application/json`})
     })
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .then(({movie, comments}) => {
+        const movieModel = Movie.parseMovie(movie);
+        movieModel.setComments(comments);
+        return movieModel;
+      });
   }
 
   deleteComment(id) {
@@ -58,6 +66,16 @@ export default class API {
       url: `comments/${id}`,
       method: Method.DELETE
     });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `movies/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+    .then((response) => response.json());
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

@@ -49,11 +49,6 @@ export default class Movie {
     const oldFilmComponent = this._filmComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
 
-    this._api.getComments(this._film.id)
-      .then((comments) => {
-        this._commentsModel.setComments(comments);
-      });
-
     this._prepeareFilm();
     this._prepearPopup();
 
@@ -154,20 +149,19 @@ export default class Movie {
       });
       render(popupMiddleElement, this._userRatingComponent);
     }
+
+    this._renderComments(this._film.commentsFull);
   }
 
   _onCommentChange(commentController, oldData, newData) {
     if (newData === null) {
       this._api.deleteComment(oldData.id)
-        .then(() => {
+        .then((movieModel) => {
           commentController.destroy();
-          this._commentsModel.removeComment(oldData);
 
-          const comments = this._commentsModel.getComments();
-          this._film.comments = comments;
-          this._movieModel.updateMovie(this._film.id, this._film);
+          this._movieModel.updateMovie(movieModel.id, movieModel);
+          this._updateComments(movieModel.commentsFull);
 
-          this._updateComments();
         });
     }
   }
@@ -208,8 +202,7 @@ export default class Movie {
     this._showedCommentControllers = [];
   }
 
-  _updateComments() {
-    const comments = this._commentsModel.getComments();
+  _updateComments(comments) {
     this._removeComents();
     this._renderComments(comments);
   }
@@ -229,10 +222,6 @@ export default class Movie {
     if (!this._filmPopupComponent._element) {
       this._prepearPopup(film);
     }
-
-    // Comment
-    const comments = this._commentsModel.getComments();
-    this._renderComments(comments);
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);

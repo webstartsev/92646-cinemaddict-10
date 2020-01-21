@@ -26,12 +26,14 @@ export default class Movie {
     this.isWatch = data[`user_details`][`already_watched`] ? data[`user_details`][`already_watched`] : false;
     this.isFavorite = data[`user_details`][`favorite`] ? data[`user_details`][`favorite`] : false;
     this.comments = data[`comments`] ? data[`comments`] : [];
+    this.commentsFull = [];
   }
 
   toRAW() {
     return {
       'id': this.id,
       'comments': [...this.comments],
+      'commentsFull': [...this.commentsFull],
       'film_info': {
         'title': this.title,
         'alternative_title': this.alternativeTitle,
@@ -69,5 +71,10 @@ export default class Movie {
 
   static clone(data) {
     return new Movie(data.toRAW());
+  }
+
+  setComments(comments) {
+    this.commentsFull = [...comments];
+    return this;
   }
 }

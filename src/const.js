@@ -3,6 +3,10 @@ export const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 
 export const SHAKE_ANIMATION_TIMEOUT = 600;
 
+export const STORE_PREFIX = `cinemaddict-localstorage`;
+export const STORE_VER = `v1`;
+export const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
+
 export const SortType = {
   DEFAULT: `default`,
   DATE: `date`,
