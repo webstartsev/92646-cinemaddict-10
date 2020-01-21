@@ -79,7 +79,7 @@ export default class Provider {
     this._isSynchronized = false;
 
     const fakeNewCommentId = nanoid();
-    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, offline: true});
+    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, offline: true, type: `add`});
 
     const comments = [...store.comments[movieId], fakeNewComment];
     this._store.setItem(`comments`, Object.assign({}, store.comments, {[movieId]: comments}));
@@ -102,7 +102,7 @@ export default class Provider {
       }
     }
 
-    if (indexComment === null) {
+    if (indexComment === null || indexMovie === null) {
       return Promise.reject();
     }
 
@@ -113,8 +113,8 @@ export default class Provider {
         });
     }
     this._isSynchronized = false;
-
-    this._store.removeItem(`comments`, indexMovie, indexComment);
+    store.comments[indexMovie][indexComment] = Object.assign({}, store.comments[indexMovie][indexComment], {offline: true, type: `delete`});
+    this._store.setItem(`comments`, Object.assign({}, store.comments));
 
     return Promise.resolve();
   }
@@ -124,6 +124,7 @@ export default class Provider {
   }
 
   sync() {
+
     if (this._isOnLine()) {
       const store = this._store.getAll();
       const storeMovies = Object.values(store.movies);
