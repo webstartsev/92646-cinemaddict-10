@@ -82,7 +82,7 @@ export default class PageController {
         });
         break;
       case `rating`:
-        this._api.updateMovie(oldData.id, newData)
+        this._api.updateMovie(newData)
           .then((movieModel) => {
             controller._userRatingComponent.removeErrorInputs();
             this._movieModel.updateMovie(oldData.id, movieModel);
@@ -96,7 +96,7 @@ export default class PageController {
       case `movie`:
       default:
         if (newData !== null) {
-          this._api.updateMovie(oldData.id, newData)
+          this._api.updateMovie(newData)
             .then((movieModel) => {
               this._movieModel.updateMovie(oldData.id, movieModel);
               this._updateMovies(this._showingFilmsCount);

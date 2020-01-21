@@ -150,7 +150,7 @@ export default class Movie {
       render(popupMiddleElement, this._userRatingComponent);
     }
 
-    this._renderComments(this._film.comments);
+    this._renderComments(this._film.commentsFull);
   }
 
   _onCommentChange(commentController, oldData, newData) {
@@ -160,7 +160,7 @@ export default class Movie {
           commentController.destroy();
 
           this._movieModel.updateMovie(this._film.id, this._film);
-          this._updateComments(this._film.comments);
+          this._updateComments(this._film.commentsFull);
         });
     }
   }
