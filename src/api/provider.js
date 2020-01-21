@@ -1,6 +1,8 @@
 import Movie from '../models/movie.js';
 import nanoid from 'nanoid';
 
+const DEFAULT_COMMENT_AUTHOR = `Sergey Startsev`;
+
 export default class Provider {
   constructor(api, store) {
     this._api = api;
@@ -57,26 +59,31 @@ export default class Provider {
   // }
 
   addComment(movieId, comment) {
-    const store = this._store.getAll();
-
     if (this._isOnLine()) {
       return this._api.addComment(movieId, comment)
-        .then((newComment) => {
-          store.comments[movieId] = Object.assign({}, newComment.comments);
-          this._store.setItem(`comments`, store.comments);
+        .then((updatedMovie) => {
+          this._store.setItem(updatedMovie.id, updatedMovie.toRAW());
 
-          return newComment;
+          return updatedMovie;
         });
     }
     this._isSynchronized = false;
 
+    const storeMovies = this._store.getAll();
+    const storeMovie = storeMovies[movieId];
+
     const fakeNewCommentId = nanoid();
-    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, offline: true, type: `add`});
+    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, author: DEFAULT_COMMENT_AUTHOR, offline: true, type: `add`});
 
-    const comments = [...store.comments[movieId], fakeNewComment];
-    this._store.setItem(`comments`, Object.assign({}, store.comments, {[movieId]: comments}));
+    storeMovie.comments.push(fakeNewComment.id);
+    storeMovie.commentsFull.push(fakeNewComment);
 
-    return Promise.resolve({movie: store.movies[movieId], comments});
+    const movie = Movie.parseMovie(storeMovie);
+    movie.setComments(storeMovie.commentsFull);
+
+    this._store.setItem(movieId, Object.assign({}, movie, {offline: true}));
+
+    return Promise.resolve(movie);
   }
 
   deleteComment(id) {

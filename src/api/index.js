@@ -53,7 +53,12 @@ export default class Api {
       body: JSON.stringify(comment),
       headers: new Headers({'Content-Type': `application/json`})
     })
-      .then((response) => response.json());
+      .then((response) => response.json())
+      .then(({movie, comments}) => {
+        const movieModel = Movie.parseMovie(movie);
+        movieModel.setComments(comments);
+        return movieModel;
+      });
   }
 
   deleteComment(id) {

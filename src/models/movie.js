@@ -33,6 +33,7 @@ export default class Movie {
     return {
       'id': this.id,
       'comments': [...this.comments],
+      'commentsFull': [...this.commentsFull],
       'film_info': {
         'title': this.title,
         'alternative_title': this.alternativeTitle,
