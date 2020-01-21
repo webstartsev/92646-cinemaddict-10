@@ -149,6 +149,8 @@ export default class Movie {
       });
       render(popupMiddleElement, this._userRatingComponent);
     }
+
+    this._renderComments(this._film.comments);
   }
 
   _onCommentChange(commentController, oldData, newData) {
@@ -156,13 +158,9 @@ export default class Movie {
       this._api.deleteComment(oldData.id)
         .then(() => {
           commentController.destroy();
-          this._commentsModel.removeComment(oldData);
 
-          const comments = this._commentsModel.getComments();
-          this._film.comments = comments;
           this._movieModel.updateMovie(this._film.id, this._film);
-
-          this._updateComments();
+          this._updateComments(this._film.comments);
         });
     }
   }
@@ -203,8 +201,7 @@ export default class Movie {
     this._showedCommentControllers = [];
   }
 
-  _updateComments() {
-    const comments = this._commentsModel.getComments();
+  _updateComments(comments) {
     this._removeComents();
     this._renderComments(comments);
   }
@@ -224,10 +221,6 @@ export default class Movie {
     if (!this._filmPopupComponent._element) {
       this._prepearPopup(film);
     }
-
-    // Comment
-    const comments = this._commentsModel.getComments();
-    this._renderComments(comments);
 
     render(document.querySelector(`body`), this._filmPopupComponent);
     document.addEventListener(`keydown`, this._onEscKeyDown);
