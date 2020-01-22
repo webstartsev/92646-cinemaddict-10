@@ -128,15 +128,24 @@ export default class FilmPopup extends AbstarctSmartComponent {
   }
 
   setWatchlistClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setWatchedClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   disabledForm() {
