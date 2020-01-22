@@ -3,7 +3,7 @@ import moment from 'moment';
 import {StatisticType, StatisticPeriod} from '../const.js';
 
 const Rank = {
-  NONE: `-`,
+  NONE: ``,
   NOVICE: `novice`,
   FAN: `fan`,
   MOVIE_BUFF: `movie buff`
