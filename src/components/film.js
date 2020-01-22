@@ -1,4 +1,6 @@
 import AbstractComponent from './abstract-component.js';
+import debounce from 'lodash/debounce';
+import {DEBOUNCE_TIMEOUT} from '../const.js';
 
 const Description = {
   MIN: 1,
@@ -51,15 +53,15 @@ export default class Film extends AbstractComponent {
   }
 
   setWatchlistClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setWatchedClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 }
 

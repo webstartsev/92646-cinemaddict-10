@@ -1,4 +1,6 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
+import debounce from 'lodash/debounce';
+import {DEBOUNCE_TIMEOUT} from '../const.js';
 
 const Description = {
   MIN: 1,
@@ -126,15 +128,15 @@ export default class FilmPopup extends AbstarctSmartComponent {
   }
 
   setWatchlistClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setWatchedClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
   }
 
   disabledForm() {
