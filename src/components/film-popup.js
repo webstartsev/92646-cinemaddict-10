@@ -58,14 +58,14 @@ const createFilmPopupTemplate = (film) => {
                 <td class="film-details__term">Director</td>
                 <td class="film-details__cell">${director}</td>
               </tr>
-              <tr class="film-details__row">
+              ${writers.length ? `<tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
                 <td class="film-details__cell">${writers.join(`, `)}</td>
-              </tr>
-              <tr class="film-details__row">
+              </tr>` : ``}
+              ${actors.length ? `<tr class="film-details__row">
                 <td class="film-details__term">Actors</td>
                 <td class="film-details__cell">${actors.join(`, `)}</td>
-              </tr>
+              </tr>` : ``}
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
                 <td class="film-details__cell">${releaseDate}</td>
@@ -82,7 +82,7 @@ const createFilmPopupTemplate = (film) => {
                 <td class="film-details__term">${genres.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
                   ${genresMarkup}
-              </tr>` : ``};
+              </tr>` : ``}
             </table>
 
             <p class="film-details__film-description">
