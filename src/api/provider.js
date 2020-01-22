@@ -40,24 +40,6 @@ export default class Provider {
     return Promise.resolve(Movie.parseMovie(movie.toRAW()));
   }
 
-
-  // getComments(movie) {
-  //   if (this._isOnLine()) {
-  //     return this._api.getComments(movie)
-  //       .then((comments) => {
-  //         const store = this._store.getAll();
-  //         const movieCommments = {[movie.id]: comments};
-  //         this._store.setItem(`comments`, Object.assign({}, store.comments, movieCommments));
-
-  //         return comments;
-  //       });
-  //   }
-  //   this._isSynchronized = false;
-
-  //   const store = this._store.getAll();
-  //   return Promise.resolve(store.comments[movieId]);
-  // }
-
   addComment(movieId, comment) {
     if (this._isOnLine()) {
       return this._api.addComment(movieId, comment)
