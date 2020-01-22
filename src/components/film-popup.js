@@ -8,7 +8,7 @@ const Description = {
 };
 
 const checkDescriptionLength = (description) => {
-  if (description.length > 139) {
+  if (description.length >= Description.MAX) {
     return `${description.slice(Description.MIN, Description.MAX)}...`;
   }
 
