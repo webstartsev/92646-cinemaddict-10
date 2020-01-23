@@ -39,9 +39,12 @@ export default class Movie {
     this._closePopup = this._closePopup.bind(this);
     this._openPopup = this._openPopup.bind(this);
     this._onCommentChange = this._onCommentChange.bind(this);
-    // this._onSubmitForm = this._onSubmitForm.bind(this);
 
     this._commentsModel.setCommentChangeHandler(this._onCommentChange);
+  }
+
+  getMovie() {
+    return this._film;
   }
 
   render(film) {
@@ -131,20 +134,32 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
 
+    this._renderUserRating();
+
+    this._renderComments(this._film.commentsFull);
+  }
+
+  _renderUserRating() {
+    const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
+    this._userRatingComponent = new UserRatingComponent(this._film);
+
+    this._userRatingComponent.setChangeRatingHandler((userRating) => {
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.personalRating = parseInt(userRating, 10);
+
+      this._onDataChange(this, this._film, newMovie, `rating`);
+    });
+    this._userRatingComponent.removeUserRationgHandler(() => {
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.personalRating = 0;
+
+      this._onDataChange(this, this._film, newMovie, `rating`);
+    });
+
     if (this._film.isWatch) {
-      const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
-      this._userRatingComponent = new UserRatingComponent(this._film);
-
-      this._userRatingComponent.setChangeRatingHandler((userRating) => {
-        const newMovie = MovieModel.clone(this._film);
-        newMovie.personalRating = parseInt(userRating, 10);
-
-        this._onDataChange(this, this._film, newMovie, `rating`);
-      });
       render(popupMiddleElement, this._userRatingComponent);
     }
 
-    this._renderComments(this._film.commentsFull);
   }
 
   _onCommentChange(commentController, oldData, newData) {
