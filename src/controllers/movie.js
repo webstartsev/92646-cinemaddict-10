@@ -99,6 +99,7 @@ export default class Movie {
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;
+      newMovie.personalRating = 0;
 
       this._onDataChange(this, this._film, newMovie);
     });
@@ -124,6 +125,7 @@ export default class Movie {
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;
+      newMovie.personalRating = 0;
 
       this._onDataChange(this, this._film, newMovie);
     });
