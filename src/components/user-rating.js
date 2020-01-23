@@ -71,6 +71,10 @@ export default class UserRating extends AbstractComponent {
     }));
   }
 
+  removeUserRationgHandler(handler) {
+    this.getElement().querySelector(`.film-details__watched-reset`).addEventListener(`click`, handler);
+  }
+
   setErrorInput() {
     this._errorInput.classList.add(`film-details__user-rating-input_error`);
   }
