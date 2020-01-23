@@ -69,6 +69,14 @@ export default class UserRating extends AbstractComponent {
     });
   }
 
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
+  }
+
   setChangeRatingHandler(handler) {
     const ratingBtns = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
     ratingBtns.forEach((button) => button.addEventListener(`change`, (evt) => {

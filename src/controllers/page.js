@@ -83,6 +83,7 @@ export default class PageController {
       case `rating`:
         this._api.updateMovie(newData)
           .then((movieModel) => {
+            controller._userRatingComponent.activateForm();
             controller._userRatingComponent.removeErrorInputs();
             this._movieModel.updateMovie(oldData.id, movieModel);
             this._renderFilmControllers(movieModel);

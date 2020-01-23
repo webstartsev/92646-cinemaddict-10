@@ -147,6 +147,7 @@ export default class Movie {
     this._userRatingComponent = new UserRatingComponent(this._film);
 
     this._userRatingComponent.setChangeRatingHandler((userRating) => {
+      this._userRatingComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.personalRating = parseInt(userRating, 10);
 
