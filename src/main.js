@@ -25,14 +25,14 @@ const movieModel = new MovieModel();
 const filterController = new FilterController(mainElement, movieModel);
 const pageController = new PageController(mainElement, movieModel, apiWithProvider);
 const statisticsController = new StatisticsController(mainElement, movieModel);
-statisticsController.render();
-statisticsController.hide();
 
 apiWithProvider.getMovies()
   .then((movies) => {
     movieModel.setMovies(movies);
     filterController.render();
     pageController.render();
+    statisticsController.render();
+    statisticsController.hide();
 
     filterController.setOnChange((menuItem) => {
       switch (menuItem) {
