@@ -122,7 +122,7 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setWatchedClickHandler(() => {
-      this._userRatingComponent.disabledForm();
+      this._userRatingComponent.disabledInputs();
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;

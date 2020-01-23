@@ -98,7 +98,7 @@ export default class PageController {
         if (newData !== null) {
           this._api.updateMovie(newData)
             .then((movieModel) => {
-              controller._userRatingComponent.activateForm();
+              controller._userRatingComponent.activateInputs();
               this._movieModel.updateMovie(oldData.id, movieModel);
               this._renderFilmControllers(movieModel);
             });
