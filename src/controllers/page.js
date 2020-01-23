@@ -71,7 +71,8 @@ export default class PageController {
         this._api.addComment(oldData.id, newData)
           .then((movieModel) => {
             controller._commentsComponent.activateForm();
-            controller._updateComments(movieModel.commentsFull);
+            this._movieModel.updateMovie(oldData.id, movieModel);
+            this._renderFilmControllers(movieModel);
           })
           .catch(() => {
             controller._commentsComponent.setErrorTextArea();
@@ -84,6 +85,7 @@ export default class PageController {
           .then((movieModel) => {
             controller._userRatingComponent.removeErrorInputs();
             this._movieModel.updateMovie(oldData.id, movieModel);
+            this._renderFilmControllers(movieModel);
           })
           .catch(() => {
             controller._userRatingComponent.setErrorInput();
@@ -97,13 +99,19 @@ export default class PageController {
           this._api.updateMovie(newData)
             .then((movieModel) => {
               this._movieModel.updateMovie(oldData.id, movieModel);
-              this._updateMovies(this._showingFilmsCount);
+              this._renderFilmControllers(movieModel);
             });
         }
         break;
     }
-
   }
+
+  _renderFilmControllers(movie) {
+    this._showedFilmControllers
+      .filter((controller) => controller.getMovie().id === movie.id)
+      .forEach((controller) => controller.render(movie));
+  }
+
 
   _onViewChange() {
     this._showedFilmControllers.forEach((filmController) => filmController.setDefaultView());
