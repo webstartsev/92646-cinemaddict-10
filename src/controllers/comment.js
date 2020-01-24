@@ -26,6 +26,7 @@ export default class CommentController {
 
     this._commentComponent.setDeleteClickHandler((evt) => {
       evt.preventDefault();
+      this._commentComponent.setDeteleText(`Deleting...`);
       this._onCommentChange(this, comment, null);
     });
   }
