@@ -13,6 +13,13 @@ const FILM_EXTRA_COUNT = 2;
 const SHOWING_FILMS_COUNT_ON_START = 5;
 const SHOWING_FILMS_COUNT_BY_BUTTON = 5;
 
+const Title = {
+  DEFAULT: `All movies. Upcoming`,
+  NO_DATA: `There are no movies in our database`,
+  NO_FILMS: `No films`,
+  LOADING: `Loading…`
+};
+
 export default class PageController {
   constructor(container, movieModel, api) {
     this._container = container;
@@ -36,8 +43,10 @@ export default class PageController {
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onShowMoreBtnClick = this._onShowMoreBtnClick.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this.render = this.render.bind(this);
 
     this._movieModel.setFilterChangeHandler(this._onFilterChange);
+    this._movieModel.setDataChangeHandler(this.render);
     this._sortComponent.setClickSortHandler(this._onSortTypeChange);
   }
 
@@ -48,10 +57,17 @@ export default class PageController {
   _updateMovies(count) {
     const movies = this._movieModel.getMovies().slice(0, count);
     this._showingFilmsCount = SHOWING_FILMS_COUNT_ON_START;
+    this._filmsComponent.setDefaultTitle();
 
     this._removeMovies();
     remove(this._filmsTopComponent);
     remove(this._filmsMostComponent);
+
+    if (movies.length === 0) {
+      this._filmsComponent.setTitle(Title.NO_FILMS);
+      remove(this._showMoreBtnComponent);
+      return;
+    }
 
     this._renderFilms(this._filmsListContainer, movies);
     this._renderTopList();
@@ -157,15 +173,23 @@ export default class PageController {
     }
   }
 
-  render() {
+  render(isLoadingData = false) {
     this._films = this._movieModel.getMovies();
-    if (this._films.length === 0) {
-      render(this._container, this._noFilmsComponent);
-      return;
-    }
 
     render(this._container, this._sortComponent);
     render(this._container, this._filmsComponent);
+
+    if (isLoadingData) {
+      this._filmsComponent.setTitle(Title.LOADING);
+      return;
+    }
+
+    if (this._films.length === 0) {
+      this._filmsComponent.setTitle(Title.NO_DATA);
+      return;
+    }
+
+    this._filmsComponent.setDefaultTitle();
     this._filmsElement = this._filmsComponent.getElement();
     this._filmsListContainer = this._filmsElement.querySelector(`.films-list__container`);
 
