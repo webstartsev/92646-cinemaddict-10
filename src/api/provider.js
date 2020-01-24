@@ -81,7 +81,7 @@ export default class Provider {
           updateMovie.comments = [...comments.slice(0, indexComment), ...comments.slice(indexComment + 1)];
           updateMovie.commentsFull = [...commentsFull.slice(0, indexComment), ...commentsFull.slice(indexComment + 1)];
           this._store.setItem(updateMovie.id, updateMovie);
-          return updateMovie;
+          return Movie.parseMovie(updateMovie);
         });
     }
     this._isSynchronized = false;
