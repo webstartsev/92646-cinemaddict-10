@@ -23,7 +23,23 @@ const headerElement = document.querySelector(`.header`);
 const movieModel = new MovieModel();
 
 const filterController = new FilterController(mainElement, movieModel);
+filterController.render();
+filterController.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.STATS:
+      statisticsController.show();
+      pageController.hide();
+      break;
+    default:
+      statisticsController.hide();
+      pageController.show();
+      break;
+  }
+});
+
 const pageController = new PageController(mainElement, movieModel, apiWithProvider);
+pageController.render(true);
+
 const statisticsController = new StatisticsController(mainElement, movieModel);
 statisticsController.render();
 statisticsController.hide();
@@ -31,21 +47,6 @@ statisticsController.hide();
 apiWithProvider.getMovies()
   .then((movies) => {
     movieModel.setMovies(movies);
-    filterController.render();
-    pageController.render();
-
-    filterController.setOnChange((menuItem) => {
-      switch (menuItem) {
-        case MenuItem.STATS:
-          statisticsController.show();
-          pageController.hide();
-          break;
-        default:
-          statisticsController.hide();
-          pageController.show();
-          break;
-      }
-    });
 
     const rank = getRank(movies);
     render(headerElement, new ProfileComponent(rank));

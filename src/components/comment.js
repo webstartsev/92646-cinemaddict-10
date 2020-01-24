@@ -1,7 +1,9 @@
-import AbstractComponent from './abstract-component.js';
+import AbstarctSmartComponent from './abstract-smart-component.js';
 import {formatDate} from "../utils/comment.js";
 
-const createCommentsTemplate = (commet) => {
+const DEFAULT_DELETE = `Delete`;
+
+const createCommentsTemplate = (commet, deleteText) => {
   const {comment, author, emotion} = commet;
   const date = formatDate(commet.date);
 
@@ -15,26 +17,35 @@ const createCommentsTemplate = (commet) => {
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
         <span class="film-details__comment-day">${date}</span>
-        <button class="film-details__comment-delete">Delete</button>
+        <button class="film-details__comment-delete">${deleteText}</button>
       </p>
     </div>
   </li>`
   );
 };
 
-export default class Comments extends AbstractComponent {
+export default class Comments extends AbstarctSmartComponent {
   constructor(commets) {
     super();
-
+    this._deleteButtonText = DEFAULT_DELETE;
     this._commets = commets;
   }
 
   getTemplate() {
-    return createCommentsTemplate(this._commets);
+    return createCommentsTemplate(this._commets, this._deleteButtonText);
   }
 
   setDeleteClickHandler(handler) {
     const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
     deleteButtons.forEach((button) => button.addEventListener(`click`, handler));
+  }
+
+  setDeteleText(text) {
+    this._deleteButtonText = text;
+    this.rerender();
+  }
+
+  recoveryListeners() {
+
   }
 }

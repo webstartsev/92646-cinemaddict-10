@@ -40,24 +40,6 @@ export default class Provider {
     return Promise.resolve(Movie.parseMovie(movie.toRAW()));
   }
 
-
-  // getComments(movie) {
-  //   if (this._isOnLine()) {
-  //     return this._api.getComments(movie)
-  //       .then((comments) => {
-  //         const store = this._store.getAll();
-  //         const movieCommments = {[movie.id]: comments};
-  //         this._store.setItem(`comments`, Object.assign({}, store.comments, movieCommments));
-
-  //         return comments;
-  //       });
-  //   }
-  //   this._isSynchronized = false;
-
-  //   const store = this._store.getAll();
-  //   return Promise.resolve(store.comments[movieId]);
-  // }
-
   addComment(movieId, comment) {
     if (this._isOnLine()) {
       return this._api.addComment(movieId, comment)
@@ -99,7 +81,7 @@ export default class Provider {
           updateMovie.comments = [...comments.slice(0, indexComment), ...comments.slice(indexComment + 1)];
           updateMovie.commentsFull = [...commentsFull.slice(0, indexComment), ...commentsFull.slice(indexComment + 1)];
           this._store.setItem(updateMovie.id, updateMovie);
-          return updateMovie;
+          return Movie.parseMovie(updateMovie);
         });
     }
     this._isSynchronized = false;

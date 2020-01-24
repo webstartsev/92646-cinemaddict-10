@@ -55,6 +55,20 @@ export default class UserRating extends AbstractComponent {
     return createUserRatingTemplate(this._film);
   }
 
+  disabledInputs() {
+    const ratingBtns = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingBtns.forEach((button) => {
+      button.disabled = true;
+    });
+  }
+
+  activateInputs() {
+    const ratingBtns = this.getElement().querySelectorAll(`.film-details__user-rating-input`);
+    ratingBtns.forEach((button) => {
+      button.disabled = false;
+    });
+  }
+
   disabledForm() {
     this.getElement().querySelector(`form`).disabled = true;
   }
@@ -69,6 +83,10 @@ export default class UserRating extends AbstractComponent {
       this._errorInput = evt.target;
       handler(evt.target.value);
     }));
+  }
+
+  removeUserRationgHandler(handler) {
+    this.getElement().querySelector(`.film-details__watched-reset`).addEventListener(`click`, handler);
   }
 
   setErrorInput() {

@@ -1,4 +1,6 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
+import debounce from 'lodash/debounce';
+import {DEBOUNCE_TIMEOUT} from '../const.js';
 
 const Description = {
   MIN: 1,
@@ -6,7 +8,7 @@ const Description = {
 };
 
 const checkDescriptionLength = (description) => {
-  if (description.length > 139) {
+  if (description.length >= Description.MAX) {
     return `${description.slice(Description.MIN, Description.MAX)}...`;
   }
 
@@ -56,14 +58,14 @@ const createFilmPopupTemplate = (film) => {
                 <td class="film-details__term">Director</td>
                 <td class="film-details__cell">${director}</td>
               </tr>
-              <tr class="film-details__row">
+              ${writers.length ? `<tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
                 <td class="film-details__cell">${writers.join(`, `)}</td>
-              </tr>
-              <tr class="film-details__row">
+              </tr>` : ``}
+              ${actors.length ? `<tr class="film-details__row">
                 <td class="film-details__term">Actors</td>
                 <td class="film-details__cell">${actors.join(`, `)}</td>
-              </tr>
+              </tr>` : ``}
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
                 <td class="film-details__cell">${releaseDate}</td>
@@ -80,7 +82,7 @@ const createFilmPopupTemplate = (film) => {
                 <td class="film-details__term">${genres.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
                   ${genresMarkup}
-              </tr>` : ``};
+              </tr>` : ``}
             </table>
 
             <p class="film-details__film-description">
@@ -126,15 +128,24 @@ export default class FilmPopup extends AbstarctSmartComponent {
   }
 
   setWatchlistClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setWatchedClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   disabledForm() {

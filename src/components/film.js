@@ -1,4 +1,6 @@
 import AbstractComponent from './abstract-component.js';
+import debounce from 'lodash/debounce';
+import {DEBOUNCE_TIMEOUT} from '../const.js';
 
 const Description = {
   MIN: 1,
@@ -15,7 +17,7 @@ const createFilmTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${year}</span>
         <span class="film-card__duration">${duration}</span>
-        <span class="film-card__genre">${genres[0] ? genres[0] : ``}</span>
+        ${genres.length ? `<span class="film-card__genre">${genres[0]}</span>` : ``}
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${description.slice(Description.MIN, Description.MAX)}...</p>
@@ -51,15 +53,24 @@ export default class Film extends AbstractComponent {
   }
 
   setWatchlistClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setWatchedClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 
   setFavoriteClickHandler(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      debounce(handler, DEBOUNCE_TIMEOUT)();
+    });
   }
 }
 

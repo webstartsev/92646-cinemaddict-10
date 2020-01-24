@@ -32,6 +32,12 @@ export const replace = (newComponent, oldComponent) => {
   const oldElement = oldComponent.getElement();
 
   if (parentElement.contains(oldElement)) {
+    const {scrollTop, scrollLeft} = oldElement;
+
+    newElement.style.animationDuration = `0s`;
     parentElement.replaceChild(newElement, oldElement);
+
+    newElement.scrollTop = scrollTop;
+    newElement.scrollLeft = scrollLeft;
   }
 };

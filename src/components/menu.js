@@ -11,7 +11,10 @@ export const MenuItem = {
 };
 
 const getCurrentItem = (href) => {
-  return href.split(`#`)[1];
+  if (href) {
+    return href.split(`#`)[1];
+  }
+  return false;
 };
 
 const createMenuMarkup = (item, {isChecked, isLast}) => {

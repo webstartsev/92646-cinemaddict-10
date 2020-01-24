@@ -20,6 +20,7 @@ export default class Movies {
 
   setMovies(films) {
     this._movies = Array.from(films);
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   updateMovie(id, film) {

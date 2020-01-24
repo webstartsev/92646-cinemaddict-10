@@ -38,10 +38,10 @@ export default class Movie {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._closePopup = this._closePopup.bind(this);
     this._openPopup = this._openPopup.bind(this);
-    this._onCommentChange = this._onCommentChange.bind(this);
-    // this._onSubmitForm = this._onSubmitForm.bind(this);
+  }
 
-    this._commentsModel.setCommentChangeHandler(this._onCommentChange);
+  getMovie() {
+    return this._film;
   }
 
   render(film) {
@@ -86,26 +86,21 @@ export default class Movie {
     this._filmComponent = new FilmComponent(this._film);
 
     this._filmComponent.setOpenDetailHandler(() => this._openPopup(this._film));
-    this._filmComponent.setWatchlistClickHandler((evt) => {
-      evt.preventDefault();
-
+    this._filmComponent.setWatchlistClickHandler(() => {
       const newMovie = MovieModel.clone(this._film);
       newMovie.isNeedWatch = !newMovie.isNeedWatch;
 
       this._onDataChange(this, this._film, newMovie);
     });
-    this._filmComponent.setWatchedClickHandler((evt) => {
-      evt.preventDefault();
-
+    this._filmComponent.setWatchedClickHandler(() => {
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;
+      newMovie.personalRating = 0;
 
       this._onDataChange(this, this._film, newMovie);
     });
-    this._filmComponent.setFavoriteClickHandler((evt) => {
-      evt.preventDefault();
-
+    this._filmComponent.setFavoriteClickHandler(() => {
       const newMovie = MovieModel.clone(this._film);
       newMovie.isFavorite = !newMovie.isFavorite;
 
@@ -124,9 +119,11 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setWatchedClickHandler(() => {
+      this._userRatingComponent.disabledInputs();
       const newMovie = MovieModel.clone(this._film);
-      newMovie.dateWatched = (newMovie.dateWatched ? null : new Date());
+      newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;
+      newMovie.personalRating = 0;
 
       this._onDataChange(this, this._film, newMovie);
     });
@@ -137,32 +134,31 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
 
-    if (this._film.isWatch) {
-      const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
-      this._userRatingComponent = new UserRatingComponent(this._film);
-
-      this._userRatingComponent.setChangeRatingHandler((userRating) => {
-        const newMovie = MovieModel.clone(this._film);
-        newMovie.personalRating = parseInt(userRating, 10);
-
-        this._onDataChange(this, this._film, newMovie, `rating`);
-      });
-      render(popupMiddleElement, this._userRatingComponent);
-    }
+    this._renderUserRating();
 
     this._renderComments(this._film.commentsFull);
   }
 
-  _onCommentChange(commentController, oldData, newData) {
-    if (newData === null) {
-      this._api.deleteComment(oldData.id)
-        .then((movieModel) => {
-          commentController.destroy();
+  _renderUserRating() {
+    const popupMiddleElement = this._filmPopupComponent.getElement().querySelector(`.form-details__middle-container`);
+    this._userRatingComponent = new UserRatingComponent(this._film);
 
-          this._movieModel.updateMovie(movieModel.id, movieModel);
-          this._updateComments(movieModel.commentsFull);
+    this._userRatingComponent.setChangeRatingHandler((userRating) => {
+      this._userRatingComponent.disabledForm();
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.personalRating = parseInt(userRating, 10);
 
-        });
+      this._onDataChange(this, this._film, newMovie, `rating`);
+    });
+    this._userRatingComponent.removeUserRationgHandler(() => {
+      const newMovie = MovieModel.clone(this._film);
+      newMovie.personalRating = 0;
+
+      this._onDataChange(this, this._film, newMovie, `rating`);
+    });
+
+    if (this._film.isWatch) {
+      render(popupMiddleElement, this._userRatingComponent);
     }
   }
 
@@ -187,7 +183,7 @@ export default class Movie {
 
     const commentListElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-list`);
     const newComment = comments.map((comment) => {
-      const commentController = new CommentController(commentListElement, this._onCommentChange, this._commentsModel);
+      const commentController = new CommentController(commentListElement, this._onDataChange, this._commentsModel);
       commentController.render(comment);
 
       return commentController;
@@ -208,6 +204,7 @@ export default class Movie {
   }
 
   _closePopup() {
+    this._onViewChange(null);
     this._mode = Mode.DEFAULT;
     remove(this._filmPopupComponent);
     remove(this._commentsComponent);
@@ -216,7 +213,7 @@ export default class Movie {
   }
 
   _openPopup(film) {
-    this._onViewChange();
+    this._onViewChange(this);
     this._mode = Mode.OPEN;
 
     if (!this._filmPopupComponent._element) {
