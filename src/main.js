@@ -26,26 +26,27 @@ const filterController = new FilterController(mainElement, movieModel);
 const pageController = new PageController(mainElement, movieModel, apiWithProvider);
 const statisticsController = new StatisticsController(mainElement, movieModel);
 
+filterController.render();
+filterController.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.STATS:
+      statisticsController.show();
+      pageController.hide();
+      break;
+    default:
+      statisticsController.hide();
+      pageController.show();
+      break;
+  }
+});
+
 apiWithProvider.getMovies()
   .then((movies) => {
     movieModel.setMovies(movies);
-    filterController.render();
+
     pageController.render();
     statisticsController.render();
     statisticsController.hide();
-
-    filterController.setOnChange((menuItem) => {
-      switch (menuItem) {
-        case MenuItem.STATS:
-          statisticsController.show();
-          pageController.hide();
-          break;
-        default:
-          statisticsController.hide();
-          pageController.show();
-          break;
-      }
-    });
 
     const rank = getRank(movies);
     render(headerElement, new ProfileComponent(rank));
