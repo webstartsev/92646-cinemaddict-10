@@ -23,9 +23,6 @@ const headerElement = document.querySelector(`.header`);
 const movieModel = new MovieModel();
 
 const filterController = new FilterController(mainElement, movieModel);
-const pageController = new PageController(mainElement, movieModel, apiWithProvider);
-const statisticsController = new StatisticsController(mainElement, movieModel);
-
 filterController.render();
 filterController.setOnChange((menuItem) => {
   switch (menuItem) {
@@ -40,13 +37,16 @@ filterController.setOnChange((menuItem) => {
   }
 });
 
+const pageController = new PageController(mainElement, movieModel, apiWithProvider);
+pageController.render(true);
+
+const statisticsController = new StatisticsController(mainElement, movieModel);
+statisticsController.render();
+statisticsController.hide();
+
 apiWithProvider.getMovies()
   .then((movies) => {
     movieModel.setMovies(movies);
-
-    pageController.render();
-    statisticsController.render();
-    statisticsController.hide();
 
     const rank = getRank(movies);
     render(headerElement, new ProfileComponent(rank));
