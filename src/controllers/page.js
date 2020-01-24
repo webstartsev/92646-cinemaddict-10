@@ -30,11 +30,12 @@ export default class PageController {
     this._api = api;
     this._filmsListContainer = null;
     this._filmsElement = null;
+    this._openMovieController = null;
 
     this._showMoreBtnComponent = new ShowMoreBtnComponent();
     this._noFilmsComponent = new NoFilmsComponent();
     this._sortComponent = new SortComponent();
-    this._filmsComponent = new FilmsComponent();
+    this._filmsComponent = null;
     this._filmsTopComponent = new FilmsTopComponent();
     this._filmsMostComponent = new FilmsMostComponent();
 
@@ -131,8 +132,12 @@ export default class PageController {
   }
 
 
-  _onViewChange() {
-    this._showedFilmControllers.forEach((filmController) => filmController.setDefaultView());
+  _onViewChange(controller) {
+    if (controller) {
+      this._showedFilmControllers.forEach((filmController) => filmController.setDefaultView());
+    }
+
+    this._openMovieController = controller;
   }
 
   _renderFilms(filmsContainer, films) {
@@ -176,28 +181,34 @@ export default class PageController {
   render(isLoadingData = false) {
     this._films = this._movieModel.getMovies();
 
-    render(this._container, this._sortComponent);
-    render(this._container, this._filmsComponent);
+    if (!this._filmsComponent) {
+      this._filmsComponent = new FilmsComponent();
+      this._filmsElement = this._filmsComponent.getElement();
+      this._filmsListContainer = this._filmsElement.querySelector(`.films-list__container`);
+
+      render(this._container, this._sortComponent);
+      render(this._container, this._filmsComponent);
+      return;
+    }
 
     if (isLoadingData) {
       this._filmsComponent.setTitle(Title.LOADING);
       return;
     }
-
     if (this._films.length === 0) {
       this._filmsComponent.setTitle(Title.NO_DATA);
       return;
+    } else {
+      this._filmsComponent.setDefaultTitle();
     }
 
-    this._filmsComponent.setDefaultTitle();
-    this._filmsElement = this._filmsComponent.getElement();
-    this._filmsListContainer = this._filmsElement.querySelector(`.films-list__container`);
+    if (!this._openMovieController) {
+      this._renderFilms(this._filmsListContainer, this._films.slice(0, this._showingFilmsCount));
+      this._renderShowMoreBtn();
 
-    this._renderFilms(this._filmsListContainer, this._films.slice(0, this._showingFilmsCount));
-    this._renderShowMoreBtn();
-
-    this._renderTopList();
-    this._renderMostList();
+      this._renderTopList();
+      this._renderMostList();
+    }
   }
 
   _onSortTypeChange(sortType) {

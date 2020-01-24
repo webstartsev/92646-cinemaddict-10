@@ -174,7 +174,6 @@ export default class Movie {
 
           this._movieModel.updateMovie(movieModel.id, movieModel);
           this._updateComments(movieModel.commentsFull);
-
         });
     }
   }
@@ -221,6 +220,7 @@ export default class Movie {
   }
 
   _closePopup() {
+    this._onViewChange(null);
     this._mode = Mode.DEFAULT;
     remove(this._filmPopupComponent);
     remove(this._commentsComponent);
@@ -229,7 +229,7 @@ export default class Movie {
   }
 
   _openPopup(film) {
-    this._onViewChange();
+    this._onViewChange(this);
     this._mode = Mode.OPEN;
 
     if (!this._filmPopupComponent._element) {

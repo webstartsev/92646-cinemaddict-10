@@ -26,7 +26,7 @@ export default class Movie {
     this.isWatch = data[`user_details`][`already_watched`] ? data[`user_details`][`already_watched`] : false;
     this.isFavorite = data[`user_details`][`favorite`] ? data[`user_details`][`favorite`] : false;
     this.comments = data[`comments`] ? data[`comments`] : [];
-    this.commentsFull = [];
+    this.commentsFull = data[`commentsFull`] ? data[`commentsFull`] : [];
   }
 
   toRAW() {
