@@ -3,9 +3,9 @@ import {render, remove} from '../utils/render.js';
 import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 
 export default class CommentController {
-  constructor(container, onCommentChange, commentsModel) {
+  constructor(container, onDataChange, commentsModel) {
     this._container = container;
-    this._onCommentChange = onCommentChange;
+    this._onDataChange = onDataChange;
     this._commentsModel = commentsModel;
 
     this._commentComponent = null;
@@ -27,7 +27,7 @@ export default class CommentController {
     this._commentComponent.setDeleteClickHandler((evt) => {
       evt.preventDefault();
       this._commentComponent.setDeteleText(`Deleting...`);
-      this._onCommentChange(this, comment, null);
+      this._onDataChange(this, comment, null, `comment`);
     });
   }
 

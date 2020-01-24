@@ -38,9 +38,6 @@ export default class Movie {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._closePopup = this._closePopup.bind(this);
     this._openPopup = this._openPopup.bind(this);
-    this._onCommentChange = this._onCommentChange.bind(this);
-
-    this._commentsModel.setCommentChangeHandler(this._onCommentChange);
   }
 
   getMovie() {
@@ -163,19 +160,6 @@ export default class Movie {
     if (this._film.isWatch) {
       render(popupMiddleElement, this._userRatingComponent);
     }
-
-  }
-
-  _onCommentChange(commentController, oldData, newData) {
-    if (newData === null) {
-      this._api.deleteComment(oldData.id)
-        .then((movieModel) => {
-          commentController.destroy();
-
-          this._movieModel.updateMovie(movieModel.id, movieModel);
-          this._updateComments(movieModel.commentsFull);
-        });
-    }
   }
 
   _renderComments(comments) {
@@ -199,7 +183,7 @@ export default class Movie {
 
     const commentListElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-list`);
     const newComment = comments.map((comment) => {
-      const commentController = new CommentController(commentListElement, this._onCommentChange, this._commentsModel);
+      const commentController = new CommentController(commentListElement, this._onDataChange, this._commentsModel);
       commentController.render(comment);
 
       return commentController;

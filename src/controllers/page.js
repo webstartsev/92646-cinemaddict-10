@@ -85,7 +85,16 @@ export default class PageController {
   _onDataChange(controller, oldData, newData, type = `movie`) {
     switch (type) {
       case `comment`:
-        this._api.addComment(oldData.id, newData)
+        if (newData === null) {
+          this._api.deleteComment(oldData.id)
+          .then((movieModel) => {
+            controller.destroy();
+
+            this._movieModel.updateMovie(movieModel.id, movieModel);
+            this._renderFilmControllers(movieModel);
+          });
+        } else {
+          this._api.addComment(oldData.id, newData)
           .then((movieModel) => {
             controller._commentsComponent.activateForm();
             this._movieModel.updateMovie(oldData.id, movieModel);
@@ -96,6 +105,7 @@ export default class PageController {
             const newCommentForm = controller._commentsComponent.getElement().querySelector(`.film-details__new-comment`);
             controller.shake(newCommentForm);
           });
+        }
         break;
       case `rating`:
         this._api.updateMovie(newData)
