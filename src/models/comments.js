@@ -1,5 +1,3 @@
-import {USER} from "../const.js";
-
 export default class Comments {
   constructor() {
     this._comments = [];
@@ -15,13 +13,8 @@ export default class Comments {
   }
 
   addComment(comment) {
-    comment.user = this._getUser();
     this._comments = [...this._comments, comment];
     this._callHandlers(this._commentChangeHandlers);
-  }
-
-  _getUser() {
-    return USER;
   }
 
   removeComment(data) {
