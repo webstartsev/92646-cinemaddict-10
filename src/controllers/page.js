@@ -1,7 +1,6 @@
 import ShowMoreBtnComponent from '../components/show-more-btn.js';
 import NoFilmsComponent from '../components/no-films.js';
-import FilmsTopComponent from '../components/films-top.js';
-import FilmsMostComponent from '../components/films-most.js';
+import FilmsExtraComponent from '../components/films-extra.js';
 import SortComponent from '../components/sort.js';
 import FilmsComponent from '../components/films.js';
 import MovieController from '../controllers/movie.js';
@@ -36,8 +35,8 @@ export default class PageController {
     this._noFilmsComponent = new NoFilmsComponent();
     this._sortComponent = new SortComponent();
     this._filmsComponent = null;
-    this._filmsTopComponent = new FilmsTopComponent();
-    this._filmsMostComponent = new FilmsMostComponent();
+    this._filmsTopComponent = new FilmsExtraComponent(`top`);
+    this._filmsMostComponent = new FilmsExtraComponent(`most`);
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
