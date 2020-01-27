@@ -10,7 +10,7 @@ export default class FilterController {
     this._activeFilterType = FilterType.ALL;
 
     this._menuComponent = null;
-    this._handlerOnMenuChange = null;
+    this._setOnChangeMenuHandler = null;
 
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
@@ -43,17 +43,17 @@ export default class FilterController {
   }
 
   setOnChange(handler) {
-    this._handlerOnMenuChange = handler;
+    this._setOnChangeMenuHandler = handler;
     this._menuComponent.setOnChange((menuItem) => {
       this._menuComponent.setActiveMenu(menuItem);
-      if (this._handlerOnMenuChange) {
-        this._handlerOnMenuChange(menuItem);
+      if (this._setOnChangeMenuHandler) {
+        this._setOnChangeMenuHandler(menuItem);
       }
     });
   }
 
   _recoveryListeners() {
     this._menuComponent.setOnChange(this._onFilterChange);
-    this.setOnChange(this._handlerOnMenuChange);
+    this.setOnChange(this._setOnChangeMenuHandler);
   }
 }
