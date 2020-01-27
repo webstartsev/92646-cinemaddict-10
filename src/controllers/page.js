@@ -240,7 +240,10 @@ export default class PageController {
     }
 
     this._removeMovies();
+
     this._renderFilms(this._filmsListContainer, sortFilms.slice(0, this._showingFilmsCount));
+    this._renderTopList();
+    this._renderMostList();
 
     this._renderShowMoreBtn();
   }
