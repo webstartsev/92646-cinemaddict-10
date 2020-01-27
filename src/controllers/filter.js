@@ -9,7 +9,7 @@ export default class FilterController {
     this._movieModel = movieModel;
     this._activeFilterType = FilterType.ALL;
 
-    this._MenuComponent = null;
+    this._menuComponent = null;
     this._handlerOnMenuChange = null;
 
     this._onFilterChange = this._onFilterChange.bind(this);
