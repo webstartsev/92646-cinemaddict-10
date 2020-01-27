@@ -1,4 +1,5 @@
 import Movie from '../models/movie.js';
+import Comment from '../models/comment.js';
 import nanoid from 'nanoid';
 
 const DEFAULT_COMMENT_AUTHOR = `Sergey Startsev`;
@@ -35,6 +36,7 @@ export default class Provider {
         });
     }
     this._isSynchronized = false;
+    // updatedFilm.deletedComments = storedFilm.deletedComments;
     this._store.setItem(movie.id, Object.assign({}, movie.toRAW(), {offline: true}));
 
     return Promise.resolve(Movie.parseMovie(movie.toRAW()));
@@ -55,7 +57,7 @@ export default class Provider {
     const storeMovie = storeMovies[movieId];
 
     const fakeNewCommentId = nanoid();
-    const fakeNewComment = Object.assign({}, comment, {id: fakeNewCommentId, movieId, author: DEFAULT_COMMENT_AUTHOR, offline: true});
+    const fakeNewComment = Object.assign({}, comment.toRAW(), {id: fakeNewCommentId, movieId, author: DEFAULT_COMMENT_AUTHOR, offline: true});
 
     storeMovie.comments.push(fakeNewComment.id);
     storeMovie.commentsFull.push(fakeNewComment);
@@ -89,7 +91,7 @@ export default class Provider {
     updateMovie.comments = [...comments.slice(0, indexComment), ...comments.slice(indexComment + 1)];
     updateMovie.commentsFull = [...commentsFull.slice(0, indexComment), ...commentsFull.slice(indexComment + 1)];
     updateMovie.deletedComments = updateMovie.deletedComments || [];
-    if (!comments[indexComment].offline) {
+    if (!commentsFull[indexComment].offline) {
       updateMovie.deletedComments.push(commentsFull[indexComment]);
     }
 
@@ -110,7 +112,7 @@ export default class Provider {
         .then(() => this._syncMovies(storeMovies))
         .then(() => {
           this._isSynchronized = true;
-          return Promise.resolve();
+          return this.getMovies();
         });
 
     }
@@ -127,7 +129,7 @@ export default class Provider {
       .reduce((acc, movie) => [...acc, ...movie.commentsFull], [])
       .filter((comment) => comment.offline)
       .map((newComment) => {
-        this._api.addComment(newComment.movieId, newComment);
+        this._api.addComment(newComment.movieId, Comment.parseComment(newComment));
       }));
   }
 

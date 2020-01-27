@@ -6,6 +6,7 @@ import CountCommentsComponent from "../components/count-comments.js";
 import CommentController from "../controllers/comment.js";
 import CommentsModel from "../models/comments.js";
 import MovieModel from "../models/movie.js";
+import Comment from "../models/comment.js";
 
 import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
@@ -167,10 +168,10 @@ export default class Movie {
     this._commentsComponent = new CommentsComponent();
 
     this._commentsComponent.setFormSumbitHandler(() => {
-      const data = this._commentsComponent.getData();
+      const newComment = new Comment(this._commentsComponent.getData());
       this._commentsComponent.disabledForm();
 
-      this._onDataChange(this, this._film, data, `comment`);
+      this._onDataChange(this, this._film, newComment, `comment`);
     });
 
     this._commentsComponent.setClickEmojiHandler();
