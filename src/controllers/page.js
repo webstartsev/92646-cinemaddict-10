@@ -190,7 +190,6 @@ export default class PageController {
 
   render(isLoadingData = false) {
     this._films = this._movieModel.getMovies();
-
     if (!this._filmsComponent) {
       this._filmsComponent = new FilmsComponent();
       this._filmsElement = this._filmsComponent.getElement();
