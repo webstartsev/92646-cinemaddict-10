@@ -33,15 +33,6 @@ export default class FilterController {
     }
   }
 
-  _onFilterChange(filterName) {
-    this._movieModel.setFilter(filterName);
-    this._activeFilterType = filterName;
-  }
-
-  _onDataChange() {
-    this.render();
-  }
-
   setOnChange(handler) {
     this._setOnChangeMenuHandler = handler;
     this._menuComponent.setOnChange((menuItem) => {
@@ -50,6 +41,15 @@ export default class FilterController {
         this._setOnChangeMenuHandler(menuItem);
       }
     });
+  }
+
+  _onFilterChange(filterName) {
+    this._movieModel.setFilter(filterName);
+    this._activeFilterType = filterName;
+  }
+
+  _onDataChange() {
+    this.render();
   }
 
   _recoveryListeners() {
