@@ -2,24 +2,36 @@ import moment from 'moment';
 
 import {StatisticType, StatisticPeriod} from '../const.js';
 
-const Rank = {
+const RankTitle = {
   NONE: ``,
   NOVICE: `novice`,
   FAN: `fan`,
   MOVIE_BUFF: `movie buff`
 };
 
+const RankPoint = {
+  NONE: 0,
+  NOVICE: {
+    MIN: 1,
+    MAX: 10
+  },
+  FAN: {
+    MIN: 11,
+    MAX: 20
+  }
+};
+
 export const getRank = (films) => {
   let rank = ``;
   const countView = films.filter((film) => film.isWatch).length;
-  if (countView === 0) {
-    rank = Rank.NONE;
-  } else if (countView >= 1 && countView <= 10) {
-    rank = Rank.NOVICE;
-  } else if (countView >= 11 && countView <= 20) {
-    rank = Rank.FAN;
+  if (countView === RankPoint.NONE) {
+    rank = RankTitle.NONE;
+  } else if (countView >= RankPoint.NOVICE.MIN && countView <= RankPoint.NOVICE.MAX) {
+    rank = RankTitle.NOVICE;
+  } else if (countView >= RankPoint.FAN.MIN && countView <= RankPoint.FAN.MAX) {
+    rank = RankTitle.FAN;
   } else {
-    rank = Rank.MOVIE_BUFF;
+    rank = RankTitle.MOVIE_BUFF;
   }
 
   return rank;
