@@ -63,7 +63,7 @@ export default class Provider {
     const movie = Movie.parseMovie(storeMovie);
     movie.setComments(storeMovie.commentsFull);
 
-    this._store.setItem(movieId, Object.assign({}, movie, {offline: true}));
+    this._store.setItem(movieId, Object.assign({}, movie.toRAW(), {offline: true}));
 
     return Promise.resolve(movie);
   }
@@ -95,7 +95,7 @@ export default class Provider {
 
     this._store.setItem(updateMovie.id, Object.assign({}, updateMovie, {offline: true}));
 
-    return Promise.resolve(updateMovie);
+    return Promise.resolve(Movie.parseMovie(updateMovie));
   }
 
   getSynchronize() {
