@@ -3,6 +3,12 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import AbstractSmartComponent from "./abstract-smart-component.js";
 
+const BAR_COLOR = `#ffe800`;
+const LABEL_PADDING = 80;
+const LABEL_COLOR = `#fff`;
+const LABEL_FONT_SIZE = 18;
+const LABEL_OFFSET = 40;
+
 const prepearData = (movies) => {
   const genres = [];
   const genresData = new Map();
@@ -26,12 +32,6 @@ const sortedData = (genresData) => {
 };
 
 const renderMovieChart = (fimsCtx, movies) => {
-  const BAR_COLOR = `#ffe800`;
-  const LABEL_PADDING = 80;
-  const LABEL_COLOR = `#fff`;
-  const LABEL_FONT_SIZE = 18;
-  const LABEL_OFFSET = 40;
-
   const genresData = prepearData(movies);
   const sortedGenresData = sortedData(genresData);
 
