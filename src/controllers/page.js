@@ -213,6 +213,8 @@ export default class PageController {
     }
 
     if (!this._openMovieController) {
+      this._removeMovies();
+
       this._renderFilms(this._filmsListContainer, this._films.slice(0, this._showingFilmsCount));
       this._renderShowMoreBtn();
 
