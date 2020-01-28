@@ -91,6 +91,10 @@ export default class PageController {
             this._renderFilmControllers(movieModel);
             this._renderTopList();
             this._renderMostList();
+          })
+          .catch(() => {
+            const commentElement = controller._commentComponent.getElement();
+            controller.shake(commentElement);
           });
         } else {
           this._api.addComment(oldData.id, newData)

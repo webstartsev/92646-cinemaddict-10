@@ -11,11 +11,11 @@ export default class CommentController {
     this._commentComponent = null;
   }
 
-  shake() {
-    this._commentComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+  shake(container) {
+    container.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 
     setTimeout(() => {
-      this._commentComponent.getElement().style.animation = ``;
+      container.style.animation = ``;
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 
