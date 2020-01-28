@@ -88,12 +88,14 @@ export default class Movie {
 
     this._filmComponent.setOpenDetailHandler(() => this._openPopup(this._film));
     this._filmComponent.setWatchlistClickHandler(() => {
+      this._filmComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.isNeedWatch = !newMovie.isNeedWatch;
 
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmComponent.setWatchedClickHandler(() => {
+      this._filmComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
       newMovie.isWatch = !newMovie.isWatch;
@@ -102,6 +104,7 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmComponent.setFavoriteClickHandler(() => {
+      this._filmComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.isFavorite = !newMovie.isFavorite;
 
@@ -114,12 +117,14 @@ export default class Movie {
 
     this._filmPopupComponent.setClickCloseHandler(this._closePopup);
     this._filmPopupComponent.setWatchlistClickHandler(() => {
+      this._filmPopupComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.isNeedWatch = !newMovie.isNeedWatch;
 
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setWatchedClickHandler(() => {
+      this._filmPopupComponent.disabledForm();
       this._userRatingComponent.disabledInputs();
       const newMovie = MovieModel.clone(this._film);
       newMovie.dateWatched = new Date();
@@ -129,6 +134,7 @@ export default class Movie {
       this._onDataChange(this, this._film, newMovie);
     });
     this._filmPopupComponent.setFavoriteClickHandler(() => {
+      this._filmPopupComponent.disabledForm();
       const newMovie = MovieModel.clone(this._film);
       newMovie.isFavorite = !newMovie.isFavorite;
 

@@ -72,5 +72,13 @@ export default class Film extends AbstractComponent {
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
+
+  disabledForm() {
+    this.getElement().querySelector(`form`).disabled = true;
+  }
+
+  activateForm() {
+    this.getElement().querySelector(`form`).disabled = false;
+  }
 }
 
