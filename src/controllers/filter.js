@@ -18,7 +18,7 @@ export default class FilterController {
   render() {
     const oldComponent = this._menuComponent;
 
-    const films = this._movieModel.getMovies();
+    const films = this._movieModel.getAllMovies();
     const menuItems = generateMenu(films);
     this._menuComponent = new MenuComponent(menuItems);
     this.setOnChange(this._setOnChangeMenuHandler);
