@@ -1,6 +1,5 @@
 import CommentComponent from "../components/comment.js";
 import {render, remove} from '../utils/render.js';
-import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 
 export default class CommentController {
   constructor(container, onDataChange, commentsModel) {
@@ -11,12 +10,8 @@ export default class CommentController {
     this._commentComponent = null;
   }
 
-  shake(container) {
-    container.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      container.style.animation = ``;
-    }, SHAKE_ANIMATION_TIMEOUT);
+  shake() {
+    this._commentComponent.shake();
   }
 
   render(comment) {

@@ -93,8 +93,7 @@ export default class PageController {
             this._renderMostList();
           })
           .catch(() => {
-            const commentElement = controller._commentComponent.getElement();
-            controller.shake(commentElement);
+            controller.shake();
           });
         } else {
           this._api.addComment(oldData.id, newData)
