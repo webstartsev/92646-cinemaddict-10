@@ -1,11 +1,15 @@
 import he from "he";
 import AbstractComponent from './abstract-component.js';
 import {createElement} from "../utils/render.js";
-import {isSubmitPressed} from "../utils/utils.js";
 
 const Emoji = {
   WIDTH: `55`,
   HEIGHT: `55`,
+};
+
+const KeyCode = {
+  ENTER: `Enter`,
+  ENT: `Ent`
 };
 
 const emojiMarkup = (src) => {
@@ -91,7 +95,7 @@ export default class Comments extends AbstractComponent {
 
   setFormSumbitHandler(handler) {
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, (evt) => {
-      if (isSubmitPressed(evt)) {
+      if (evt.ctrlKey && (evt.key === KeyCode.ENTER || evt.key === KeyCode.ENT)) {
         handler();
       }
     });
