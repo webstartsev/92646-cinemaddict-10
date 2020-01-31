@@ -70,11 +70,8 @@ window.addEventListener(`online`, () => {
 
   if (!apiWithProvider.getSynchronize()) {
     apiWithProvider.sync()
-      .then(() => {
-
-      })
-      .catch(() => {
-
+      .then((movies) => {
+        movieModel.setMovies(movies);
       });
   }
 });

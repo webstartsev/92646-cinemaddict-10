@@ -205,7 +205,7 @@ export default class Movie {
     this._showedCommentControllers = [];
   }
 
-  _updateComments(comments) {
+  updateComments(comments) {
     this._removeComents();
     this._renderComments(comments);
   }

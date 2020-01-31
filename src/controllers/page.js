@@ -227,6 +227,9 @@ export default class PageController {
 
       this._renderTopList();
       this._renderMostList();
+    } else {
+      const movie = this._openMovieController.getMovie();
+      this._openMovieController.updateComments(this._films[movie.id].commentsFull);
     }
   }
 
