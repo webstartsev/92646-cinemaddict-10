@@ -8,7 +8,6 @@ import CommentsModel from "../models/comments.js";
 import MovieModel from "../models/movie.js";
 import Comment from "../models/comment.js";
 
-import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
 
 const Mode = {
@@ -104,14 +103,6 @@ export default class Movie {
     if (isEscKey) {
       this._closePopup();
     }
-  }
-
-  shake(container) {
-    container.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      container.style.animation = ``;
-    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _prepeareFilm() {
