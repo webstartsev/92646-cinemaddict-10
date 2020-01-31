@@ -197,7 +197,6 @@ export default class PageController {
 
       render(this._container, this._sortComponent);
       render(this._container, this._filmsComponent);
-      return;
     }
 
     if (isLoadingData) {
@@ -206,7 +205,6 @@ export default class PageController {
     }
     if (this._films.length === 0) {
       this._filmsComponent.setTitle(Title.NO_DATA);
-      return;
     } else {
       this._filmsComponent.setDefaultTitle();
     }
