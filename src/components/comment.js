@@ -1,6 +1,5 @@
 import AbstarctSmartComponent from './abstract-smart-component.js';
 import {formatDate} from "../utils/comment.js";
-import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 
 const DEFAULT_DELETE = `Delete`;
 
