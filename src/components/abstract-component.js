@@ -1,5 +1,6 @@
 import {createElement} from '../utils/render.js';
 import {HIDDEN_CLASS} from "../const.js";
+import {SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 
 export default class AbstarctComponent {
   constructor() {
@@ -36,5 +37,16 @@ export default class AbstarctComponent {
     if (this._element) {
       this._element.classList.add(HIDDEN_CLASS);
     }
+  }
+
+  shake() {
+    this.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.getElement().style.animation = ``;
+        resolve();
+      }, SHAKE_ANIMATION_TIMEOUT);
+    });
   }
 }
