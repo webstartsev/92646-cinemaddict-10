@@ -63,8 +63,6 @@ export default class PageController {
 
     if (movies.length === 0) {
       this._filmsComponent.setTitle(Title.NO_FILMS);
-      remove(this._showMoreBtnComponent);
-      return;
     }
 
     this._renderFilms(this._filmsListContainer, movies);
@@ -251,14 +249,16 @@ export default class PageController {
   }
 
   _renderTopList() {
-    const oldFilmsTopComponent = this._filmsTopComponent;
-    this._filmsTopComponent = new FilmsExtraComponent(`top`);
-
     const films = this._movieModel.getMovies();
     const filmTopList = this._getTopListMovies(films);
     if (!filmTopList.length) {
+      remove(this._filmsTopComponent);
+      this._filmsTopComponent = null;
       return;
     }
+
+    const oldFilmsTopComponent = this._filmsTopComponent;
+    this._filmsTopComponent = new FilmsExtraComponent(`top`);
 
     if (oldFilmsTopComponent) {
       replace(this._filmsTopComponent, oldFilmsTopComponent);
@@ -271,14 +271,16 @@ export default class PageController {
   }
 
   _renderMostList() {
-    const oldFilmsMostComponent = this._filmsMostComponent;
-    this._filmsMostComponent = new FilmsExtraComponent(`most`);
-
     const films = this._movieModel.getMovies();
     const filmMostList = this._getMostListMovies(films);
     if (!filmMostList.length) {
+      remove(this._filmsMostComponent);
+      this._filmsMostComponent = null;
       return;
     }
+
+    const oldFilmsMostComponent = this._filmsMostComponent;
+    this._filmsMostComponent = new FilmsExtraComponent(`most`);
 
     if (oldFilmsMostComponent) {
       replace(this._filmsMostComponent, oldFilmsMostComponent);
