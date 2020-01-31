@@ -71,6 +71,11 @@ const createCommentsTemplate = () => {
 };
 
 export default class Comments extends AbstractComponent {
+  constructor() {
+    super();
+
+    this._isDisabled = false;
+  }
   getTemplate() {
     return createCommentsTemplate();
   }
@@ -79,6 +84,11 @@ export default class Comments extends AbstractComponent {
     const emojies = this.getElement().querySelectorAll(`.film-details__emoji-label`);
     emojies.forEach((emoji) => {
       emoji.addEventListener(`click`, (evt) => {
+        if (this._isDisabled) {
+          evt.preventDefault();
+          return;
+        }
+
         const src = evt.currentTarget.querySelector(`img`).getAttribute(`src`);
         this._setEmoji(src);
       });
@@ -102,11 +112,13 @@ export default class Comments extends AbstractComponent {
   }
 
   disabledForm() {
-    this.getElement().querySelector(`form`).disabled = true;
+    this._isDisabled = true;
+    this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
   }
 
   activateForm() {
-    this.getElement().querySelector(`form`).disabled = false;
+    this._isDisabled = false;
+    this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
   }
 
   setErrorTextArea() {

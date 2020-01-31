@@ -36,6 +36,7 @@ export default class Film extends AbstractComponent {
     super();
 
     this._film = film;
+    this._isDisabled = false;
   }
 
   getTemplate() {
@@ -55,6 +56,10 @@ export default class Film extends AbstractComponent {
   setWatchlistClickHandler(handler) {
     this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
@@ -62,6 +67,10 @@ export default class Film extends AbstractComponent {
   setWatchedClickHandler(handler) {
     this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
@@ -69,16 +78,28 @@ export default class Film extends AbstractComponent {
   setFavoriteClickHandler(handler) {
     this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
 
   disabledForm() {
-    this.getElement().querySelector(`form`).disabled = true;
+    this._isDisabled = true;
+    [...this.getElement().querySelectorAll(`.film-card__controls-item`)]
+      .forEach((element) => {
+        element.disabled = true;
+      });
   }
 
   activateForm() {
-    this.getElement().querySelector(`form`).disabled = false;
+    this._isDisabled = false;
+    [...this.getElement().querySelectorAll(`.film-card__controls-item`)]
+      .forEach((element) => {
+        element.disabled = false;
+      });
   }
 }
 

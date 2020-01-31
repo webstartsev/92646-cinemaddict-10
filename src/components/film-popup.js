@@ -116,6 +116,7 @@ export default class FilmPopup extends AbstarctSmartComponent {
     super();
 
     this._film = film;
+    this._isDisabled = false;
   }
 
   getTemplate() {
@@ -130,6 +131,10 @@ export default class FilmPopup extends AbstarctSmartComponent {
   setWatchlistClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
@@ -137,6 +142,10 @@ export default class FilmPopup extends AbstarctSmartComponent {
   setWatchedClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
@@ -144,16 +153,28 @@ export default class FilmPopup extends AbstarctSmartComponent {
   setFavoriteClickHandler(handler) {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
+      if (this._isDisabled) {
+        return;
+      }
+
       debounce(handler, DEBOUNCE_TIMEOUT)();
     });
   }
 
   disabledForm() {
-    this.getElement().querySelector(`form`).disabled = true;
+    this._isDisabled = true;
+    [...this.getElement().querySelectorAll(`.film-details__control-input`)]
+      .forEach((element) => {
+        element.disabled = true;
+      });
   }
 
   activateForm() {
-    this.getElement().querySelector(`form`).disabled = false;
+    this._isDisabled = false;
+    [...this.getElement().querySelectorAll(`.film-details__control-input`)]
+      .forEach((element) => {
+        element.disabled = false;
+      });
   }
 
   recoveryListeners() {
