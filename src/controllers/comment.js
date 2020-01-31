@@ -1,6 +1,9 @@
 import CommentComponent from "../components/comment.js";
 import {render, remove} from '../utils/render.js';
 
+const DELETE_TEXT = `Delete`;
+const DELETING_TEXT = `Deleting...`;
+
 export default class CommentController {
   constructor(container, onDataChange, commentsModel) {
     this._container = container;
@@ -10,8 +13,12 @@ export default class CommentController {
     this._commentComponent = null;
   }
 
-  shake() {
-    this._commentComponent.shake();
+  handleError() {
+    this._commentComponent
+      .shake()
+      .then(() => {
+        this._commentComponent.setDeteleText(DELETE_TEXT);
+      });
   }
 
   render(comment) {
@@ -21,7 +28,7 @@ export default class CommentController {
 
     this._commentComponent.setDeleteClickHandler((evt) => {
       evt.preventDefault();
-      this._commentComponent.setDeteleText(`Deleting...`);
+      this._commentComponent.setDeteleText(DELETING_TEXT);
       this._onDataChange(this, comment, null, `comment`);
     });
   }

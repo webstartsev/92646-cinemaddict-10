@@ -61,6 +61,37 @@ export default class Movie {
     }
   }
 
+  handleError(type) {
+    switch (type) {
+      case `comment`:
+        this._commentsComponent.setErrorTextArea();
+        this._commentsComponent
+          .shake()
+          .then(() => this._commentsComponent.activateForm());
+        break;
+      case `rating`:
+        this._userRatingComponent.setErrorInput();
+        this._userRatingComponent.shake();
+        break;
+      default:
+        if (this._mode === Mode.OPEN) {
+          this._filmPopupComponent
+            .shake()
+            .then(() => {
+              this.render(this._film);
+            });
+        } else {
+          this._filmComponent
+            .shake()
+            .then(() => {
+              this.render(this._film);
+            });
+        }
+        break;
+    }
+
+  }
+
   destroy() {
     remove(this._filmComponent);
     remove(this._filmPopupComponent);

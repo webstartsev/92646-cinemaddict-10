@@ -86,45 +86,37 @@ export default class PageController {
           this._api.deleteComment(oldData.id)
           .then((movieModel) => {
             controller.destroy();
-
             this._movieModel.updateMovie(movieModel.id, movieModel);
             this._renderFilmControllers(movieModel);
             this._renderTopList();
             this._renderMostList();
           })
           .catch(() => {
-            controller.shake();
+            controller.handleError();
           });
         } else {
           this._api.addComment(oldData.id, newData)
           .then((movieModel) => {
-            controller._commentsComponent.activateForm();
             this._movieModel.updateMovie(oldData.id, movieModel);
             this._renderFilmControllers(movieModel);
             this._renderTopList();
             this._renderMostList();
           })
           .catch(() => {
-            controller._commentsComponent.setErrorTextArea();
-            const newCommentForm = controller._commentsComponent.getElement().querySelector(`.film-details__new-comment`);
-            controller.shake(newCommentForm);
+            controller.handleError(type);
           });
         }
         break;
       case `rating`:
         this._api.updateMovie(newData)
           .then((movieModel) => {
-            controller._userRatingComponent.activateForm();
-            controller._userRatingComponent.removeErrorInputs();
             this._movieModel.updateMovie(oldData.id, movieModel);
             this._renderFilmControllers(movieModel);
             this._renderTopList();
             this._renderMostList();
           })
           .catch(() => {
-            controller._userRatingComponent.setErrorInput();
-            const userRatingFormElement = controller._userRatingComponent.getElement().querySelector(`.film-details__user-rating-score`);
-            controller.shake(userRatingFormElement);
+            controller.handleError(type);
           });
         break;
       case `movie`:
@@ -132,11 +124,11 @@ export default class PageController {
         if (newData !== null) {
           this._api.updateMovie(newData)
             .then((movieModel) => {
-              controller._filmComponent.activateForm();
-              controller._filmPopupComponent.activateForm();
-              controller._userRatingComponent.activateInputs();
               this._movieModel.updateMovie(oldData.id, movieModel);
               this._renderFilmControllers(movieModel);
+            })
+            .catch(() => {
+              controller.handleError(type);
             });
         }
         break;
