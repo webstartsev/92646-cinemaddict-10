@@ -75,6 +75,7 @@ export default class Comments extends AbstractComponent {
     super();
 
     this._isDisabled = false;
+    this._handler = null;
   }
   getTemplate() {
     return createCommentsTemplate();
@@ -104,6 +105,7 @@ export default class Comments extends AbstractComponent {
   }
 
   setFormSumbitHandler(handler) {
+    this._handler = handler;
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, (evt) => {
       if (evt.ctrlKey && (evt.key === KeyCode.ENTER || evt.key === KeyCode.ENT)) {
         handler();
@@ -118,7 +120,7 @@ export default class Comments extends AbstractComponent {
 
   activateForm() {
     this._isDisabled = false;
-    this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
+    this.getElement().querySelector(`.film-details__comment-input`).disabled = false;
   }
 
   setErrorTextArea() {

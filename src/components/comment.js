@@ -28,8 +28,10 @@ const createCommentsTemplate = (commet, deleteText) => {
 export default class Comments extends AbstarctSmartComponent {
   constructor(commets) {
     super();
+
     this._deleteButtonText = DEFAULT_DELETE;
     this._commets = commets;
+    this._handler = null;
   }
 
   getTemplate() {
@@ -37,6 +39,7 @@ export default class Comments extends AbstarctSmartComponent {
   }
 
   setDeleteClickHandler(handler) {
+    this._handler = handler;
     const deleteButtons = this.getElement().querySelectorAll(`.film-details__comment-delete`);
     deleteButtons.forEach((button) => button.addEventListener(`click`, handler));
   }
@@ -47,14 +50,6 @@ export default class Comments extends AbstarctSmartComponent {
   }
 
   recoveryListeners() {
-
-  }
-
-  shake() {
-    this.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
-
-    setTimeout(() => {
-      this.getElement().style.animation = ``;
-    }, SHAKE_ANIMATION_TIMEOUT);
+    this.setDeleteClickHandler(this._handler);
   }
 }
